@@ -76,5 +76,6 @@ app.patch('/api/applications/:id',auth,(req,res)=>{
 
 app.get('/health',(req,res)=>res.json({ok:true,service:'dcurs'}));
 
+app.get('/',(req,res)=>res.sendFile(path.join(__dirname,'public','index.html')));
 app.get('/*splat',(req,res)=>res.sendFile(path.join(__dirname,'public','index.html')));
 app.listen(PORT,()=>console.log(`DCURS running at http://localhost:${PORT}`));

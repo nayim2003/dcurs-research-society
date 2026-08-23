@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: dcurs-research-society
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DB_FILE
+        value: /var/data/dcurs.sqlite
+    disk:
+      name: dcurs-data
+      mountPath: /var/data
+      sizeGB: 1

@@ -716,7 +716,52 @@ service:"dcurs"
 
 
 
+// ==========================
+// PUBLIC APPROVED PROJECTS
+// ==========================
 
+
+app.get("/api/public/projects",(req,res)=>{
+
+
+const projects = db.prepare(`
+
+SELECT
+
+projects.title,
+
+projects.area,
+
+projects.abstract,
+
+projects.supervisor,
+
+users.name,
+
+users.department
+
+
+FROM projects
+
+JOIN users
+
+ON projects.student_id = users.id
+
+
+WHERE projects.status='Approved'
+
+
+ORDER BY projects.id DESC
+
+
+`).all();
+
+
+
+res.json(projects);
+
+
+});
 
 // ==========================
 // START SERVER

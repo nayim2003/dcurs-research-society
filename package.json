@@ -1,9 +1,0 @@
-{
-  "name": "dcurs-website",
-  "version": "4.0.0",
-  "private": true,
-  "description": "Dhaka Central University Research Society website with membership backend and admin dashboard",
-  "main": "server.js",
-  "scripts": {"start":"node server.js"},
-  "dependencies": {"better-sqlite3":"^11.10.0","express":"^5.1.0"}
-}

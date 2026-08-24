@@ -216,7 +216,20 @@ throw new Error(result.error);
 
 // পরে dashboard যোগ হলে এখানে redirect হবে
 
-localStorage.setItem("token", result.token);
+// Save login information
+
+localStorage.setItem(
+"token",
+result.token
+);
+
+
+localStorage.setItem(
+"user",
+JSON.stringify(result.user)
+);
+
+
 window.location.href="student-dashboard.html";
 
 

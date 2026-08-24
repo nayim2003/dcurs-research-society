@@ -617,7 +617,77 @@ console.log(error);
 
 loadProfile();
 
+document
+.getElementById("projectForm")
+.addEventListener("submit", async function(e){
 
+
+e.preventDefault();
+
+
+
+const project = {
+
+
+student_id:user.id,
+
+
+title:
+document.getElementById("title").value,
+
+
+area:
+document.getElementById("area").value,
+
+
+abstract:
+document.getElementById("abstract").value,
+
+
+supervisor:
+document.getElementById("supervisor").value
+
+
+};
+
+
+
+
+const response = await fetch(
+"/api/projects",
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(project)
+
+}
+
+);
+
+
+
+const data = await response.json();
+
+
+
+document.getElementById(
+"projectMessage"
+).innerHTML =
+data.message;
+
+
+
+this.reset();
+
+
+});
 
 </script>
 

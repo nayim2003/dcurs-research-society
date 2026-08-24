@@ -1,1 +1,449 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Research | DCURS</title><link rel="stylesheet" href="style.css"></head><body><header class="site-header"><nav class="nav container"><a class="brand" href="index.html"><img src="assets/dcurs-logo.png" alt="DCURS Logo"><span><strong>DCURS</strong><small>Research Society</small></span></a><button class="menu-btn">☰</button><div class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="research.html">Research</a><a href="events.html">Events</a><a href="members.html">Members</a><a href="publications.html">Publications</a><a href="join.html" class="nav-cta">Join Us</a></div></nav></header><main><section class="page-hero"><div class="container"><p class="section-label">RESEARCH</p><h1>Ideas worth<br><span>investigating.</span></h1><p>Research projects, working groups and publications will be listed here.</p></div></section><section class="section"><div class="container"><p class="section-label">RESEARCH AREAS</p><h2>Interdisciplinary by design.</h2><div class="research-grid light-grid"><div class="research-item"><span>01</span><h3>Social Science</h3><p>Education, society, culture and public policy.</p></div><div class="research-item"><span>02</span><h3>Data Science & AI</h3><p>Machine learning, analytics and computational research.</p></div><div class="research-item"><span>03</span><h3>Business & Economics</h3><p>Markets, entrepreneurship and economic studies.</p></div><div class="research-item"><span>04</span><h3>Science & Technology</h3><p>Scientific inquiry, technology and innovation.</p></div></div></div></section></main><footer class="footer"><div class="container footer-grid"><div><div class="footer-brand">DCURS</div><p>Dhaka Central University Research Society</p><p class="muted">INQUIRE • ANALYZE • INNOVATE</p></div><div><h4>Explore</h4><a href="about.html">About</a><a href="research.html">Research</a><a href="events.html">Events</a></div><div><h4>Connect</h4><a href="join.html">Membership</a><a href="mailto:dcurs@example.com">Email</a><a href="#">Facebook</a></div></div><div class="container copyright">© 2026 Dhaka Central University Research Society. All rights reserved.</div></footer><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>DCURS Research Archive</title>
+
+<link rel="stylesheet" href="style.css">
+
+
+<style>
+
+body{
+background:#f7f9fc;
+}
+
+
+
+.container{
+
+width:90%;
+max-width:1200px;
+margin:auto;
+
+}
+
+
+
+.research{
+
+padding:60px 20px;
+
+}
+
+
+
+.research-title{
+
+color:#06244b;
+font-size:42px;
+margin-bottom:40px;
+
+}
+
+
+
+.card{
+
+background:white;
+
+padding:35px;
+
+border-radius:22px;
+
+margin-bottom:25px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+
+
+.card:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+
+.card h2{
+
+color:#06244b;
+
+font-size:28px;
+
+}
+
+
+
+.card p{
+
+color:#64748b;
+
+line-height:1.7;
+
+}
+
+
+
+.info{
+
+margin-top:20px;
+
+padding-top:20px;
+
+border-top:1px solid #eee;
+
+}
+
+
+
+.badge{
+
+display:inline-block;
+
+background:#d1fadf;
+
+color:#067647;
+
+padding:8px 18px;
+
+border-radius:20px;
+
+font-weight:600;
+
+}
+
+
+
+.loading{
+
+text-align:center;
+
+color:#64748b;
+
+font-size:18px;
+
+}
+
+
+
+.empty{
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+text-align:center;
+
+color:#64748b;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+<header class="site-header">
+
+
+<nav class="nav container">
+
+
+<a class="brand" href="index.html">
+
+
+<img src="assets/dcurs-logo.png">
+
+
+<span>
+
+<strong>
+Dhaka Central University
+</strong>
+
+<small>
+Research Society
+</small>
+
+
+</span>
+
+
+</a>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+<section class="research">
+
+
+<div class="container">
+
+
+
+<h1 class="research-title">
+
+DCURS Research Archive
+
+</h1>
+
+
+
+
+<div id="projects" class="loading">
+
+Loading research projects...
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<script>
+
+
+async function loadProjects(){
+
+
+const box=document.getElementById("projects");
+
+
+
+try{
+
+
+const response = await fetch(
+
+"/api/public/projects"
+
+);
+
+
+
+if(!response.ok){
+
+throw new Error("Failed to load projects");
+
+}
+
+
+
+const projects = await response.json();
+
+
+
+
+
+if(projects.length===0){
+
+
+box.className="empty";
+
+
+box.innerHTML=
+
+"No approved research projects available yet.";
+
+
+return;
+
+
+}
+
+
+
+
+box.className="";
+
+box.innerHTML="";
+
+
+
+
+
+projects.forEach(project=>{
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+
+<h2>
+
+${project.title || "Untitled Research"}
+
+</h2>
+
+
+
+
+<p>
+
+<strong>
+Research Area:
+</strong>
+
+${project.area || "Not specified"}
+
+</p>
+
+
+
+
+<p>
+
+${project.abstract || "No abstract available."}
+
+</p>
+
+
+
+
+
+<div class="info">
+
+
+
+<p>
+
+<strong>
+Researcher:
+</strong>
+
+${project.name || "Unknown"}
+
+</p>
+
+
+
+<p>
+
+<strong>
+Department:
+</strong>
+
+${project.department || "Unknown"}
+
+</p>
+
+
+
+<p>
+
+<strong>
+Supervisor:
+</strong>
+
+${project.supervisor || "Not assigned"}
+
+</p>
+
+
+
+
+<span class="badge">
+
+Approved Research
+
+</span>
+
+
+
+</div>
+
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+catch(error){
+
+
+console.log(error);
+
+
+
+box.className="empty";
+
+
+box.innerHTML=
+
+"Unable to load research archive.";
+
+}
+
+
+
+}
+
+
+
+
+
+loadProjects();
+
+
+
+</script>
+
+
+
+</body>
+
+
+</html>

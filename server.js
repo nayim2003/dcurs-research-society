@@ -15,7 +15,10 @@ app.use(express.static("public"));
 
 
 
+// ======================
 // DATABASE
+// ======================
+
 
 db.exec(`
 
@@ -46,21 +49,28 @@ status TEXT DEFAULT 'Pending'
 
 
 
-// ==========================
+// ======================
 // STUDENT REGISTER
-// ==========================
+// ======================
 
 
 app.post("/api/register", async(req,res)=>{
 
 
 const {
+
 name,
+
 email,
+
 password,
+
 department,
+
 student_id,
+
 research_interest
+
 }=req.body;
 
 
@@ -75,6 +85,7 @@ const hash = await bcrypt.hash(password,10);
 db.prepare(`
 
 INSERT INTO users
+
 (
 name,
 email,
@@ -89,10 +100,15 @@ VALUES(?,?,?,?,?,?)
 `).run(
 
 name,
+
 email,
+
 hash,
+
 department,
+
 student_id,
+
 research_interest
 
 );
@@ -108,9 +124,11 @@ message:"Registration submitted"
 });
 
 
+
 }
 
-catch(err){
+catch(error){
+
 
 res.status(400).json({
 
@@ -131,9 +149,9 @@ error:"Email already exists"
 
 
 
-// ==========================
+// ======================
 // STUDENT LOGIN
-// ==========================
+// ======================
 
 
 app.post("/api/login", async(req,res)=>{
@@ -156,6 +174,7 @@ error:"Invalid login"
 });
 
 }
+
 
 
 
@@ -197,6 +216,7 @@ error:"Account pending approval"
 
 
 
+
 const token = jwt.sign(
 
 {
@@ -210,7 +230,6 @@ role:user.role
 SECRET
 
 );
-
 
 
 
@@ -255,28 +274,25 @@ status:user.status
 
 
 
-// ==========================
+// ======================
 // ADMIN LOGIN
-// ==========================
+// ======================
 
 
 app.post("/api/admin/login",(req,res)=>{
 
 
-const username =
-process.env.ADMIN_USERNAME;
+const username = process.env.ADMIN_USERNAME;
 
-
-const password =
-process.env.ADMIN_PASSWORD;
+const password = process.env.ADMIN_PASSWORD;
 
 
 
 if(
 
-req.body.username===username &&
+req.body.username === username &&
 
-req.body.password===password
+req.body.password === password
 
 ){
 
@@ -322,9 +338,10 @@ error:"Invalid admin login"
 
 
 
-// ==========================
-// ADMIN APPLICATION LIST
-// ==========================
+
+// ======================
+// ADMIN GET APPLICATIONS
+// ======================
 
 
 app.get("/api/applications",(req,res)=>{
@@ -351,6 +368,7 @@ status
 
 FROM users
 
+
 WHERE role='student'
 
 
@@ -374,15 +392,35 @@ res.json(data);
 
 
 
-// ==========================
-// APPROVE / REJECT
-// ==========================
+// ======================
+// ADMIN UPDATE STATUS
+// ======================
 
 
 app.patch("/api/applications/:id",(req,res)=>{
 
 
 const {status}=req.body;
+
+
+
+if(
+
+!["Pending","Approved","Rejected"]
+
+.includes(status)
+
+)
+
+{
+
+return res.status(400).json({
+
+error:"Invalid status"
+
+});
+
+}
 
 
 
@@ -421,9 +459,9 @@ success:true
 
 
 
-// ==========================
+// ======================
 // STUDENT PROFILE
-// ==========================
+// ======================
 
 
 app.get("/api/profile/:id",(req,res)=>{
@@ -458,14 +496,15 @@ WHERE id=?
 
 
 
-
 if(!user){
+
 
 return res.status(404).json({
 
 error:"Student not found"
 
 });
+
 
 }
 
@@ -484,9 +523,9 @@ res.json(user);
 
 
 
-// ==========================
-// HEALTH
-// ==========================
+// ======================
+// HEALTH CHECK
+// ======================
 
 
 app.get("/health",(req,res)=>{
@@ -502,6 +541,7 @@ service:"dcurs"
 
 
 });
+
 
 
 

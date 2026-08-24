@@ -6,69 +6,75 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DCURS Admin Panel</title>
+<title>DCURS Admin Dashboard</title>
 
 <link rel="stylesheet" href="style.css">
-
 
 <style>
 
 body{
-background:#f7f9fc;
+background:#f6f8fc;
 }
 
 
 .container{
+
 width:90%;
 max-width:1200px;
 margin:auto;
+
 }
 
 
 .admin{
+
 padding:50px 20px;
+
 }
 
 
-.box{
+.card{
 
 background:white;
+
 padding:30px;
+
 border-radius:20px;
-box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+box-shadow:0 15px 35px rgba(0,0,0,.08);
+
 margin-bottom:30px;
 
 }
 
 
-input{
 
-width:100%;
-padding:12px;
-margin:10px 0;
-border:1px solid #ddd;
-border-radius:10px;
+h1,h2{
+
+color:#06244b;
 
 }
+
 
 
 button{
 
-padding:10px 18px;
 border:none;
+
+padding:10px 18px;
+
 border-radius:20px;
+
 cursor:pointer;
-background:#06244b;
+
 color:white;
 
-}
+background:#06244b;
 
-
-.reject{
-
-background:#b42318;
+margin:3px;
 
 }
+
 
 
 .approve{
@@ -78,48 +84,70 @@ background:#16a34a;
 }
 
 
+.reject{
+
+background:#dc2626;
+
+}
+
+
+
 .logout{
 
 float:right;
+
 background:#b42318;
 
 }
 
 
+
 .stats{
 
 display:grid;
+
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+
 gap:20px;
 
 }
 
 
+
 .stat{
 
 background:#06244b;
+
 color:white;
+
 padding:25px;
+
 border-radius:20px;
 
 }
 
 
+
+.stat h1{
+
+color:white;
+
+margin:0;
+
+}
+
+
+
 table{
 
 width:100%;
+
 border-collapse:collapse;
 
-}
-
-
-th,td{
-
-padding:12px;
-border-bottom:1px solid #ddd;
-text-align:left;
+margin-top:20px;
 
 }
+
 
 
 th{
@@ -129,8 +157,20 @@ background:#eef4fb;
 }
 
 
-</style>
 
+td,th{
+
+padding:14px;
+
+border-bottom:1px solid #ddd;
+
+text-align:left;
+
+}
+
+
+
+</style>
 
 </head>
 
@@ -146,7 +186,9 @@ background:#eef4fb;
 
 <a class="brand" href="index.html">
 
+
 <img src="assets/dcurs-logo.png">
+
 
 <span>
 
@@ -160,6 +202,7 @@ Research Society
 
 </span>
 
+
 </a>
 
 
@@ -171,59 +214,15 @@ Research Society
 
 
 
+
 <section class="admin">
+
 
 <div class="container">
 
 
 
-<!-- LOGIN -->
-
-<div class="box" id="loginBox">
-
-
-<h1>
-Admin Login
-</h1>
-
-
-<form id="loginForm">
-
-
-<input id="username" placeholder="Username" required>
-
-
-<input id="password" type="password" placeholder="Password" required>
-
-
-<button type="submit">
-
-Login
-
-</button>
-
-
-</form>
-
-
-<p id="error"></p>
-
-
-</div>
-
-
-
-
-
-
-<!-- DASHBOARD -->
-
-
-<div id="dashboard" style="display:none;">
-
-
-
-<div class="box">
+<div class="card">
 
 
 <button class="logout" onclick="logout()">
@@ -251,9 +250,26 @@ DCURS Admin Dashboard
 
 <div class="stat">
 
-<h1 id="total">0</h1>
+<h1 id="total">
+0
+</h1>
 
-<p>Total Students</p>
+<p>
+Total Students
+</p>
+
+</div>
+
+
+<div class="stat">
+
+<h1 id="pending">
+0
+</h1>
+
+<p>
+Pending
+</p>
 
 </div>
 
@@ -261,23 +277,15 @@ DCURS Admin Dashboard
 
 <div class="stat">
 
-<h1 id="pending">0</h1>
+<h1 id="approved">
+0
+</h1>
 
-<p>Pending</p>
-
-</div>
-
-
-
-
-<div class="stat">
-
-<h1 id="approved">0</h1>
-
-<p>Approved</p>
+<p>
+Approved
+</p>
 
 </div>
-
 
 
 </div>
@@ -289,12 +297,13 @@ DCURS Admin Dashboard
 
 
 
-<div class="box">
+<div class="card">
 
 
 <h2>
 🎓 Student Applications
 </h2>
+
 
 
 <table>
@@ -323,10 +332,12 @@ DCURS Admin Dashboard
 
 <tbody id="studentRows">
 
+
 </tbody>
 
 
 </table>
+
 
 
 </div>
@@ -338,7 +349,8 @@ DCURS Admin Dashboard
 
 
 
-<div class="box">
+
+<div class="card">
 
 
 <h2>
@@ -350,6 +362,7 @@ DCURS Admin Dashboard
 
 
 <thead>
+
 
 <tr>
 
@@ -372,6 +385,7 @@ DCURS Admin Dashboard
 
 <tbody id="projectRows">
 
+
 </tbody>
 
 
@@ -381,10 +395,6 @@ DCURS Admin Dashboard
 </div>
 
 
-
-
-
-</div>
 
 
 </div>
@@ -401,108 +411,15 @@ DCURS Admin Dashboard
 <script>
 
 
-let token = "";
-
-
-
-
-// LOGIN
-
-
-document
-.getElementById("loginForm")
-.addEventListener("submit",async function(e){
-
-
-e.preventDefault();
-
-
-
-const response = await fetch(
-
-"/api/admin/login",
-
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-username:
-document.getElementById("username").value,
-
-
-password:
-document.getElementById("password").value
-
-
-})
-
-}
-
-
-);
-
-
-
-const data = await response.json();
-
-
-
-if(!response.ok){
-
-document.getElementById("error").innerHTML =
-data.error;
-
-return;
-
-}
-
-
-
-token=data.token;
-
-
-localStorage.setItem(
-"adminToken",
-token
-);
-
-
-
-document.getElementById("loginBox").style.display="none";
-
-
-document.getElementById("dashboard").style.display="block";
-
-
-
-loadStudents();
-
-loadProjects();
-
-
-
-});
-
-
-
-
-
-
-
-
-
+// ==========================
 // LOAD STUDENTS
+// ==========================
 
 
 async function loadStudents(){
+
+
+try{
 
 
 const response = await fetch(
@@ -517,24 +434,30 @@ const students = await response.json();
 
 
 
-let pending=0;
-
-let approved=0;
+console.log(
+"Students:",
+students
+);
 
 
 
 let html="";
 
 
+let pending=0;
 
-students.forEach(s=>{
+let approved=0;
 
 
-if(s.status==="Pending")
+
+students.forEach(student=>{
+
+
+if(student.status==="Pending")
 pending++;
 
 
-if(s.status==="Approved")
+if(student.status==="Approved")
 approved++;
 
 
@@ -542,29 +465,39 @@ approved++;
 
 html += `
 
+
 <tr>
 
-<td>${s.name}</td>
 
-<td>${s.email}</td>
+<td>${student.name}</td>
 
-<td>${s.department || ""}</td>
 
-<td>${s.status}</td>
+<td>${student.email}</td>
+
+
+<td>${student.department || ""}</td>
+
+
+<td>${student.status}</td>
+
 
 
 <td>
 
+
 <button class="approve"
-onclick="studentStatus(${s.id},'Approved')">
+
+onclick="changeStudentStatus(${student.id},'Approved')">
 
 Approve
 
 </button>
 
 
+
 <button class="reject"
-onclick="studentStatus(${s.id},'Rejected')">
+
+onclick="changeStudentStatus(${student.id},'Rejected')">
 
 Reject
 
@@ -574,7 +507,9 @@ Reject
 </td>
 
 
+
 </tr>
+
 
 `;
 
@@ -584,14 +519,45 @@ Reject
 
 
 
-document.getElementById("studentRows").innerHTML=html;
+
+document.getElementById(
+"studentRows"
+).innerHTML=html;
 
 
-document.getElementById("total").innerHTML=students.length;
 
-document.getElementById("pending").innerHTML=pending;
 
-document.getElementById("approved").innerHTML=approved;
+document.getElementById(
+"total"
+).innerHTML=students.length;
+
+
+
+document.getElementById(
+"pending"
+).innerHTML=pending;
+
+
+
+document.getElementById(
+"approved"
+).innerHTML=approved;
+
+
+
+}
+
+catch(error){
+
+
+console.log(
+"Student Load Error:",
+error
+);
+
+
+}
+
 
 
 }
@@ -604,7 +570,13 @@ document.getElementById("approved").innerHTML=approved;
 
 
 
-async function studentStatus(id,status){
+// ==========================
+// UPDATE STUDENT STATUS
+// ==========================
+
+
+async function changeStudentStatus(id,status){
+
 
 
 await fetch(
@@ -613,19 +585,24 @@ await fetch(
 
 {
 
+
 method:"PATCH",
 
+
 headers:{
+
 
 "Content-Type":"application/json"
 
 },
+
 
 body:JSON.stringify({
 
 status:status
 
 })
+
 
 }
 
@@ -646,10 +623,15 @@ loadStudents();
 
 
 
+// ==========================
 // LOAD PROJECTS
+// ==========================
 
 
 async function loadProjects(){
+
+
+try{
 
 
 const response = await fetch(
@@ -664,24 +646,37 @@ const projects = await response.json();
 
 
 
+console.log(
+"Projects:",
+projects
+);
+
+
+
 let html="";
 
 
 
-projects.forEach(p=>{
+projects.forEach(project=>{
 
 
 html += `
 
+
 <tr>
 
-<td>${p.title}</td>
 
-<td>${p.area}</td>
+<td>${project.title}</td>
 
-<td>${p.supervisor}</td>
 
-<td>${p.status}</td>
+<td>${project.area}</td>
+
+
+<td>${project.supervisor}</td>
+
+
+<td>${project.status}</td>
+
 
 
 <td>
@@ -689,7 +684,7 @@ html += `
 
 <button class="approve"
 
-onclick="projectStatus(${p.id},'Approved')">
+onclick="changeProjectStatus(${project.id},'Approved')">
 
 Approve
 
@@ -699,7 +694,7 @@ Approve
 
 <button class="reject"
 
-onclick="projectStatus(${p.id},'Rejected')">
+onclick="changeProjectStatus(${project.id},'Rejected')">
 
 Reject
 
@@ -709,16 +704,36 @@ Reject
 </td>
 
 
+
 </tr>
 
+
 `;
+
 
 
 });
 
 
 
-document.getElementById("projectRows").innerHTML=html;
+document.getElementById(
+"projectRows"
+).innerHTML=html;
+
+
+
+}
+
+catch(error){
+
+
+console.log(
+"Project Load Error:",
+error
+);
+
+
+}
 
 
 }
@@ -730,8 +745,7 @@ document.getElementById("projectRows").innerHTML=html;
 
 
 
-
-async function projectStatus(id,status){
+async function changeProjectStatus(id,status){
 
 
 await fetch(
@@ -740,19 +754,24 @@ await fetch(
 
 {
 
+
 method:"PATCH",
 
+
 headers:{
+
 
 "Content-Type":"application/json"
 
 },
+
 
 body:JSON.stringify({
 
 status:status
 
 })
+
 
 }
 
@@ -775,7 +794,9 @@ loadProjects();
 function logout(){
 
 
-localStorage.removeItem("adminToken");
+localStorage.removeItem(
+"adminToken"
+);
 
 
 location.reload();
@@ -785,10 +806,24 @@ location.reload();
 
 
 
+
+
+
+
+// START
+
+
+loadStudents();
+
+loadProjects();
+
+
+
 </script>
 
 
 
 </body>
+
 
 </html>

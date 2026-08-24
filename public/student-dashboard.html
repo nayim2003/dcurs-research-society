@@ -312,15 +312,61 @@ Loading...
 
 <div class="card">
 
-
 <h2>
-🔬 Research Projects
+🔬 Research Project Submission
 </h2>
 
 
-<p>
-Submit and manage your research ideas.
-</p>
+<form id="projectForm">
+
+
+<input 
+id="title"
+placeholder="Project Title"
+required>
+
+
+<br><br>
+
+
+<input 
+id="area"
+placeholder="Research Area"
+required>
+
+
+<br><br>
+
+
+<textarea 
+id="abstract"
+placeholder="Project Abstract"
+required></textarea>
+
+
+<br><br>
+
+
+<input 
+id="supervisor"
+placeholder="Supervisor Name"
+required>
+
+
+<br><br>
+
+
+<button type="submit">
+
+Submit Project
+
+</button>
+
+
+</form>
+
+
+<p id="projectMessage"></p>
 
 
 </div>

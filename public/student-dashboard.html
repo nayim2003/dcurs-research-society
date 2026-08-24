@@ -1,368 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+<script>
 
-<head>
+function logout(){
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+localStorage.removeItem("token");
+localStorage.removeItem("user");
 
-<title>Student Dashboard | DCURS</title>
-
-<link rel="stylesheet" href="style.css">
-
-<style>
-
-body{
-    background:#f7f9fc;
-}
-
-
-.dashboard{
-    padding:60px 20px;
-}
-
-
-.dashboard-header{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    background:white;
-    padding:25px 35px;
-
-    border-radius:20px;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.08);
-
-    margin-bottom:35px;
-
-}
-
-
-.student-info h1{
-
-    color:#06244b;
-    margin:0;
-
-}
-
-
-.student-info p{
-
-    color:#64748b;
-
-}
-
-
-.logout{
-
-    background:#06244b;
-    color:white;
-
-    padding:12px 25px;
-
-    border-radius:30px;
-
-    cursor:pointer;
+window.location.href="login.html";
 
 }
 
 
 
-.cards{
+const token = localStorage.getItem("token");
 
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-
-    gap:25px;
-
-}
+const user = JSON.parse(
+localStorage.getItem("user")
+);
 
 
 
-.card{
+if(!token || !user){
 
-    background:white;
-
-    padding:30px;
-
-    border-radius:20px;
-
-    box-shadow:0 15px 35px rgba(0,0,0,.08);
-
-}
-
-
-.card h2{
-
-    color:#06244b;
-
-    margin-bottom:15px;
-
-}
-
-
-.card p{
-
-    color:#64748b;
+window.location.href="login.html";
 
 }
 
 
 
-.status{
-
-    display:inline-block;
-
-    background:#fff3cd;
-
-    color:#856404;
-
-    padding:8px 18px;
-
-    border-radius:20px;
-
-}
+async function loadProfile(){
 
 
+try{
 
-.project-btn{
 
-    margin-top:15px;
+const response = await fetch(
+"/api/profile/"+user.id
+);
 
-    display:inline-block;
 
-    background:#06244b;
+const data = await response.json();
 
-    color:white;
 
-    padding:10px 20px;
 
-    border-radius:25px;
+if(!response.ok){
+
+console.log(data);
+return;
 
 }
 
 
-</style>
 
+// Header name
 
-</head>
-
-
-<body>
-
-
-
-<header class="site-header">
-
-<nav class="nav container">
-
-
-<a class="brand" href="index.html">
-
-<img src="assets/dcurs-logo.png">
-
-<span>
-
-<strong>
-Dhaka Central University
-</strong>
-
-<small>
-Research Society
-</small>
-
-</span>
-
-
-</a>
-
-
-</nav>
-
-</header>
+document.querySelector(
+".student-info h1"
+).innerHTML =
+"Welcome, "+data.name;
 
 
 
-<section class="dashboard">
+// Profile card
 
-
-<div class="container">
-
-
-<div class="dashboard-header">
-
-
-<div class="student-info">
-
-<h1>
-Welcome, Student
-</h1>
-
-<p>
-DCURS Research Portal
-</p>
-
-</div>
+const cards =
+document.querySelectorAll(".card");
 
 
 
-<div class="logout" onclick="logout()">
-
-Logout
-
-</div>
-
-
-</div>
-
-
-
-
-<div class="cards">
-
-
-
-<div class="card">
+cards[0].innerHTML = `
 
 <h2>
 👤 Profile
 </h2>
 
 <p>
-Name: Loading...
+Name: ${data.name}
 </p>
 
 <p>
-Department: Loading...
+Department: ${data.department}
 </p>
 
 <p>
-Student ID: Loading...
+Student ID: ${data.student_id}
 </p>
 
-</div>
+<p>
+Research Interest: ${data.research_interest}
+</p>
+
+`;
 
 
 
-<div class="card">
+
+// Status card
+
+cards[1].innerHTML = `
 
 <h2>
 Membership Status
 </h2>
 
 <span class="status">
-Pending Approval
+
+${data.status}
+
 </span>
 
 
 <p>
-Your membership approval is being reviewed by DCURS administration.
+Your membership approval status.
 </p>
 
-
-</div>
-
+`;
 
 
 
-<div class="card">
+}
 
-<h2>
-🔬 Research Projects
-</h2>
+catch(error){
 
+console.log(error);
 
-<p>
-Submit and manage your research ideas.
-</p>
+}
 
-
-<a class="project-btn">
-
-Submit Project
-
-</a>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-<h2>
-📚 Publications
-</h2>
-
-
-<p>
-Your research publications will appear here.
-</p>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-<h2>
-📅 Events
-</h2>
-
-
-<p>
-Upcoming DCURS seminars and workshops.
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-
-
-<script>
-
-
-function logout(){
-
-localStorage.removeItem("token");
-
-window.location.href="login.html";
 
 }
 
 
 
-const token =
-localStorage.getItem("token");
-
-
-if(!token){
-
-window.location.href="login.html";
-
-}
+loadProfile();
 
 
 </script>
-
-
-</body>
-
-</html>

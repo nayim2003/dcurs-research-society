@@ -14,14 +14,10 @@
 <link rel="stylesheet" href="style.css">
 
 
-
 <style>
 
-
 body{
-
 background:#f7f9fc;
-
 }
 
 
@@ -34,8 +30,25 @@ padding:60px 20px;
 
 
 
+.container{
+
+width:90%;
+max-width:1200px;
+margin:auto;
+
+}
+
+
+
 .dashboard-header{
 
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 15px 40px rgba(0,0,0,.08);
 
 display:flex;
 
@@ -43,19 +56,7 @@ justify-content:space-between;
 
 align-items:center;
 
-
-background:white;
-
-padding:25px 35px;
-
-border-radius:20px;
-
-
-box-shadow:0 15px 40px rgba(0,0,0,.08);
-
-
-margin-bottom:35px;
-
+margin-bottom:30px;
 
 }
 
@@ -65,33 +66,21 @@ margin-bottom:35px;
 
 color:#06244b;
 
-margin:0;
-
-}
-
-
-
-.student-info p{
-
-color:#64748b;
-
 }
 
 
 
 .logout{
 
-
-background:#06244b;
+background:#b42318;
 
 color:white;
 
 padding:12px 25px;
 
-border-radius:30px;
+border-radius:25px;
 
 cursor:pointer;
-
 
 }
 
@@ -99,13 +88,11 @@ cursor:pointer;
 
 .cards{
 
-
 display:grid;
 
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 
 gap:25px;
-
 
 }
 
@@ -113,16 +100,13 @@ gap:25px;
 
 .card{
 
-
 background:white;
 
 padding:30px;
 
 border-radius:20px;
 
-
 box-shadow:0 15px 35px rgba(0,0,0,.08);
-
 
 }
 
@@ -136,9 +120,43 @@ color:#06244b;
 
 
 
-.card p{
+input,textarea{
 
-color:#64748b;
+width:100%;
+
+padding:12px;
+
+margin:8px 0;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+}
+
+
+
+textarea{
+
+height:120px;
+
+}
+
+
+
+button{
+
+background:#06244b;
+
+color:white;
+
+border:none;
+
+padding:12px 20px;
+
+border-radius:25px;
+
+cursor:pointer;
 
 }
 
@@ -146,18 +164,21 @@ color:#64748b;
 
 .status{
 
-
-display:inline-block;
-
 background:#fff3cd;
 
-color:#856404;
-
-
-padding:8px 18px;
+padding:8px 15px;
 
 border-radius:20px;
 
+}
+
+
+
+.project{
+
+border-bottom:1px solid #ddd;
+
+padding:10px 0;
 
 }
 
@@ -170,13 +191,11 @@ border-radius:20px;
 
 
 
-
 <body>
 
 
 
 <header class="site-header">
-
 
 <nav class="nav container">
 
@@ -207,8 +226,8 @@ Research Society
 
 </nav>
 
-
 </header>
+
 
 
 
@@ -223,17 +242,19 @@ Research Society
 
 
 
-<div class="dashboard-header">
 
+
+<div class="dashboard-header">
 
 
 <div class="student-info">
 
 
 <h1 id="welcome">
-Welcome, Student
-</h1>
 
+Welcome Student
+
+</h1>
 
 
 <p>
@@ -242,8 +263,6 @@ DCURS Research Portal
 
 
 </div>
-
-
 
 
 
@@ -263,13 +282,17 @@ Logout
 
 
 
+
 <div class="cards">
 
 
 
 
 
-<div class="card" id="profileCard">
+
+<!-- PROFILE -->
+
+<div class="card">
 
 
 <h2>
@@ -277,10 +300,11 @@ Logout
 </h2>
 
 
-<p>
-Loading...
-</p>
+<div id="profile">
 
+Loading...
+
+</div>
 
 
 </div>
@@ -290,7 +314,13 @@ Loading...
 
 
 
-<div class="card" id="statusCard">
+
+
+
+<!-- STATUS -->
+
+
+<div class="card">
 
 
 <h2>
@@ -298,9 +328,12 @@ Membership Status
 </h2>
 
 
-<p>
-Loading...
-</p>
+<span class="status" id="status">
+
+Loading
+
+</span>
+
 
 
 </div>
@@ -310,53 +343,38 @@ Loading...
 
 
 
+
+
+
+
+<!-- PROJECT -->
+
+
 <div class="card">
 
+
 <h2>
-🔬 Research Project Submission
+🔬 Research Project
 </h2>
+
 
 
 <form id="projectForm">
 
 
-<input 
-id="title"
-placeholder="Project Title"
-required>
+<input id="title" placeholder="Project Title" required>
 
 
-<br><br>
+<input id="area" placeholder="Research Area" required>
 
 
-<input 
-id="area"
-placeholder="Research Area"
-required>
+<textarea id="abstract" placeholder="Project Abstract"></textarea>
 
 
-<br><br>
+<input id="supervisor" placeholder="Supervisor Name">
 
 
-<textarea 
-id="abstract"
-placeholder="Project Abstract"
-required></textarea>
-
-
-<br><br>
-
-
-<input 
-id="supervisor"
-placeholder="Supervisor Name"
-required>
-
-
-<br><br>
-
-
-<button type="submit">
+<button>
 
 Submit Project
 
@@ -369,24 +387,62 @@ Submit Project
 <p id="projectMessage"></p>
 
 
+
 </div>
 
 
 
 
+
+
+
+
+
+<!-- PUBLICATION -->
 
 
 <div class="card">
 
 
 <h2>
-📚 Publications
+📄 Publication
 </h2>
 
 
-<p>
-Your research publications will appear here.
-</p>
+
+<form id="publicationForm">
+
+
+<input id="pubTitle" placeholder="Publication Title" required>
+
+
+<input id="journal" placeholder="Journal / Conference" required>
+
+
+<input id="year" placeholder="Publication Year">
+
+
+<input id="pubArea" placeholder="Research Area">
+
+
+<input id="pubLink" placeholder="DOI / Link">
+
+
+
+<button>
+
+Submit Publication
+
+</button>
+
+
+
+</form>
+
+
+
+<p id="pubMessage"></p>
+
 
 
 </div>
@@ -395,28 +451,64 @@ Your research publications will appear here.
 
 
 
+
+
+
+
+<!-- MY PROJECT -->
 
 
 <div class="card">
 
 
 <h2>
-📅 Events
+My Research Projects
 </h2>
 
 
-<p>
-Upcoming DCURS seminars and workshops.
-</p>
+<div id="myProjects">
+
+Loading...
+
+</div>
 
 
 </div>
 
 
 
+
+
+
+
+
+
+<!-- MY PUBLICATIONS -->
+
+
+<div class="card">
+
+
+<h2>
+My Publications
+</h2>
+
+
+<div id="myPublications">
+
+Loading...
+
 </div>
 
 
+</div>
+
+
+
+
+
+
+</div>
 
 
 </div>
@@ -431,24 +523,9 @@ Upcoming DCURS seminars and workshops.
 
 
 
+
+
 <script>
-
-
-
-function logout(){
-
-
-localStorage.removeItem("token");
-
-localStorage.removeItem("user");
-
-
-window.location.href="login.html";
-
-
-}
-
-
 
 
 const token = localStorage.getItem("token");
@@ -462,15 +539,33 @@ localStorage.getItem("user")
 
 
 
-
-
 if(!token || !user){
 
+location.href="login.html";
 
-window.location.href="login.html";
+}
+
+
+
+
+
+
+
+
+function logout(){
+
+
+localStorage.removeItem("token");
+
+localStorage.removeItem("user");
+
+
+location.href="login.html";
 
 
 }
+
+
 
 
 
@@ -482,10 +577,7 @@ async function loadProfile(){
 
 
 
-try{
-
-
-const response = await fetch(
+const res = await fetch(
 
 "/api/profile/"+user.id
 
@@ -493,171 +585,71 @@ const response = await fetch(
 
 
 
-const data = await response.json();
+const data = await res.json();
 
 
 
 
-
-if(!response.ok){
-
-
-console.log(data);
-
-return;
-
-
-}
-
-
-
-
-
-
-document.getElementById("welcome").innerHTML =
+document.getElementById(
+"welcome"
+).innerHTML=
 
 "Welcome, "+data.name;
 
 
 
 
+document.getElementById(
+"profile"
+).innerHTML=`
 
+<p>Name: ${data.name}</p>
 
+<p>Email: ${data.email}</p>
 
+<p>Department: ${data.department}</p>
 
-document.getElementById("profileCard").innerHTML = `
+<p>Student ID: ${data.student_id}</p>
 
-
-<h2>
-👤 Profile
-</h2>
-
-
-<p>
-Name: ${data.name}
-</p>
-
-
-<p>
-Email: ${data.email}
-</p>
-
-
-<p>
-Department: ${data.department || "N/A"}
-</p>
-
-
-<p>
-Student ID: ${data.student_id || "N/A"}
-</p>
-
-
-<p>
-Research Interest: ${data.research_interest || "N/A"}
-</p>
-
-
+<p>Research Interest: ${data.research_interest}</p>
 
 `;
 
 
 
-
-
-
-
-document.getElementById("statusCard").innerHTML = `
-
-
-<h2>
-Membership Status
-</h2>
-
-
-<span class="status">
-
-${data.status}
-
-</span>
-
-
-
-<p>
-
-Your membership approval status.
-
-</p>
-
-
-
-`;
-
-
+document.getElementById(
+"status"
+).innerHTML=data.status;
 
 
 
 }
 
 
-catch(error){
-
-
-console.log(error);
-
-
-}
-
-
-}
 
 
 
 
 
-loadProfile();
+
+
+// PROJECT SUBMIT
+
 
 document
 .getElementById("projectForm")
-.addEventListener("submit", async function(e){
+.addEventListener("submit",async(e)=>{
 
 
 e.preventDefault();
 
 
 
-const project = {
+await fetch("/api/projects",{
 
-
-student_id:user.id,
-
-
-title:
-document.getElementById("title").value,
-
-
-area:
-document.getElementById("area").value,
-
-
-abstract:
-document.getElementById("abstract").value,
-
-
-supervisor:
-document.getElementById("supervisor").value
-
-
-};
-
-
-
-
-const response = await fetch(
-"/api/projects",
-{
 
 method:"POST",
+
 
 headers:{
 
@@ -665,33 +657,250 @@ headers:{
 
 },
 
-body:JSON.stringify(project)
 
-}
+body:JSON.stringify({
+
+
+student_id:user.id,
+
+
+title:title.value,
+
+
+area:area.value,
+
+
+abstract:abstract.value,
+
+
+supervisor:supervisor.value
+
+
+})
+
+
+});
+
+
+
+projectMessage.innerHTML=
+
+"Project submitted successfully";
+
+
+e.target.reset();
+
+
+});
+
+
+
+
+
+
+
+
+
+// PUBLICATION SUBMIT
+
+
+document
+.getElementById("publicationForm")
+.addEventListener("submit",async(e)=>{
+
+
+e.preventDefault();
+
+
+
+const res=await fetch("/api/publications",{
+
+
+method:"POST",
+
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+
+body:JSON.stringify({
+
+
+student_id:user.id,
+
+
+title:pubTitle.value,
+
+
+journal:journal.value,
+
+
+year:year.value,
+
+
+area:pubArea.value,
+
+
+link:pubLink.value
+
+
+})
+
+
+});
+
+
+
+const data=await res.json();
+
+
+
+pubMessage.innerHTML=data.message;
+
+
+
+e.target.reset();
+
+
+loadPublications();
+
+
+});
+
+
+
+
+
+
+
+
+
+// LOAD PROJECTS
+
+
+async function loadProjects(){
+
+
+const res=await fetch(
+
+"/api/projects/student/"+user.id
 
 );
 
 
 
-const data = await response.json();
+const data=await res.json();
 
 
 
-document.getElementById(
-"projectMessage"
-).innerHTML =
-data.message;
+myProjects.innerHTML="";
 
 
 
-this.reset();
+data.forEach(p=>{
+
+
+myProjects.innerHTML += `
+
+
+<div class="project">
+
+<b>${p.title}</b>
+
+<p>${p.area}</p>
+
+<p>Status: ${p.status}</p>
+
+</div>
+
+
+`;
 
 
 });
 
+
+}
+
+
+
+
+
+
+
+
+
+// LOAD PUBLICATIONS
+
+
+async function loadPublications(){
+
+
+const res=await fetch(
+
+"/api/publications/student/"+user.id
+
+);
+
+
+
+const data=await res.json();
+
+
+
+myPublications.innerHTML="";
+
+
+
+data.forEach(p=>{
+
+
+myPublications.innerHTML += `
+
+
+<div class="project">
+
+
+<b>${p.title}</b>
+
+
+<p>${p.journal}</p>
+
+
+<p>Status: ${p.status}</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+loadProfile();
+
+loadProjects();
+
+loadPublications();
+
+
+
 </script>
-
-
 
 
 </body>

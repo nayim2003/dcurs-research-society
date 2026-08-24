@@ -1,31 +1,794 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DCURS Admin Dashboard</title><link rel="stylesheet" href="style.css"></head>
-<body>
-<header class="site-header"><nav class="nav container"><a class="brand" href="index.html"><img src="assets/dcurs-logo.png"><span><strong>DCURS</strong><small>Admin Dashboard</small></span></a><div class="nav-links"><a href="index.html">Website</a><a href="join.html">Membership</a></div></nav></header>
-<main><section class="section"><div class="container">
-<div id="login"><p class="section-label">SECURE ADMIN</p><h1 class="admin-title">Sign in</h1><form id="loginForm" class="form-box"><label>Username<input id="username" required></label><label>Password<input id="password" type="password" required></label><button class="btn btn-primary">Sign in</button></form></div>
-<div id="dashboard" hidden><div class="admin-head"><div><p class="section-label">ADMIN</p><h1 class="admin-title">Applications</h1></div><button class="btn btn-secondary" id="logout">Log out</button></div>
-<div class="admin-stats"><div><strong id="total">0</strong><span>Total</span></div><div><strong id="pending">0</strong><span>Pending</span></div><div><strong id="approved">0</strong><span>Approved</span></div></div>
-<div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Campus</th><th>Email</th><th>Interests</th><th>Status</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table></div>
-</div></div></section></main>
-<script>
-let token='';
-const $=id=>document.getElementById(id);
-$('loginForm').addEventListener('submit',async e=>{
- e.preventDefault();
- const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:$('username').value,password:$('password').value})});
- const d=await r.json(); if(!r.ok)return alert(d.error||'Login failed');
- token=d.token;$('login').hidden=true;$('dashboard').hidden=false;load();
-});
-async function load(){
- const r=await fetch('/api/applications',{headers:{Authorization:'Bearer '+token}});
- if(r.status===401)return logout();
- const apps=await r.json();$('rows').innerHTML='';
- apps.forEach(a=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${a.id}</td><td>${a.name}</td><td>${a.department}</td><td>${a.campus}</td><td>${a.email}</td><td>${a.interests}</td><td><span class="status ${a.status.toLowerCase()}">${a.status}</span></td><td><button class="small-btn" onclick="setStatus('${a.id}','${a.status==='Pending'?'Approved':'Pending'}')">${a.status==='Pending'?'Approve':'Reset'}</button></td>`;$('rows').appendChild(tr)});
- $('total').textContent=apps.length;$('pending').textContent=apps.filter(x=>x.status==='Pending').length;$('approved').textContent=apps.filter(x=>x.status==='Approved').length;
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DCURS Admin Panel</title>
+
+<link rel="stylesheet" href="style.css">
+
+
+<style>
+
+body{
+background:#f7f9fc;
 }
-async function setStatus(id,status){await fetch('/api/applications/'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify({status})});load()}
-function logout(){token='';$('dashboard').hidden=true;$('login').hidden=false}
-$('logout').onclick=logout;
-</script></body></html>
+
+
+.container{
+width:90%;
+max-width:1200px;
+margin:auto;
+}
+
+
+.admin{
+padding:50px 20px;
+}
+
+
+.box{
+
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+margin-bottom:30px;
+
+}
+
+
+input{
+
+width:100%;
+padding:12px;
+margin:10px 0;
+border:1px solid #ddd;
+border-radius:10px;
+
+}
+
+
+button{
+
+padding:10px 18px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+background:#06244b;
+color:white;
+
+}
+
+
+.reject{
+
+background:#b42318;
+
+}
+
+
+.approve{
+
+background:#16a34a;
+
+}
+
+
+.logout{
+
+float:right;
+background:#b42318;
+
+}
+
+
+.stats{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+
+}
+
+
+.stat{
+
+background:#06244b;
+color:white;
+padding:25px;
+border-radius:20px;
+
+}
+
+
+table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+
+th,td{
+
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left;
+
+}
+
+
+th{
+
+background:#eef4fb;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+<header class="site-header">
+
+<nav class="nav container">
+
+
+<a class="brand" href="index.html">
+
+<img src="assets/dcurs-logo.png">
+
+<span>
+
+<strong>
+Dhaka Central University
+</strong>
+
+<small>
+Research Society
+</small>
+
+</span>
+
+</a>
+
+
+</nav>
+
+</header>
+
+
+
+
+
+<section class="admin">
+
+<div class="container">
+
+
+
+<!-- LOGIN -->
+
+<div class="box" id="loginBox">
+
+
+<h1>
+Admin Login
+</h1>
+
+
+<form id="loginForm">
+
+
+<input id="username" placeholder="Username" required>
+
+
+<input id="password" type="password" placeholder="Password" required>
+
+
+<button type="submit">
+
+Login
+
+</button>
+
+
+</form>
+
+
+<p id="error"></p>
+
+
+</div>
+
+
+
+
+
+
+<!-- DASHBOARD -->
+
+
+<div id="dashboard" style="display:none;">
+
+
+
+<div class="box">
+
+
+<button class="logout" onclick="logout()">
+
+Logout
+
+</button>
+
+
+<h1>
+DCURS Admin Dashboard
+</h1>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="stats">
+
+
+<div class="stat">
+
+<h1 id="total">0</h1>
+
+<p>Total Students</p>
+
+</div>
+
+
+
+<div class="stat">
+
+<h1 id="pending">0</h1>
+
+<p>Pending</p>
+
+</div>
+
+
+
+
+<div class="stat">
+
+<h1 id="approved">0</h1>
+
+<p>Approved</p>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="box">
+
+
+<h2>
+🎓 Student Applications
+</h2>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Department</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+
+</tr>
+
+
+</thead>
+
+
+<tbody id="studentRows">
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="box">
+
+
+<h2>
+🔬 Research Projects
+</h2>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>Title</th>
+
+<th>Area</th>
+
+<th>Supervisor</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+
+</tr>
+
+
+</thead>
+
+
+<tbody id="projectRows">
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<script>
+
+
+let token = "";
+
+
+
+
+// LOGIN
+
+
+document
+.getElementById("loginForm")
+.addEventListener("submit",async function(e){
+
+
+e.preventDefault();
+
+
+
+const response = await fetch(
+
+"/api/admin/login",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+username:
+document.getElementById("username").value,
+
+
+password:
+document.getElementById("password").value
+
+
+})
+
+}
+
+
+);
+
+
+
+const data = await response.json();
+
+
+
+if(!response.ok){
+
+document.getElementById("error").innerHTML =
+data.error;
+
+return;
+
+}
+
+
+
+token=data.token;
+
+
+localStorage.setItem(
+"adminToken",
+token
+);
+
+
+
+document.getElementById("loginBox").style.display="none";
+
+
+document.getElementById("dashboard").style.display="block";
+
+
+
+loadStudents();
+
+loadProjects();
+
+
+
+});
+
+
+
+
+
+
+
+
+
+// LOAD STUDENTS
+
+
+async function loadStudents(){
+
+
+const response = await fetch(
+
+"/api/applications"
+
+);
+
+
+
+const students = await response.json();
+
+
+
+let pending=0;
+
+let approved=0;
+
+
+
+let html="";
+
+
+
+students.forEach(s=>{
+
+
+if(s.status==="Pending")
+pending++;
+
+
+if(s.status==="Approved")
+approved++;
+
+
+
+
+html += `
+
+<tr>
+
+<td>${s.name}</td>
+
+<td>${s.email}</td>
+
+<td>${s.department || ""}</td>
+
+<td>${s.status}</td>
+
+
+<td>
+
+<button class="approve"
+onclick="studentStatus(${s.id},'Approved')">
+
+Approve
+
+</button>
+
+
+<button class="reject"
+onclick="studentStatus(${s.id},'Rejected')">
+
+Reject
+
+</button>
+
+
+</td>
+
+
+</tr>
+
+`;
+
+
+
+});
+
+
+
+document.getElementById("studentRows").innerHTML=html;
+
+
+document.getElementById("total").innerHTML=students.length;
+
+document.getElementById("pending").innerHTML=pending;
+
+document.getElementById("approved").innerHTML=approved;
+
+
+}
+
+
+
+
+
+
+
+
+
+async function studentStatus(id,status){
+
+
+await fetch(
+
+"/api/applications/"+id,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+status:status
+
+})
+
+}
+
+);
+
+
+
+loadStudents();
+
+
+}
+
+
+
+
+
+
+
+
+
+// LOAD PROJECTS
+
+
+async function loadProjects(){
+
+
+const response = await fetch(
+
+"/api/projects"
+
+);
+
+
+
+const projects = await response.json();
+
+
+
+let html="";
+
+
+
+projects.forEach(p=>{
+
+
+html += `
+
+<tr>
+
+<td>${p.title}</td>
+
+<td>${p.area}</td>
+
+<td>${p.supervisor}</td>
+
+<td>${p.status}</td>
+
+
+<td>
+
+
+<button class="approve"
+
+onclick="projectStatus(${p.id},'Approved')">
+
+Approve
+
+</button>
+
+
+
+<button class="reject"
+
+onclick="projectStatus(${p.id},'Rejected')">
+
+Reject
+
+</button>
+
+
+</td>
+
+
+</tr>
+
+`;
+
+
+});
+
+
+
+document.getElementById("projectRows").innerHTML=html;
+
+
+}
+
+
+
+
+
+
+
+
+
+async function projectStatus(id,status){
+
+
+await fetch(
+
+"/api/projects/"+id,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+status:status
+
+})
+
+}
+
+);
+
+
+
+loadProjects();
+
+
+}
+
+
+
+
+
+
+
+
+function logout(){
+
+
+localStorage.removeItem("adminToken");
+
+
+location.reload();
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

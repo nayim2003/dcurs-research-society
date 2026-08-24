@@ -210,14 +210,17 @@ token,
 
 user:{
 
+id:user.id,
 name:user.name,
-
-email:user.email
+email:user.email,
+department:user.department,
+student_id:user.student_id,
+research_interest:user.research_interest,
+status:user.status
 
 }
 
 });
-
 
 });
 

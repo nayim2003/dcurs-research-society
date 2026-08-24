@@ -11,13 +11,14 @@ const SECRET = process.env.SESSION_SECRET || "dcurs-secret";
 
 
 app.use(express.json());
+
 app.use(express.static("public"));
 
 
 
-// ======================
-// DATABASE
-// ======================
+// ==========================
+// DATABASE TABLES
+// ==========================
 
 
 db.exec(`
@@ -46,6 +47,9 @@ status TEXT DEFAULT 'Pending'
 
 `);
 
+
+
+
 db.exec(`
 
 CREATE TABLE IF NOT EXISTS projects(
@@ -71,9 +75,14 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 `);
 
 
-// ======================
+
+
+
+
+
+// ==========================
 // STUDENT REGISTER
-// ======================
+// ==========================
 
 
 app.post("/api/register", async(req,res)=>{
@@ -109,12 +118,19 @@ db.prepare(`
 INSERT INTO users
 
 (
+
 name,
+
 email,
+
 password,
+
 department,
+
 student_id,
+
 research_interest
+
 )
 
 VALUES(?,?,?,?,?,?)
@@ -146,10 +162,9 @@ message:"Registration submitted"
 });
 
 
-
 }
 
-catch(error){
+catch(err){
 
 
 res.status(400).json({
@@ -171,9 +186,10 @@ error:"Email already exists"
 
 
 
-// ======================
+
+// ==========================
 // STUDENT LOGIN
-// ======================
+// ==========================
 
 
 app.post("/api/login", async(req,res)=>{
@@ -222,7 +238,6 @@ error:"Invalid login"
 
 
 
-
 if(user.status !== "Approved"){
 
 
@@ -232,26 +247,18 @@ error:"Account pending approval"
 
 });
 
-
 }
 
 
 
 
-
-const token = jwt.sign(
-
-{
+const token = jwt.sign({
 
 id:user.id,
 
 role:user.role
 
-},
-
-SECRET
-
-);
+},SECRET);
 
 
 
@@ -296,9 +303,9 @@ status:user.status
 
 
 
-// ======================
+// ==========================
 // ADMIN LOGIN
-// ======================
+// ==========================
 
 
 app.post("/api/admin/login",(req,res)=>{
@@ -312,24 +319,18 @@ const password = process.env.ADMIN_PASSWORD;
 
 if(
 
-req.body.username === username &&
+req.body.username===username &&
 
-req.body.password === password
+req.body.password===password
 
 ){
 
 
-const token = jwt.sign(
-
-{
+const token = jwt.sign({
 
 role:"admin"
 
-},
-
-SECRET
-
-);
+},SECRET);
 
 
 
@@ -353,55 +354,37 @@ error:"Invalid admin login"
 
 });
 
-
-
-
-
-
-
-
-
-// ======================
-// ADMIN GET APPLICATIONS
-// ======================
+// ==========================
+// ADMIN GET STUDENT APPLICATIONS
+// ==========================
 
 
 app.get("/api/applications",(req,res)=>{
 
 
-const data = db.prepare(`
+const students = db.prepare(`
 
 SELECT
 
 id,
-
 name,
-
 email,
-
 department,
-
 student_id,
-
 research_interest,
-
 status
-
 
 FROM users
 
-
 WHERE role='student'
 
-
 ORDER BY id DESC
-
 
 `).all();
 
 
 
-res.json(data);
+res.json(students);
 
 
 });
@@ -413,36 +396,15 @@ res.json(data);
 
 
 
-
-// ======================
-// ADMIN UPDATE STATUS
-// ======================
+// ==========================
+// ADMIN APPROVE / REJECT STUDENT
+// ==========================
 
 
 app.patch("/api/applications/:id",(req,res)=>{
 
 
 const {status}=req.body;
-
-
-
-if(
-
-!["Pending","Approved","Rejected"]
-
-.includes(status)
-
-)
-
-{
-
-return res.status(400).json({
-
-error:"Invalid status"
-
-});
-
-}
 
 
 
@@ -481,45 +443,35 @@ success:true
 
 
 
-// ======================
+// ==========================
 // STUDENT PROFILE
-// ======================
+// ==========================
 
 
 app.get("/api/profile/:id",(req,res)=>{
 
 
-const user = db.prepare(`
+const student = db.prepare(`
 
 SELECT
 
 id,
-
 name,
-
 email,
-
 department,
-
 student_id,
-
 research_interest,
-
 status
-
 
 FROM users
 
-
 WHERE id=?
-
 
 `).get(req.params.id);
 
 
 
-if(!user){
-
+if(!student){
 
 return res.status(404).json({
 
@@ -527,12 +479,11 @@ error:"Student not found"
 
 });
 
-
 }
 
 
 
-res.json(user);
+res.json(student);
 
 
 });
@@ -540,29 +491,6 @@ res.json(user);
 
 
 
-
-
-
-
-
-// ======================
-// HEALTH CHECK
-// ======================
-
-
-app.get("/health",(req,res)=>{
-
-
-res.json({
-
-ok:true,
-
-service:"dcurs"
-
-});
-
-
-});
 
 
 
@@ -588,8 +516,8 @@ abstract,
 
 supervisor
 
-
 }=req.body;
+
 
 
 
@@ -633,32 +561,30 @@ res.json({
 
 success:true,
 
-message:"Project submitted"
+message:"Project submitted successfully"
 
 });
 
 
 });
 
-app.listen(
 
-process.env.PORT || 3000,
 
-()=>{
 
-console.log("DCURS server running");
 
-}
 
-);
 
-// GET STUDENT PROJECTS
+
+
+// ==========================
+// STUDENT PROJECT LIST
+// ==========================
 
 
 app.get("/api/projects/student/:id",(req,res)=>{
 
 
-const projects=db.prepare(`
+const projects = db.prepare(`
 
 SELECT *
 
@@ -677,13 +603,23 @@ res.json(projects);
 
 });
 
-// ADMIN PROJECT LIST
+
+
+
+
+
+
+
+
+// ==========================
+// ADMIN GET ALL PROJECTS
+// ==========================
 
 
 app.get("/api/projects",(req,res)=>{
 
 
-const projects=db.prepare(`
+const projects = db.prepare(`
 
 SELECT *
 
@@ -700,7 +636,17 @@ res.json(projects);
 
 });
 
-// UPDATE PROJECT STATUS
+
+
+
+
+
+
+
+
+// ==========================
+// ADMIN PROJECT APPROVE / REJECT
+// ==========================
 
 
 app.patch("/api/projects/:id",(req,res)=>{
@@ -736,3 +682,55 @@ success:true
 
 
 });
+
+
+
+
+
+
+
+
+
+// ==========================
+// HEALTH CHECK
+// ==========================
+
+
+app.get("/health",(req,res)=>{
+
+
+res.json({
+
+ok:true,
+
+service:"dcurs"
+
+});
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// START SERVER
+// ==========================
+
+
+app.listen(
+
+process.env.PORT || 3000,
+
+()=>{
+
+console.log("DCURS server running");
+
+}
+
+);

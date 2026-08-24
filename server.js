@@ -17,7 +17,7 @@ app.use(express.static("public"));
 
 
 // ==========================
-// DATABASE TABLES
+// DATABASE
 // ==========================
 
 
@@ -46,6 +46,7 @@ status TEXT DEFAULT 'Pending'
 )
 
 `);
+
 
 
 
@@ -88,6 +89,9 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 app.post("/api/register", async(req,res)=>{
 
 
+try{
+
+
 const {
 
 name,
@@ -104,9 +108,6 @@ research_interest
 
 }=req.body;
 
-
-
-try{
 
 
 const hash = await bcrypt.hash(password,10);
@@ -164,7 +165,7 @@ message:"Registration submitted"
 
 }
 
-catch(err){
+catch(error){
 
 
 res.status(400).json({
@@ -215,7 +216,6 @@ error:"Invalid login"
 
 
 
-
 const match = await bcrypt.compare(
 
 req.body.password,
@@ -247,6 +247,7 @@ error:"Account pending approval"
 
 });
 
+
 }
 
 
@@ -263,13 +264,13 @@ role:user.role
 
 
 
+
 res.json({
 
 token,
 
 
 user:{
-
 
 id:user.id,
 
@@ -285,12 +286,10 @@ research_interest:user.research_interest,
 
 status:user.status
 
-
 }
 
 
 });
-
 
 
 });
@@ -354,8 +353,16 @@ error:"Invalid admin login"
 
 });
 
+
+
+
+
+
+
+
+
 // ==========================
-// ADMIN GET STUDENT APPLICATIONS
+// ADMIN STUDENTS
 // ==========================
 
 
@@ -367,11 +374,17 @@ const students = db.prepare(`
 SELECT
 
 id,
+
 name,
+
 email,
+
 department,
+
 student_id,
+
 research_interest,
+
 status
 
 FROM users
@@ -396,16 +409,13 @@ res.json(students);
 
 
 
+
 // ==========================
-// ADMIN APPROVE / REJECT STUDENT
+// APPROVE STUDENT
 // ==========================
 
 
 app.patch("/api/applications/:id",(req,res)=>{
-
-
-const {status}=req.body;
-
 
 
 db.prepare(`
@@ -418,7 +428,7 @@ WHERE id=?
 
 `).run(
 
-status,
+req.body.status,
 
 req.params.id
 
@@ -444,7 +454,7 @@ success:true
 
 
 // ==========================
-// STUDENT PROFILE
+// PROFILE
 // ==========================
 
 
@@ -456,11 +466,17 @@ const student = db.prepare(`
 SELECT
 
 id,
+
 name,
+
 email,
+
 department,
+
 student_id,
+
 research_interest,
+
 status
 
 FROM users
@@ -497,7 +513,7 @@ res.json(student);
 
 
 // ==========================
-// SUBMIT RESEARCH PROJECT
+// SUBMIT PROJECT
 // ==========================
 
 
@@ -517,7 +533,6 @@ abstract,
 supervisor
 
 }=req.body;
-
 
 
 
@@ -577,7 +592,7 @@ message:"Project submitted successfully"
 
 
 // ==========================
-// STUDENT PROJECT LIST
+// STUDENT PROJECTS
 // ==========================
 
 
@@ -612,7 +627,7 @@ res.json(projects);
 
 
 // ==========================
-// ADMIN GET ALL PROJECTS
+// ADMIN PROJECTS
 // ==========================
 
 
@@ -645,15 +660,11 @@ res.json(projects);
 
 
 // ==========================
-// ADMIN PROJECT APPROVE / REJECT
+// PROJECT APPROVE
 // ==========================
 
 
 app.patch("/api/projects/:id",(req,res)=>{
-
-
-const {status}=req.body;
-
 
 
 db.prepare(`
@@ -666,7 +677,7 @@ WHERE id=?
 
 `).run(
 
-status,
+req.body.status,
 
 req.params.id
 
@@ -692,7 +703,89 @@ success:true
 
 
 // ==========================
-// HEALTH CHECK
+// PUBLIC RESEARCH ARCHIVE
+// ==========================
+
+
+app.get("/api/public/projects",(req,res)=>{
+
+
+try{
+
+
+const projects = db.prepare(`
+
+SELECT
+
+projects.title,
+
+projects.area,
+
+projects.abstract,
+
+projects.supervisor,
+
+users.name,
+
+users.department
+
+
+FROM projects
+
+
+JOIN users
+
+
+ON projects.student_id = users.id
+
+
+
+WHERE projects.status='Approved'
+
+AND users.status='Approved'
+
+
+ORDER BY projects.id DESC
+
+
+`).all();
+
+
+
+res.json(projects);
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+res.status(500).json({
+
+error:"Failed to load research projects"
+
+});
+
+
+}
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// HEALTH
 // ==========================
 
 
@@ -716,52 +809,7 @@ service:"dcurs"
 
 
 
-// ==========================
-// PUBLIC APPROVED PROJECTS
-// ==========================
 
-
-app.get("/api/public/projects",(req,res)=>{
-
-
-const projects = db.prepare(`
-
-SELECT
-
-projects.title,
-
-projects.area,
-
-projects.abstract,
-
-projects.supervisor,
-
-users.name,
-
-users.department
-
-
-FROM projects
-
-JOIN users
-
-ON projects.student_id = users.id
-
-
-WHERE projects.status='Approved'
-
-
-ORDER BY projects.id DESC
-
-
-`).all();
-
-
-
-res.json(projects);
-
-
-});
 
 // ==========================
 // START SERVER

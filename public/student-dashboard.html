@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Student Dashboard | DCURS</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+
+
+<style>
+
+
+body{
+
+background:#f7f9fc;
+
+}
+
+
+
+.dashboard{
+
+padding:60px 20px;
+
+}
+
+
+
+.dashboard-header{
+
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+
+background:white;
+
+padding:25px 35px;
+
+border-radius:20px;
+
+
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+
+margin-bottom:35px;
+
+
+}
+
+
+
+.student-info h1{
+
+color:#06244b;
+
+margin:0;
+
+}
+
+
+
+.student-info p{
+
+color:#64748b;
+
+}
+
+
+
+.logout{
+
+
+background:#06244b;
+
+color:white;
+
+padding:12px 25px;
+
+border-radius:30px;
+
+cursor:pointer;
+
+
+}
+
+
+
+.cards{
+
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:25px;
+
+
+}
+
+
+
+.card{
+
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+
+box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+
+}
+
+
+
+.card h2{
+
+color:#06244b;
+
+}
+
+
+
+.card p{
+
+color:#64748b;
+
+}
+
+
+
+.status{
+
+
+display:inline-block;
+
+background:#fff3cd;
+
+color:#856404;
+
+
+padding:8px 18px;
+
+border-radius:20px;
+
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+
+
+<body>
+
+
+
+<header class="site-header">
+
+
+<nav class="nav container">
+
+
+<a class="brand" href="index.html">
+
+
+<img src="assets/dcurs-logo.png">
+
+
+<span>
+
+<strong>
+Dhaka Central University
+</strong>
+
+
+<small>
+Research Society
+</small>
+
+
+</span>
+
+
+</a>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+<section class="dashboard">
+
+
+<div class="container">
+
+
+
+<div class="dashboard-header">
+
+
+
+<div class="student-info">
+
+
+<h1 id="welcome">
+Welcome, Student
+</h1>
+
+
+
+<p>
+DCURS Research Portal
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="logout" onclick="logout()">
+
+Logout
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="cards">
+
+
+
+
+
+<div class="card" id="profileCard">
+
+
+<h2>
+👤 Profile
+</h2>
+
+
+<p>
+Loading...
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="card" id="statusCard">
+
+
+<h2>
+Membership Status
+</h2>
+
+
+<p>
+Loading...
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+<h2>
+🔬 Research Project Submission
+</h2>
+
+
+<form id="projectForm">
+
+
+<input 
+id="title"
+placeholder="Project Title"
+required>
+
+
+<br><br>
+
+
+<input 
+id="area"
+placeholder="Research Area"
+required>
+
+
+<br><br>
+
+
+<textarea 
+id="abstract"
+placeholder="Project Abstract"
+required></textarea>
+
+
+<br><br>
+
+
+<input 
+id="supervisor"
+placeholder="Supervisor Name"
+required>
+
+
+<br><br>
+
+
+<button type="submit">
+
+Submit Project
+
+</button>
+
+
+</form>
+
+
+<p id="projectMessage"></p>
+
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+📚 Publications
+</h2>
+
+
+<p>
+Your research publications will appear here.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+📅 Events
+</h2>
+
+
+<p>
+Upcoming DCURS seminars and workshops.
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<script>
+
+
+
+function logout(){
+
+
+localStorage.removeItem("token");
+
+localStorage.removeItem("user");
+
+
+window.location.href="login.html";
+
+
+}
+
+
+
+
+const token = localStorage.getItem("token");
+
+
+const user = JSON.parse(
+
+localStorage.getItem("user")
+
+);
+
+
+
+
+
+if(!token || !user){
+
+
+window.location.href="login.html";
+
+
+}
+
+
+
+
+
+
+
+async function loadProfile(){
+
+
+
+try{
+
+
+const response = await fetch(
+
+"/api/profile/"+user.id
+
+);
+
+
+
+const data = await response.json();
+
+
+
+
+
+if(!response.ok){
+
+
+console.log(data);
+
+return;
+
+
+}
+
+
+
+
+
+
+document.getElementById("welcome").innerHTML =
+
+"Welcome, "+data.name;
+
+
+
+
+
+
+
+
+document.getElementById("profileCard").innerHTML = `
+
+
+<h2>
+👤 Profile
+</h2>
+
+
+<p>
+Name: ${data.name}
+</p>
+
+
+<p>
+Email: ${data.email}
+</p>
+
+
+<p>
+Department: ${data.department || "N/A"}
+</p>
+
+
+<p>
+Student ID: ${data.student_id || "N/A"}
+</p>
+
+
+<p>
+Research Interest: ${data.research_interest || "N/A"}
+</p>
+
+
+
+`;
+
+
+
+
+
+
+
+document.getElementById("statusCard").innerHTML = `
+
+
+<h2>
+Membership Status
+</h2>
+
+
+<span class="status">
+
+${data.status}
+
+</span>
+
+
+
+<p>
+
+Your membership approval status.
+
+</p>
+
+
+
+`;
+
+
+
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
+
+
+}
+
+
+}
+
+
+
+
+
+loadProfile();
+
+document
+.getElementById("projectForm")
+.addEventListener("submit", async function(e){
+
+
+e.preventDefault();
+
+
+
+const project = {
+
+
+student_id:user.id,
+
+
+title:
+document.getElementById("title").value,
+
+
+area:
+document.getElementById("area").value,
+
+
+abstract:
+document.getElementById("abstract").value,
+
+
+supervisor:
+document.getElementById("supervisor").value
+
+
+};
+
+
+
+
+const response = await fetch(
+"/api/projects",
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(project)
+
+}
+
+);
+
+
+
+const data = await response.json();
+
+
+
+document.getElementById(
+"projectMessage"
+).innerHTML =
+data.message;
+
+
+
+this.reset();
+
+
+});
+
+</script>
+
+
+
+
+</body>
+
+</html>

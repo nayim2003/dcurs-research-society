@@ -46,7 +46,29 @@ status TEXT DEFAULT 'Pending'
 
 `);
 
+db.exec(`
 
+CREATE TABLE IF NOT EXISTS projects(
+
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+student_id INTEGER,
+
+title TEXT,
+
+area TEXT,
+
+abstract TEXT,
+
+supervisor TEXT,
+
+status TEXT DEFAULT 'Pending',
+
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+
+)
+
+`);
 
 
 // ======================

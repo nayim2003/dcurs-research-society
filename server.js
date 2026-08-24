@@ -398,21 +398,15 @@ success:true
 
 app.get("/api/profile/:id",(req,res)=>{
 
-
 const user=db.prepare(`
 
 SELECT
-
+id,
 name,
-
 email,
-
 department,
-
 student_id,
-
 research_interest,
-
 status
 
 FROM users
@@ -421,6 +415,14 @@ WHERE id=?
 
 `).get(req.params.id);
 
+
+if(!user){
+
+return res.status(404).json({
+error:"Student not found"
+});
+
+}
 
 
 res.json(user);

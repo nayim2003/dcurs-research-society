@@ -216,7 +216,8 @@ throw new Error(result.error);
 
 // পরে dashboard যোগ হলে এখানে redirect হবে
 
-alert("Login successful");
+localStorage.setItem("token", result.token);
+window.location.href="student-dashboard.html";
 
 
 }

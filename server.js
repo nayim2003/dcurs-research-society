@@ -11,7 +11,6 @@ const SECRET = process.env.SESSION_SECRET || "dcurs-secret";
 
 
 app.use(express.json());
-
 app.use(express.static("public"));
 
 
@@ -20,15 +19,15 @@ app.use(express.static("public"));
 
 db.exec(`
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS users(
 
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-name TEXT,
+name TEXT NOT NULL,
 
-email TEXT UNIQUE,
+email TEXT UNIQUE NOT NULL,
 
-password TEXT,
+password TEXT NOT NULL,
 
 role TEXT DEFAULT 'student',
 
@@ -47,28 +46,21 @@ status TEXT DEFAULT 'Pending'
 
 
 
-
-// STUDENT REGISTRATION
+// ==========================
+// STUDENT REGISTER
+// ==========================
 
 
 app.post("/api/register", async(req,res)=>{
 
 
 const {
-
 name,
-
 email,
-
 password,
-
 department,
-
 student_id,
-
 research_interest
-
-
 }=req.body;
 
 
@@ -83,23 +75,24 @@ const hash = await bcrypt.hash(password,10);
 db.prepare(`
 
 INSERT INTO users
+(
+name,
+email,
+password,
+department,
+student_id,
+research_interest
+)
 
-(name,email,password,department,student_id,research_interest)
-
-VALUES (?,?,?,?,?,?)
+VALUES(?,?,?,?,?,?)
 
 `).run(
 
 name,
-
 email,
-
 hash,
-
 department,
-
 student_id,
-
 research_interest
 
 );
@@ -110,15 +103,14 @@ res.json({
 
 success:true,
 
-message:"Registration submitted. Wait for admin approval."
+message:"Registration submitted"
 
 });
 
 
 }
 
-catch(error){
-
+catch(err){
 
 res.status(400).json({
 
@@ -138,10 +130,13 @@ error:"Email already exists"
 
 
 
+
+// ==========================
 // STUDENT LOGIN
+// ==========================
 
 
-app.post("/api/login",async(req,res)=>{
+app.post("/api/login", async(req,res)=>{
 
 
 const user = db.prepare(
@@ -152,13 +147,15 @@ const user = db.prepare(
 
 
 
-if(!user)
+if(!user){
 
 return res.status(401).json({
 
 error:"Invalid login"
 
 });
+
+}
 
 
 
@@ -172,7 +169,7 @@ user.password
 
 
 
-if(!match)
+if(!match){
 
 return res.status(401).json({
 
@@ -180,10 +177,13 @@ error:"Invalid login"
 
 });
 
+}
 
 
 
-if(user.status !== "Approved")
+
+if(user.status !== "Approved"){
+
 
 return res.status(403).json({
 
@@ -192,15 +192,26 @@ error:"Account pending approval"
 });
 
 
+}
 
 
-const token = jwt.sign({
+
+
+const token = jwt.sign(
+
+{
 
 id:user.id,
 
 role:user.role
 
-},SECRET);
+},
+
+SECRET
+
+);
+
+
 
 
 
@@ -208,56 +219,79 @@ res.json({
 
 token,
 
+
 user:{
 
+
 id:user.id,
+
 name:user.name,
+
 email:user.email,
+
 department:user.department,
+
 student_id:user.student_id,
+
 research_interest:user.research_interest,
+
 status:user.status
+
 
 }
 
-});
 
 });
 
 
 
+});
 
 
 
 
 
+
+
+
+
+// ==========================
 // ADMIN LOGIN
+// ==========================
 
 
 app.post("/api/admin/login",(req,res)=>{
 
 
-const username = process.env.ADMIN_USERNAME;
+const username =
+process.env.ADMIN_USERNAME;
 
-const password = process.env.ADMIN_PASSWORD;
+
+const password =
+process.env.ADMIN_PASSWORD;
 
 
 
 if(
 
-req.body.username === username &&
+req.body.username===username &&
 
-req.body.password === password
+req.body.password===password
 
 ){
 
 
+const token = jwt.sign(
 
-const token = jwt.sign({
+{
 
 role:"admin"
 
-},SECRET);
+},
+
+SECRET
+
+);
 
 
 
@@ -288,8 +322,9 @@ error:"Invalid admin login"
 
 
 
-
-// ADMIN GET STUDENTS
+// ==========================
+// ADMIN APPLICATION LIST
+// ==========================
 
 
 app.get("/api/applications",(req,res)=>{
@@ -313,9 +348,11 @@ research_interest,
 
 status
 
+
 FROM users
 
 WHERE role='student'
+
 
 ORDER BY id DESC
 
@@ -335,30 +372,17 @@ res.json(data);
 
 
 
-// ADMIN APPROVE / REJECT
+
+
+// ==========================
+// APPROVE / REJECT
+// ==========================
 
 
 app.patch("/api/applications/:id",(req,res)=>{
 
 
 const {status}=req.body;
-
-
-
-if(
-
-!["Approved","Rejected","Pending"]
-
-.includes(status)
-
-)
-
-return res.status(400).json({
-
-error:"Invalid status"
-
-});
-
 
 
 
@@ -396,36 +420,55 @@ success:true
 
 
 
+
+// ==========================
 // STUDENT PROFILE
+// ==========================
 
 
 app.get("/api/profile/:id",(req,res)=>{
 
-const user=db.prepare(`
+
+const user = db.prepare(`
 
 SELECT
+
 id,
+
 name,
+
 email,
+
 department,
+
 student_id,
+
 research_interest,
+
 status
+
 
 FROM users
 
+
 WHERE id=?
 
+
 `).get(req.params.id);
+
+
 
 
 if(!user){
 
 return res.status(404).json({
+
 error:"Student not found"
+
 });
 
 }
+
 
 
 res.json(user);
@@ -439,7 +482,11 @@ res.json(user);
 
 
 
-// HEALTH CHECK
+
+
+// ==========================
+// HEALTH
+// ==========================
 
 
 app.get("/health",(req,res)=>{
@@ -465,6 +512,10 @@ app.listen(
 
 process.env.PORT || 3000,
 
-()=>console.log("DCURS server running")
+()=>{
+
+console.log("DCURS server running");
+
+}
 
 );

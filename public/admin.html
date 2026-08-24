@@ -25,7 +25,14 @@ password:$('#password').value
 })
 });
  const d=await r.json(); if(!r.ok)return alert(d.error||'Login failed');
- token=d.token;$('login').hidden=true;$('dashboard').hidden=false;load();
+ token = d.token;
+
+localStorage.setItem("adminToken", token);
+
+document.getElementById("login").style.display="none";
+document.getElementById("dashboard").style.display="block";
+
+load();
 });
 async function load(){
  const r=await fetch('/api/applications',{headers:{Authorization:'Bearer '+token}});

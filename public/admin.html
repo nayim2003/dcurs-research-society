@@ -14,7 +14,16 @@ let token='';
 const $=id=>document.getElementById(id);
 $('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();
- const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:$('username').value,password:$('password').value})});
+ const r=await fetch('/api/admin/login',{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+username:$('#username').value,
+password:$('#password').value
+})
+});
  const d=await r.json(); if(!r.ok)return alert(d.error||'Login failed');
  token=d.token;$('login').hidden=true;$('dashboard').hidden=false;load();
 });

@@ -568,7 +568,77 @@ service:"dcurs"
 
 
 
+// ==========================
+// SUBMIT RESEARCH PROJECT
+// ==========================
 
+
+app.post("/api/projects",(req,res)=>{
+
+
+const {
+
+student_id,
+
+title,
+
+area,
+
+abstract,
+
+supervisor
+
+
+}=req.body;
+
+
+
+db.prepare(`
+
+INSERT INTO projects
+
+(
+
+student_id,
+
+title,
+
+area,
+
+abstract,
+
+supervisor
+
+)
+
+VALUES(?,?,?,?,?)
+
+`).run(
+
+student_id,
+
+title,
+
+area,
+
+abstract,
+
+supervisor
+
+);
+
+
+
+res.json({
+
+success:true,
+
+message:"Project submitted"
+
+});
+
+
+});
 
 app.listen(
 
@@ -581,3 +651,88 @@ console.log("DCURS server running");
 }
 
 );
+
+// GET STUDENT PROJECTS
+
+
+app.get("/api/projects/student/:id",(req,res)=>{
+
+
+const projects=db.prepare(`
+
+SELECT *
+
+FROM projects
+
+WHERE student_id=?
+
+ORDER BY id DESC
+
+`).all(req.params.id);
+
+
+
+res.json(projects);
+
+
+});
+
+// ADMIN PROJECT LIST
+
+
+app.get("/api/projects",(req,res)=>{
+
+
+const projects=db.prepare(`
+
+SELECT *
+
+FROM projects
+
+ORDER BY id DESC
+
+`).all();
+
+
+
+res.json(projects);
+
+
+});
+
+// UPDATE PROJECT STATUS
+
+
+app.patch("/api/projects/:id",(req,res)=>{
+
+
+const {status}=req.body;
+
+
+
+db.prepare(`
+
+UPDATE projects
+
+SET status=?
+
+WHERE id=?
+
+`).run(
+
+status,
+
+req.params.id
+
+);
+
+
+
+res.json({
+
+success:true
+
+});
+
+
+});

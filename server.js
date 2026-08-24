@@ -16,8 +16,9 @@ app.use(express.static("public"));
 
 
 
+
 // ==========================
-// DATABASE
+// DATABASE TABLES
 // ==========================
 
 
@@ -51,6 +52,7 @@ status TEXT DEFAULT 'Pending'
 
 
 
+
 db.exec(`
 
 CREATE TABLE IF NOT EXISTS projects(
@@ -74,6 +76,45 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )
 
 `);
+
+
+
+
+
+
+
+// ==========================
+// PUBLICATIONS TABLE
+// ==========================
+
+
+db.exec(`
+
+CREATE TABLE IF NOT EXISTS publications(
+
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+student_id INTEGER,
+
+title TEXT,
+
+journal TEXT,
+
+year TEXT,
+
+area TEXT,
+
+link TEXT,
+
+status TEXT DEFAULT 'Pending',
+
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+
+)
+
+`);
+
+
 
 
 
@@ -165,6 +206,7 @@ message:"Registration submitted"
 
 }
 
+
 catch(error){
 
 
@@ -204,6 +246,7 @@ const user = db.prepare(
 
 
 
+
 if(!user){
 
 return res.status(401).json({
@@ -213,6 +256,8 @@ error:"Invalid login"
 });
 
 }
+
+
 
 
 
@@ -226,6 +271,7 @@ user.password
 
 
 
+
 if(!match){
 
 return res.status(401).json({
@@ -235,6 +281,8 @@ error:"Invalid login"
 });
 
 }
+
+
 
 
 
@@ -253,6 +301,7 @@ error:"Account pending approval"
 
 
 
+
 const token = jwt.sign({
 
 id:user.id,
@@ -265,12 +314,14 @@ role:user.role
 
 
 
+
 res.json({
 
 token,
 
 
 user:{
+
 
 id:user.id,
 
@@ -286,10 +337,12 @@ research_interest:user.research_interest,
 
 status:user.status
 
+
 }
 
 
 });
+
 
 
 });
@@ -316,6 +369,7 @@ const password = process.env.ADMIN_PASSWORD;
 
 
 
+
 if(
 
 req.body.username===username &&
@@ -325,11 +379,13 @@ req.body.password===password
 ){
 
 
+
 const token = jwt.sign({
 
 role:"admin"
 
 },SECRET);
+
 
 
 
@@ -344,6 +400,7 @@ token
 
 
 
+
 res.status(401).json({
 
 error:"Invalid admin login"
@@ -353,16 +410,8 @@ error:"Invalid admin login"
 
 });
 
-
-
-
-
-
-
-
-
 // ==========================
-// ADMIN STUDENTS
+// ADMIN GET STUDENT APPLICATIONS
 // ==========================
 
 
@@ -411,7 +460,7 @@ res.json(students);
 
 
 // ==========================
-// APPROVE STUDENT
+// APPROVE / REJECT STUDENT
 // ==========================
 
 
@@ -454,7 +503,7 @@ success:true
 
 
 // ==========================
-// PROFILE
+// STUDENT PROFILE
 // ==========================
 
 
@@ -513,7 +562,7 @@ res.json(student);
 
 
 // ==========================
-// SUBMIT PROJECT
+// SUBMIT RESEARCH PROJECT
 // ==========================
 
 
@@ -592,7 +641,7 @@ message:"Project submitted successfully"
 
 
 // ==========================
-// STUDENT PROJECTS
+// STUDENT PROJECT LIST
 // ==========================
 
 
@@ -627,7 +676,7 @@ res.json(projects);
 
 
 // ==========================
-// ADMIN PROJECTS
+// ADMIN PROJECT LIST
 // ==========================
 
 
@@ -660,7 +709,7 @@ res.json(projects);
 
 
 // ==========================
-// PROJECT APPROVE
+// PROJECT APPROVE / REJECT
 // ==========================
 
 
@@ -703,14 +752,289 @@ success:true
 
 
 // ==========================
-// PUBLIC RESEARCH ARCHIVE
+// SUBMIT PUBLICATION
+// ==========================
+
+
+app.post("/api/publications",(req,res)=>{
+
+
+const {
+
+student_id,
+
+title,
+
+journal,
+
+year,
+
+area,
+
+link
+
+}=req.body;
+
+
+
+db.prepare(`
+
+INSERT INTO publications
+
+(
+
+student_id,
+
+title,
+
+journal,
+
+year,
+
+area,
+
+link
+
+)
+
+VALUES(?,?,?,?,?,?)
+
+`).run(
+
+student_id,
+
+title,
+
+journal,
+
+year,
+
+area,
+
+link
+
+);
+
+
+
+res.json({
+
+success:true,
+
+message:"Publication submitted successfully"
+
+});
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// STUDENT PUBLICATIONS
+// ==========================
+
+
+app.get("/api/publications/student/:id",(req,res)=>{
+
+
+const publications = db.prepare(`
+
+SELECT *
+
+FROM publications
+
+WHERE student_id=?
+
+ORDER BY id DESC
+
+`).all(req.params.id);
+
+
+
+res.json(publications);
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// ADMIN PUBLICATIONS
+// ==========================
+
+
+app.get("/api/publications",(req,res)=>{
+
+
+const publications = db.prepare(`
+
+SELECT *
+
+FROM publications
+
+ORDER BY id DESC
+
+`).all();
+
+
+
+res.json(publications);
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// PUBLICATION APPROVE / REJECT
+// ==========================
+
+
+app.patch("/api/publications/:id",(req,res)=>{
+
+
+db.prepare(`
+
+UPDATE publications
+
+SET status=?
+
+WHERE id=?
+
+`).run(
+
+req.body.status,
+
+req.params.id
+
+);
+
+
+
+res.json({
+
+success:true
+
+});
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// PUBLIC APPROVED PUBLICATIONS
+// ==========================
+
+
+app.get("/api/public/publications",(req,res)=>{
+
+
+try{
+
+
+const publications = db.prepare(`
+
+SELECT
+
+
+publications.title,
+
+publications.journal,
+
+publications.year,
+
+publications.area,
+
+publications.link,
+
+users.name,
+
+users.department
+
+
+FROM publications
+
+
+JOIN users
+
+
+ON publications.student_id = users.id
+
+
+
+WHERE publications.status='Approved'
+
+AND users.status='Approved'
+
+
+ORDER BY publications.id DESC
+
+
+`).all();
+
+
+
+res.json(publications);
+
+
+}
+
+
+catch(error){
+
+
+res.status(500).json({
+
+error:"Failed to load publications"
+
+});
+
+
+}
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// PUBLIC APPROVED PROJECTS
 // ==========================
 
 
 app.get("/api/public/projects",(req,res)=>{
-
-
-try{
 
 
 const projects = db.prepare(`
@@ -755,25 +1079,6 @@ ORDER BY projects.id DESC
 res.json(projects);
 
 
-
-}
-
-catch(error){
-
-
-console.log(error);
-
-
-res.status(500).json({
-
-error:"Failed to load research projects"
-
-});
-
-
-}
-
-
 });
 
 
@@ -785,7 +1090,7 @@ error:"Failed to load research projects"
 
 
 // ==========================
-// HEALTH
+// HEALTH CHECK
 // ==========================
 
 
@@ -822,7 +1127,9 @@ process.env.PORT || 3000,
 
 ()=>{
 
+
 console.log("DCURS server running");
+
 
 }
 

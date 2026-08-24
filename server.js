@@ -12,6 +12,39 @@ name TEXT,email TEXT UNIQUE,password TEXT,role TEXT DEFAULT 'student',
 department TEXT,student_id TEXT,research_interest TEXT,status TEXT DEFAULT 'Pending')`);
 app.use(express.json());
 app.use(express.static("public"));
+// Admin Login
+app.post("/api/admin/login",(req,res)=>{
+
+const username = process.env.ADMIN_USERNAME;
+const password = process.env.ADMIN_PASSWORD;
+
+
+if(
+req.body.username === username &&
+req.body.password === password
+){
+
+res.json({
+success:true,
+token:jwt.sign(
+{
+role:"admin"
+},
+SECRET
+)
+});
+
+}
+
+else{
+
+res.status(401).json({
+error:"Invalid admin login"
+});
+
+}
+
+});
 app.post("/api/register",async(req,res)=>{
  const {name,email,password,department,student_id,research_interest}=req.body;
  const hash=await bcrypt.hash(password,10);

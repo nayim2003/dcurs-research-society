@@ -43,6 +43,9 @@ Research Society
 </a>
 
 
+
+
+
 <div class="nav-links">
 
 <a href="index.html">Home</a>
@@ -75,10 +78,12 @@ Join Us
 
 
 
+
 <main>
 
 
 <section class="page-hero">
+
 
 <div class="container">
 
@@ -89,19 +94,29 @@ JOIN DCURS
 
 
 <h1>
+
 Start your<br>
+
 <span>research journey.</span>
+
 </h1>
 
 
+
 <p>
-Submit your membership application. Your account will be reviewed by DCURS administration.
+
+Become a member of Dhaka Central University Research Society and start your research journey.
+
 </p>
+
 
 
 </div>
 
+
 </section>
+
+
 
 
 
@@ -115,11 +130,14 @@ Submit your membership application. Your account will be reviewed by DCURS admin
 <div class="container form-box">
 
 
+
 <div id="successBox" class="success-box" hidden>
 
-Application submitted successfully. Wait for admin approval.
+Application submitted successfully. Please wait for admin approval.
 
 </div>
+
+
 
 
 
@@ -129,9 +147,13 @@ Membership Application
 
 
 
+
 <p class="section-copy">
+
 Please provide accurate information.
+
 </p>
+
 
 
 
@@ -144,6 +166,8 @@ Please provide accurate information.
 
 
 <div class="form-grid">
+
+
 
 
 
@@ -160,6 +184,7 @@ name="name"
 required>
 
 </label>
+
 
 
 
@@ -260,8 +285,8 @@ name="student_id">
 
 
 
-
 </div>
+
 
 
 
@@ -279,12 +304,13 @@ name="research_interest"
 
 required
 
-placeholder="Example: Artificial Intelligence, Data Science">
+placeholder="Example: AI, Data Science, Education">
 
 </textarea>
 
-
 </label>
+
+
 
 
 
@@ -304,7 +330,6 @@ placeholder="Write your motivation">
 
 </textarea>
 
-
 </label>
 
 
@@ -313,7 +338,12 @@ placeholder="Write your motivation">
 
 
 
-<button class="btn btn-primary" type="submit">
+
+<button 
+
+class="btn btn-primary"
+
+type="submit">
 
 Submit Application
 
@@ -324,6 +354,9 @@ Submit Application
 
 
 </form>
+
+
+
 
 
 
@@ -342,15 +375,131 @@ Submit Application
 
 
 
+
 <footer class="footer">
 
-<div class="container copyright">
 
-© 2026 Dhaka Central University Research Society
+<div class="container footer-grid">
+
+
+
+
+
+<div>
+
+
+<div class="footer-brand">
+
+DCURS
 
 </div>
 
+
+<p>
+
+Dhaka Central University Research Society
+
+</p>
+
+
+<p class="muted">
+
+INQUIRE • ANALYZE • INNOVATE
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div>
+
+
+<h4>
+
+Explore
+
+</h4>
+
+
+<a href="about.html">
+About
+</a>
+
+
+<a href="research.html">
+Research
+</a>
+
+
+<a href="events.html">
+Events
+</a>
+
+
+<a href="publications.html">
+Publications
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+
+<h4>
+
+Admin
+
+</h4>
+
+
+<a href="admin.html">
+
+Dashboard
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="container copyright">
+
+
+© 2026 Dhaka Central University Research Society. All rights reserved.
+
+
+</div>
+
+
 </footer>
+
 
 
 
@@ -363,11 +512,14 @@ Submit Application
 
 
 document
+
 .getElementById("membershipForm")
+
 .addEventListener("submit", async function(e){
 
 
 e.preventDefault();
+
 
 
 
@@ -382,7 +534,10 @@ new FormData(this)
 
 
 
+
+
 try{
+
 
 
 const response = await fetch("/api/register",{
@@ -430,7 +585,15 @@ return;
 
 
 
-document.getElementById("successBox").hidden=false;
+
+document
+
+.getElementById("successBox")
+
+.hidden=false;
+
+
+
 
 
 
@@ -439,6 +602,7 @@ this.reset();
 
 
 }
+
 
 
 catch(error){
@@ -455,6 +619,7 @@ alert("Server connection error");
 
 
 });
+
 
 
 </script>

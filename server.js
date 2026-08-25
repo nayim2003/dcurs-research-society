@@ -1,11 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Database = require("better-sqlite3");
+const { Pool } = require("pg");
 
 const app = express();
-
-const db = new Database("dcurs.sqlite");
 
 const SECRET = process.env.SESSION_SECRET || "dcurs-secret";
 
@@ -16,17 +14,37 @@ app.use(express.static("public"));
 
 
 
+// ==========================
+// POSTGRES CONNECTION
+// ==========================
+
+
+const pool = new Pool({
+
+connectionString: process.env.DATABASE_URL,
+
+ssl:{
+rejectUnauthorized:false
+}
+
+});
+
+
+
 
 // ==========================
-// DATABASE TABLES
+// CREATE TABLES
 // ==========================
 
 
-db.exec(`
+async function createTables(){
+
+
+await pool.query(`
 
 CREATE TABLE IF NOT EXISTS users(
 
-id INTEGER PRIMARY KEY AUTOINCREMENT,
+id SERIAL PRIMARY KEY,
 
 name TEXT NOT NULL,
 
@@ -44,20 +62,18 @@ research_interest TEXT,
 
 status TEXT DEFAULT 'Pending'
 
-)
+);
 
 `);
 
 
 
 
-
-
-db.exec(`
+await pool.query(`
 
 CREATE TABLE IF NOT EXISTS projects(
 
-id INTEGER PRIMARY KEY AUTOINCREMENT,
+id SERIAL PRIMARY KEY,
 
 student_id INTEGER,
 
@@ -71,9 +87,9 @@ supervisor TEXT,
 
 status TEXT DEFAULT 'Pending',
 
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-)
+);
 
 `);
 
@@ -81,18 +97,11 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 
 
 
-
-
-// ==========================
-// PUBLICATIONS TABLE
-// ==========================
-
-
-db.exec(`
+await pool.query(`
 
 CREATE TABLE IF NOT EXISTS publications(
 
-id INTEGER PRIMARY KEY AUTOINCREMENT,
+id SERIAL PRIMARY KEY,
 
 student_id INTEGER,
 
@@ -108,11 +117,24 @@ link TEXT,
 
 status TEXT DEFAULT 'Pending',
 
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-)
+);
 
 `);
+
+
+
+
+
+console.log("Database ready");
+
+
+}
+
+
+
+createTables();
 
 
 
@@ -155,29 +177,17 @@ const hash = await bcrypt.hash(password,10);
 
 
 
-db.prepare(`
+await pool.query(`
 
 INSERT INTO users
 
-(
+(name,email,password,department,student_id,research_interest)
 
-name,
+VALUES($1,$2,$3,$4,$5,$6)
 
-email,
+`,
 
-password,
-
-department,
-
-student_id,
-
-research_interest
-
-)
-
-VALUES(?,?,?,?,?,?)
-
-`).run(
+[
 
 name,
 
@@ -190,6 +200,8 @@ department,
 student_id,
 
 research_interest
+
+]
 
 );
 
@@ -238,12 +250,17 @@ error:"Email already exists"
 app.post("/api/login", async(req,res)=>{
 
 
-const user = db.prepare(
+const result = await pool.query(
 
-"SELECT * FROM users WHERE email=?"
+"SELECT * FROM users WHERE email=$1",
 
-).get(req.body.email);
+[req.body.email]
 
+);
+
+
+
+const user=result.rows[0];
 
 
 
@@ -259,16 +276,13 @@ error:"Invalid login"
 
 
 
-
-
-const match = await bcrypt.compare(
+const match=await bcrypt.compare(
 
 req.body.password,
 
 user.password
 
 );
-
 
 
 
@@ -284,10 +298,7 @@ error:"Invalid login"
 
 
 
-
-
-if(user.status !== "Approved"){
-
+if(user.status!=="Approved"){
 
 return res.status(403).json({
 
@@ -295,14 +306,11 @@ error:"Account pending approval"
 
 });
 
-
 }
 
 
 
-
-
-const token = jwt.sign({
+const token=jwt.sign({
 
 id:user.id,
 
@@ -313,15 +321,11 @@ role:user.role
 
 
 
-
-
 res.json({
 
 token,
 
-
 user:{
-
 
 id:user.id,
 
@@ -337,23 +341,12 @@ research_interest:user.research_interest,
 
 status:user.status
 
-
 }
 
-
 });
 
 
-
 });
-
-
-
-
-
-
-
-
 
 // ==========================
 // ADMIN LOGIN
@@ -369,7 +362,6 @@ const password = process.env.ADMIN_PASSWORD;
 
 
 
-
 if(
 
 req.body.username===username &&
@@ -379,13 +371,11 @@ req.body.password===password
 ){
 
 
-
 const token = jwt.sign({
 
 role:"admin"
 
 },SECRET);
-
 
 
 
@@ -400,7 +390,6 @@ token
 
 
 
-
 res.status(401).json({
 
 error:"Invalid admin login"
@@ -410,15 +399,23 @@ error:"Invalid admin login"
 
 });
 
+
+
+
+
+
+
+
+
 // ==========================
-// ADMIN GET STUDENT APPLICATIONS
+// GET STUDENTS
 // ==========================
 
 
-app.get("/api/applications",(req,res)=>{
+app.get("/api/applications",async(req,res)=>{
 
 
-const students = db.prepare(`
+const result = await pool.query(`
 
 SELECT
 
@@ -442,11 +439,11 @@ WHERE role='student'
 
 ORDER BY id DESC
 
-`).all();
+`);
 
 
 
-res.json(students);
+res.json(result.rows);
 
 
 });
@@ -460,26 +457,30 @@ res.json(students);
 
 
 // ==========================
-// APPROVE / REJECT STUDENT
+// APPROVE STUDENT
 // ==========================
 
 
-app.patch("/api/applications/:id",(req,res)=>{
+app.patch("/api/applications/:id",async(req,res)=>{
 
 
-db.prepare(`
+await pool.query(`
 
 UPDATE users
 
-SET status=?
+SET status=$1
 
-WHERE id=?
+WHERE id=$2
 
-`).run(
+`,
+
+[
 
 req.body.status,
 
 req.params.id
+
+]
 
 );
 
@@ -503,14 +504,14 @@ success:true
 
 
 // ==========================
-// STUDENT PROFILE
+// PROFILE
 // ==========================
 
 
-app.get("/api/profile/:id",(req,res)=>{
+app.get("/api/profile/:id",async(req,res)=>{
 
 
-const student = db.prepare(`
+const result = await pool.query(`
 
 SELECT
 
@@ -530,13 +531,17 @@ status
 
 FROM users
 
-WHERE id=?
+WHERE id=$1
 
-`).get(req.params.id);
+`,
+
+[req.params.id]
+
+);
 
 
 
-if(!student){
+if(result.rows.length===0){
 
 return res.status(404).json({
 
@@ -548,7 +553,7 @@ error:"Student not found"
 
 
 
-res.json(student);
+res.json(result.rows[0]);
 
 
 });
@@ -562,11 +567,11 @@ res.json(student);
 
 
 // ==========================
-// SUBMIT RESEARCH PROJECT
+// CREATE PROJECT
 // ==========================
 
 
-app.post("/api/projects",(req,res)=>{
+app.post("/api/projects",async(req,res)=>{
 
 
 const {
@@ -585,11 +590,17 @@ supervisor
 
 
 
-db.prepare(`
+await pool.query(`
 
 INSERT INTO projects
 
-(
+(student_id,title,area,abstract,supervisor)
+
+VALUES($1,$2,$3,$4,$5)
+
+`,
+
+[
 
 student_id,
 
@@ -601,21 +612,7 @@ abstract,
 
 supervisor
 
-)
-
-VALUES(?,?,?,?,?)
-
-`).run(
-
-student_id,
-
-title,
-
-area,
-
-abstract,
-
-supervisor
+]
 
 );
 
@@ -641,28 +638,32 @@ message:"Project submitted successfully"
 
 
 // ==========================
-// STUDENT PROJECT LIST
+// STUDENT PROJECTS
 // ==========================
 
 
-app.get("/api/projects/student/:id",(req,res)=>{
+app.get("/api/projects/student/:id",async(req,res)=>{
 
 
-const projects = db.prepare(`
+const result = await pool.query(`
 
 SELECT *
 
 FROM projects
 
-WHERE student_id=?
+WHERE student_id=$1
 
 ORDER BY id DESC
 
-`).all(req.params.id);
+`,
+
+[req.params.id]
+
+);
 
 
 
-res.json(projects);
+res.json(result.rows);
 
 
 });
@@ -676,14 +677,14 @@ res.json(projects);
 
 
 // ==========================
-// ADMIN PROJECT LIST
+// ADMIN PROJECTS
 // ==========================
 
 
-app.get("/api/projects",(req,res)=>{
+app.get("/api/projects",async(req,res)=>{
 
 
-const projects = db.prepare(`
+const result = await pool.query(`
 
 SELECT *
 
@@ -691,11 +692,11 @@ FROM projects
 
 ORDER BY id DESC
 
-`).all();
+`);
 
 
 
-res.json(projects);
+res.json(result.rows);
 
 
 });
@@ -709,26 +710,30 @@ res.json(projects);
 
 
 // ==========================
-// PROJECT APPROVE / REJECT
+// PROJECT STATUS
 // ==========================
 
 
-app.patch("/api/projects/:id",(req,res)=>{
+app.patch("/api/projects/:id",async(req,res)=>{
 
 
-db.prepare(`
+await pool.query(`
 
 UPDATE projects
 
-SET status=?
+SET status=$1
 
-WHERE id=?
+WHERE id=$2
 
-`).run(
+`,
+
+[
 
 req.body.status,
 
 req.params.id
+
+]
 
 );
 
@@ -756,7 +761,7 @@ success:true
 // ==========================
 
 
-app.post("/api/publications",(req,res)=>{
+app.post("/api/publications",async(req,res)=>{
 
 
 const {
@@ -777,11 +782,17 @@ link
 
 
 
-db.prepare(`
+await pool.query(`
 
 INSERT INTO publications
 
-(
+(student_id,title,journal,year,area,link)
+
+VALUES($1,$2,$3,$4,$5,$6)
+
+`,
+
+[
 
 student_id,
 
@@ -795,23 +806,7 @@ area,
 
 link
 
-)
-
-VALUES(?,?,?,?,?,?)
-
-`).run(
-
-student_id,
-
-title,
-
-journal,
-
-year,
-
-area,
-
-link
+]
 
 );
 
@@ -841,24 +836,28 @@ message:"Publication submitted successfully"
 // ==========================
 
 
-app.get("/api/publications/student/:id",(req,res)=>{
+app.get("/api/publications/student/:id",async(req,res)=>{
 
 
-const publications = db.prepare(`
+const result = await pool.query(`
 
 SELECT *
 
 FROM publications
 
-WHERE student_id=?
+WHERE student_id=$1
 
 ORDER BY id DESC
 
-`).all(req.params.id);
+`,
+
+[req.params.id]
+
+);
 
 
 
-res.json(publications);
+res.json(result.rows);
 
 
 });
@@ -876,10 +875,10 @@ res.json(publications);
 // ==========================
 
 
-app.get("/api/publications",(req,res)=>{
+app.get("/api/publications",async(req,res)=>{
 
 
-const publications = db.prepare(`
+const result = await pool.query(`
 
 SELECT *
 
@@ -887,11 +886,11 @@ FROM publications
 
 ORDER BY id DESC
 
-`).all();
+`);
 
 
 
-res.json(publications);
+res.json(result.rows);
 
 
 });
@@ -905,26 +904,30 @@ res.json(publications);
 
 
 // ==========================
-// PUBLICATION APPROVE / REJECT
+// PUBLICATION STATUS
 // ==========================
 
 
-app.patch("/api/publications/:id",(req,res)=>{
+app.patch("/api/publications/:id",async(req,res)=>{
 
 
-db.prepare(`
+await pool.query(`
 
 UPDATE publications
 
-SET status=?
+SET status=$1
 
-WHERE id=?
+WHERE id=$2
 
-`).run(
+`,
+
+[
 
 req.body.status,
 
 req.params.id
+
+]
 
 );
 
@@ -948,17 +951,73 @@ success:true
 
 
 // ==========================
-// PUBLIC APPROVED PUBLICATIONS
+// PUBLIC RESEARCH ARCHIVE
 // ==========================
 
 
-app.get("/api/public/publications",(req,res)=>{
+app.get("/api/public/projects",async(req,res)=>{
 
 
-try{
+const result = await pool.query(`
+
+SELECT
+
+projects.title,
+
+projects.area,
+
+projects.abstract,
+
+projects.supervisor,
+
+users.name,
+
+users.department
 
 
-const publications = db.prepare(`
+FROM projects
+
+
+JOIN users
+
+ON projects.student_id = users.id
+
+
+
+WHERE projects.status='Approved'
+
+AND users.status='Approved'
+
+
+ORDER BY projects.id DESC
+
+
+`);
+
+
+
+res.json(result.rows);
+
+
+});
+
+
+
+
+
+
+
+
+
+// ==========================
+// PUBLIC PUBLICATION ARCHIVE
+// ==========================
+
+
+app.get("/api/public/publications",async(req,res)=>{
+
+
+const result = await pool.query(`
 
 SELECT
 
@@ -983,7 +1042,6 @@ FROM publications
 
 JOIN users
 
-
 ON publications.student_id = users.id
 
 
@@ -996,87 +1054,11 @@ AND users.status='Approved'
 ORDER BY publications.id DESC
 
 
-`).all();
+`);
 
 
 
-res.json(publications);
-
-
-}
-
-
-catch(error){
-
-
-res.status(500).json({
-
-error:"Failed to load publications"
-
-});
-
-
-}
-
-
-});
-
-
-
-
-
-
-
-
-
-// ==========================
-// PUBLIC APPROVED PROJECTS
-// ==========================
-
-
-app.get("/api/public/projects",(req,res)=>{
-
-
-const projects = db.prepare(`
-
-SELECT
-
-projects.title,
-
-projects.area,
-
-projects.abstract,
-
-projects.supervisor,
-
-users.name,
-
-users.department
-
-
-FROM projects
-
-
-JOIN users
-
-
-ON projects.student_id = users.id
-
-
-
-WHERE projects.status='Approved'
-
-AND users.status='Approved'
-
-
-ORDER BY projects.id DESC
-
-
-`).all();
-
-
-
-res.json(projects);
+res.json(result.rows);
 
 
 });
@@ -1127,9 +1109,7 @@ process.env.PORT || 3000,
 
 ()=>{
 
-
-console.log("DCURS server running");
-
+console.log("DCURS PostgreSQL server running");
 
 }
 

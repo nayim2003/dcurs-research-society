@@ -1,22 +1,84 @@
-const form = document.getElementById('membershipForm');
-const successBox = document.getElementById('successBox');
+document
+.getElementById("membershipForm")
+.addEventListener("submit", async function(e){
 
-form?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(form).entries());
-  try {
-    const res = await fetch('/api/applications', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(data)
-    });
-    const result = await res.json();
-    if (!res.ok) throw new Error(result.error || 'Submission failed');
-    document.getElementById('applicationId').textContent = result.id;
-    successBox.hidden = false;
-    form.reset();
-    window.scrollTo({top: successBox.offsetTop - 100, behavior: 'smooth'});
-  } catch (err) {
-    alert(err.message);
-  }
+e.preventDefault();
+
+
+const data = Object.fromEntries(
+new FormData(this)
+);
+
+
+
+try{
+
+
+const response = await fetch("/api/register",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+name:data.name,
+
+email:data.email,
+
+password:data.email,
+
+department:data.department,
+
+student_id:data.studentId,
+
+research_interest:data.interests
+
+})
+
+});
+
+
+
+const result = await response.json();
+
+
+
+if(!response.ok){
+
+alert(result.error);
+
+return;
+
+}
+
+
+
+document.getElementById("successBox").hidden=false;
+
+
+document.getElementById("applicationId").innerText="Submitted";
+
+
+this.reset();
+
+
+
+}
+
+
+catch(error){
+
+console.log(error);
+
+alert("Server error");
+
+}
+
+
+
 });

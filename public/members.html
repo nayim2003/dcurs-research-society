@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Members | DCURS</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{background:#f7f9fc}
+    .members-section{padding:70px 0 100px}
+    .members-head{margin-bottom:34px}
+    .members-head h1{font-family:"Playfair Display",serif;color:#06244b;font-size:clamp(42px,6vw,70px);line-height:1.05}
+    .members-head p{color:#667085;margin-top:12px;max-width:720px}
+    .member-controls{display:grid;grid-template-columns:1fr 280px;gap:14px;margin-bottom:28px}
+    .member-controls input,.member-controls select{width:100%;padding:13px 14px;border:1px solid #d6deea;border-radius:10px;background:white;font:inherit}
+    .members-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+    .member-card{background:white;border:1px solid #e4e9f1;border-radius:20px;padding:26px;box-shadow:0 10px 30px rgba(6,36,75,.06)}
+    .member-avatar{width:54px;height:54px;border-radius:16px;background:#06244b;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:18px}
+    .member-card h2{color:#06244b;font-size:21px;margin-bottom:8px}
+    .member-meta{color:#667085;font-size:13px;margin:4px 0}
+    .member-interest{margin-top:14px;padding-top:14px;border-top:1px solid #e4e9f1;color:#526070;font-size:14px}
+    .member-badge{display:inline-block;margin-top:12px;background:#e7f7ec;color:#176b35;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800}
+    .empty-members{background:white;padding:35px;border:1px solid #e4e9f1;border-radius:18px;color:#667085;text-align:center}
+    @media(max-width:900px){.members-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:650px){.members-grid{grid-template-columns:1fr}.member-controls{grid-template-columns:1fr}}
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html">
+      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
+      <span>
+        <strong>Dhaka Central University</strong>
+        <small>Research Society</small>
+      </span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="members.html">Members</a>
+      <a href="publications.html">Publications</a>
+      <a href="login.html">Student Login</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">MEMBER DIRECTORY</p>
+      <h1>Meet the DCURS<br><span>research community.</span></h1>
+      <p>Only approved members are shown in this public directory.</p>
+    </div>
+  </section>
+
+  <section class="members-section">
+    <div class="container">
+
+      <div class="members-head">
+        <h1>Approved Members</h1>
+        <p>Search researchers by name, department, campus or research interest.</p>
+      </div>
+
+      <div class="member-controls">
+        <input id="memberSearch" type="search" placeholder="Search members...">
+
+        <select id="campusFilter">
+          <option value="">All Campuses</option>
+          <option>Dhaka College</option>
+          <option>Eden Mohila College</option>
+          <option>Government Titumir College</option>
+          <option>Government Bangla College</option>
+          <option>Begum Badrunnesa Government Women’s College</option>
+          <option>Government Shaheed Suhrawardy College</option>
+          <option>Kabi Nazrul Government College</option>
+        </select>
+      </div>
+
+      <div id="membersGrid" class="members-grid">
+        <div class="empty-members">Loading members...</div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">DCURS</div>
+      <p>Dhaka Central University Research Society - DCURS</p>
+      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
+    </div>
+
+    <div>
+      <h4>Explore</h4>
+      <a href="campuses.html">Campuses</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+    </div>
+
+    <div>
+      <h4>Community</h4>
+      <a href="members.html">Members</a>
+      <a href="join.html">Join DCURS</a>
+      <a href="login.html">Student Login</a>
+    </div>
+  </div>
+
+  <div class="container copyright">
+    © 2026 Dhaka Central University Research Society - DCURS. All rights reserved.
+  </div>
+</footer>
+
+<script>
+let allMembers = [];
+
+function initials(name){
+  return String(name || "M")
+    .trim()
+    .split(/\s+/)
+    .slice(0,2)
+    .map(part => part[0] || "")
+    .join("")
+    .toUpperCase();
+}
+
+function renderMembers(){
+
+  const query =
+    document.getElementById("memberSearch").value
+    .trim()
+    .toLowerCase();
+
+  const campus =
+    document.getElementById("campusFilter").value;
+
+  const filtered = allMembers.filter(member => {
+
+    const haystack = [
+      member.name,
+      member.department,
+      member.campus,
+      member.research_interest
+    ]
+    .join(" ")
+    .toLowerCase();
+
+    const matchesSearch =
+      !query || haystack.includes(query);
+
+    const matchesCampus =
+      !campus || member.campus === campus;
+
+    return matchesSearch && matchesCampus;
+  });
+
+  const grid = document.getElementById("membersGrid");
+
+  if(filtered.length === 0){
+    grid.innerHTML = `
+      <div class="empty-members">
+        No approved members found.
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(member => `
+    <article class="member-card">
+
+      <div class="member-avatar">
+        ${initials(member.name)}
+      </div>
+
+      <h2>${member.name || "Member"}</h2>
+
+      <p class="member-meta">
+        <strong>Department:</strong>
+        ${member.department || "Not specified"}
+      </p>
+
+      <p class="member-meta">
+        <strong>Campus:</strong>
+        ${member.campus || "Not specified"}
+      </p>
+
+      <div class="member-interest">
+        <strong>Research Interest</strong>
+        <p>${member.research_interest || "Not specified"}</p>
+      </div>
+
+      <span class="member-badge">
+        Approved Member
+      </span>
+
+    </article>
+  `).join("");
+}
+
+async function loadMembers(){
+
+  const grid = document.getElementById("membersGrid");
+
+  try{
+
+    const response =
+      await fetch("/api/public/members");
+
+    const data =
+      await response.json();
+
+    if(!response.ok){
+      throw new Error(
+        data.error || "Unable to load members"
+      );
+    }
+
+    allMembers = data;
+
+    renderMembers();
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    grid.innerHTML = `
+      <div class="empty-members">
+        Unable to load the member directory.
+      </div>
+    `;
+  }
+}
+
+document
+.getElementById("memberSearch")
+.addEventListener("input",renderMembers);
+
+document
+.getElementById("campusFilter")
+.addEventListener("change",renderMembers);
+
+loadMembers();
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

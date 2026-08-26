@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login | DCURS</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:#f7f9fc}
+.login-wrap{min-height:75vh;display:flex;align-items:center;justify-content:center;padding:60px 20px}
+.login-card{width:100%;max-width:470px;background:white;padding:40px;border-radius:22px;border:1px solid #e4e9f1;box-shadow:0 20px 50px rgba(6,36,75,.1)}
+.login-card h1{color:#06244b;margin-bottom:8px}
+.login-card p{color:#667085;margin-bottom:22px}
+.login-card label{display:block;font-weight:700;color:#06244b;margin-bottom:14px}
+.login-card input{width:100%;margin-top:7px;padding:13px;border:1px solid #d6deea;border-radius:10px}
+.login-card button{width:100%;border:0}
+.links{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;font-size:13px}
+.links a{color:#0b356b;font-weight:700}
+#error{color:#b42318;margin-top:14px}
+</style>
+</head>
+<body>
+<header class="site-header"><nav class="nav container">
+<a class="brand" href="index.html"><img src="assets/dcurs-logo.png" alt="DCURS Logo"><span><strong>Dhaka Central University</strong><small>Research Society</small></span></a>
+<button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+<div class="nav-links"><a href="index.html">Home</a><a href="campuses.html">Campuses</a><a href="research.html">Research</a><a href="events.html">Events</a><a href="notices.html">Notices</a><a href="documents.html">Documents</a><a href="members.html">Members</a><a href="publications.html">Publications</a><a href="join.html" class="nav-cta">Join Us</a></div>
+</nav></header>
+
+<main class="login-wrap">
+<div class="login-card">
+<p class="section-label">STUDENT ACCESS</p>
+<h1>Student Login</h1>
+<p>Your email must be verified and your account must be approved.</p>
+
+<form id="loginForm">
+<label>Email<input id="email" type="email" autocomplete="email" required></label>
+<label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+<button class="btn btn-primary" type="submit">Login</button>
+</form>
+
+<div id="error"></div>
+
+<div class="links">
+<a href="forgot-password.html">Forgot password?</a>
+<a href="resend-verification.html">Resend verification email</a>
+</div>
+</div>
+</main>
+
+<script>
+loginForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  error.innerText="";
+
+  try{
+    const response=await fetch("/api/login",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        email:email.value,
+        password:password.value
+      })
+    });
+
+    const data=await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error||"Login failed");
+    }
+
+    localStorage.setItem("token",data.token);
+    localStorage.setItem("user",JSON.stringify(data.user));
+    location.href="student-dashboard.html";
+  }catch(err){
+    error.innerText=err.message;
+  }
+});
+</script>
+<script src="script.js"></script>
+</body>
+</html>

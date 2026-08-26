@@ -1,0 +1,89 @@
+DCURS LAUNCH SECURITY UPDATE
+
+THIS PACKAGE ADDS
+1. User-created password + confirm password.
+2. bcrypt cost factor 12.
+3. No SESSION_SECRET fallback. Server refuses to start if secret is missing/weak.
+4. Student login rate limit: 10 attempts / 15 minutes.
+5. Admin login rate limit: 5 attempts / 15 minutes.
+6. Registration rate limit.
+7. Helmet HTTP security headers.
+8. Strict CORS allowlist.
+9. 100 KB JSON/form body limit.
+10. Student JWT lifetime reduced to 1 day.
+11. Admin JWT lifetime reduced to 2 hours.
+12. Generic login errors to reduce account enumeration.
+13. Protected student/admin authorization remains enforced.
+14. Sanitized production error responses.
+15. Basic audit logs that never log passwords/tokens/secrets.
+16. PDF size limit: 2 MB.
+17. PDF MIME + extension + %PDF magic-byte validation.
+18. Max 3 PDF documents per student.
+19. .env protection through .gitignore.
+20. HTTPS redirect when Render reports a non-HTTPS production request.
+
+IMPORTANT BEFORE DEPLOYING
+Render -> Web Service -> Environment:
+
+SESSION_SECRET
+- REQUIRED.
+- At least 32 characters.
+- Recommended: 64 random hexadecimal characters.
+- Generate locally with:
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+ADMIN_PASSWORD
+- REQUIRED.
+- Must be at least 12 characters.
+
+ALLOWED_ORIGINS
+- Comma-separated, no trailing slash.
+- Example while using Render:
+  https://YOUR-SERVICE.onrender.com
+- When dcurs.org is live:
+  https://YOUR-SERVICE.onrender.com,https://dcurs.org,https://www.dcurs.org
+
+Existing variables must remain:
+DATABASE_URL
+ADMIN_USERNAME
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+
+FILES TO REPLACE
+- package.json
+- server.js
+- storage.js
+- public/register.html
+- public/join.html
+
+FILES TO ADD
+- security.js
+- .gitignore
+- .env.example
+
+DO NOT PUT REAL SECRETS IN .env.example OR GITHUB.
+
+DEPLOY ORDER
+1. FIRST create/update SESSION_SECRET, ADMIN_PASSWORD and ALLOWED_ORIGINS in Render.
+2. Then upload/replace the files.
+3. Commit.
+4. Render -> Deploy latest commit.
+5. Build should install helmet, cors and express-rate-limit.
+6. Old student/admin JWTs may stop working; log in again.
+7. Test registration with Password + Confirm Password.
+8. Test student login.
+9. Test admin login.
+10. Test PDF upload under 2 MB.
+
+HELMET / CSP NOTE
+The current DCURS HTML uses inline JavaScript. A strict Content-Security-Policy would block those scripts.
+This update enables Helmet's other security headers but leaves CSP disabled for now.
+A later hardening step should move inline JavaScript into external .js files, then enable a strict CSP.
+
+NOT INCLUDED YET
+- Email verification / forgot-password email flow: requires an email provider.
+- MFA/2FA: requires an authenticator/email/SMS design.
+- Automated PostgreSQL backups: this should be configured at the database/provider level, not faked inside the Node app.
+- Refresh-token architecture: best handled as a separate authentication migration.
+- Cloudflare WAF: configured at DNS/Cloudflare level after the domain is connected.

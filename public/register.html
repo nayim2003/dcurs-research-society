@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration | DCURS</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{background:#f8fafc}
+    .register-section{min-height:85vh;display:flex;justify-content:center;align-items:center;padding:60px 20px}
+    .register-card{width:100%;max-width:540px;background:white;padding:45px;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.12)}
+    .brand-area{text-align:center;margin-bottom:30px}
+    .brand-area img{width:90px;margin:0 auto 15px}
+    .register-card h1{text-align:center;color:#06244b;font-size:36px;margin-bottom:10px}
+    .subtitle{text-align:center;color:#64748b;margin-bottom:30px}
+    .form-group{margin-bottom:18px}
+    .form-group label{display:block;font-weight:600;color:#06244b;margin-bottom:7px}
+    .form-group input,.form-group textarea,.form-group select{width:100%;padding:14px;border:1px solid #d6deea;border-radius:12px;font-size:15px;background:white}
+    .form-group textarea{resize:none;height:100px}
+    .register-btn{width:100%;margin-top:10px}
+    .login-link{text-align:center;margin-top:25px;color:#64748b}
+    .login-link a{color:#06244b;font-weight:bold}
+    #error{text-align:center;color:#b42318;margin-top:15px}
+    #success{text-align:center;color:#027a48;margin-top:15px}
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html">
+      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
+      <span>
+        <strong>Dhaka Central University</strong>
+        <small>Research Society</small>
+      </span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="members.html">Members</a>
+      <a href="publications.html">Publications</a>
+      <a href="login.html">Student Login</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+</header>
+
+
+<section class="register-section">
+
+  <div class="register-card">
+
+    <div class="brand-area">
+      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
+      <h2>DCURS</h2>
+      <p>RESEARCH SOCIETY</p>
+    </div>
+
+
+    <h1>
+      Student Registration
+    </h1>
+
+
+    <p class="subtitle">
+      Join the Dhaka Central University Research Society community
+    </p>
+
+
+    <form id="registerForm">
+
+      <div class="form-group">
+        <label>Full Name</label>
+
+        <input
+          name="name"
+          autocomplete="name"
+          placeholder="Enter your full name"
+          required>
+      </div>
+
+
+      <div class="form-group">
+        <label>Email Address</label>
+
+        <input
+          type="email"
+          name="email"
+          autocomplete="email"
+          placeholder="Enter your email"
+          required>
+      </div>
+
+
+      <div class="form-group">
+        <label>Password</label>
+
+        <input
+          type="password"
+          name="password"
+          autocomplete="new-password"
+          placeholder="Create password"
+          required>
+      </div>
+
+
+      <div class="form-group">
+        <label>Department</label>
+
+        <input
+          name="department"
+          placeholder="Your department"
+          required>
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Campus</label>
+
+        <select
+          name="campus"
+          required>
+
+          <option value="">
+            Select Campus
+          </option>
+
+          <option>Dhaka College</option>
+          <option>Eden Mohila College</option>
+          <option>Government Titumir College</option>
+          <option>Government Bangla College</option>
+          <option>Begum Badrunnesa Government Women’s College</option>
+          <option>Government Shaheed Suhrawardy College</option>
+          <option>Kabi Nazrul Government College</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+        <label>Student ID</label>
+
+        <input
+          name="student_id"
+          placeholder="Your student ID">
+      </div>
+
+
+      <div class="form-group">
+        <label>Research Interest</label>
+
+        <textarea
+          name="research_interest"
+          placeholder="Tell us your research interests"
+          required></textarea>
+      </div>
+
+
+      <button
+        class="btn btn-primary register-btn"
+        type="submit">
+
+        Create Account
+
+      </button>
+
+    </form>
+
+
+    <div id="error"></div>
+    <div id="success"></div>
+
+
+    <div class="login-link">
+      Already registered?
+      <a href="login.html">
+        Student Login
+      </a>
+    </div>
+
+  </div>
+
+</section>
+
+
+<script>
+
+document
+.getElementById("registerForm")
+.addEventListener(
+  "submit",
+  async function(e){
+
+    e.preventDefault();
+
+    const data =
+      Object.fromEntries(
+        new FormData(this)
+      );
+
+    try{
+
+      const response =
+        await fetch(
+          "/api/register",
+          {
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+              "application/json"
+            },
+
+            body:JSON.stringify(data)
+          }
+        );
+
+      const result =
+        await response.json();
+
+      if(!response.ok){
+
+        throw new Error(
+          result.error ||
+          "Registration failed"
+        );
+
+      }
+
+      document
+      .getElementById("error")
+      .innerText = "";
+
+      document
+      .getElementById("success")
+      .innerText =
+        "Registration submitted. Wait for admin approval.";
+
+      this.reset();
+
+    }
+    catch(error){
+
+      document
+      .getElementById("success")
+      .innerText = "";
+
+      document
+      .getElementById("error")
+      .innerText =
+        error.message;
+
+    }
+  }
+);
+
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

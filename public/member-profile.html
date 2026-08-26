@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Profile | DCURS</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{background:#f7f9fc}
+    .profile-section{padding:70px 0 100px}
+    .profile-card{background:white;border:1px solid #e4e9f1;border-radius:22px;padding:34px;box-shadow:0 15px 35px rgba(6,36,75,.07);margin-bottom:28px}
+    .profile-head{display:grid;grid-template-columns:86px 1fr;gap:22px;align-items:center}
+    .profile-avatar{width:86px;height:86px;border-radius:24px;background:#06244b;color:white;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800}
+    .profile-head h1{color:#06244b;font-size:34px}
+    .profile-meta{color:#667085;margin-top:5px}
+    .profile-interest{margin-top:22px;padding-top:20px;border-top:1px solid #e4e9f1;color:#526070}
+    .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .profile-section-card{background:white;border:1px solid #e4e9f1;border-radius:20px;padding:28px}
+    .profile-section-card h2{color:#06244b;margin-bottom:18px}
+    .profile-entry{padding:16px 0;border-bottom:1px solid #e4e9f1}
+    .profile-entry:last-child{border-bottom:0}
+    .profile-entry h3{color:#06244b;font-size:18px;margin-bottom:6px}
+    .profile-entry p{color:#667085;font-size:14px}
+    .paper-link{display:inline-flex;margin-top:10px;color:#0b356b;font-weight:700;font-size:13px}
+    .back-link{display:inline-flex;margin-bottom:22px;color:#0b356b;font-weight:700}
+    .empty-box{color:#667085}
+    @media(max-width:800px){.profile-grid{grid-template-columns:1fr}}
+    @media(max-width:560px){.profile-head{grid-template-columns:1fr}.profile-avatar{width:70px;height:70px}}
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html">
+      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
+      <span>
+        <strong>Dhaka Central University</strong>
+        <small>Research Society</small>
+      </span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="members.html">Members</a>
+      <a href="publications.html">Publications</a>
+      <a href="login.html">Student Login</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+</header>
+
+<main class="profile-section">
+  <div class="container">
+
+    <a class="back-link" href="members.html">
+      ← Back to Members
+    </a>
+
+    <div id="memberProfile" class="profile-card">
+      Loading member profile...
+    </div>
+
+    <div class="profile-grid">
+
+      <section class="profile-section-card">
+        <h2>Approved Research Projects</h2>
+        <div id="memberProjects">
+          Loading projects...
+        </div>
+      </section>
+
+      <section class="profile-section-card">
+        <h2>Approved Publications</h2>
+        <div id="memberPublications">
+          Loading publications...
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">DCURS</div>
+      <p>Dhaka Central University Research Society - DCURS</p>
+      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
+    </div>
+
+    <div>
+      <h4>Explore</h4>
+      <a href="campuses.html">Campuses</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+    </div>
+
+    <div>
+      <h4>Community</h4>
+      <a href="members.html">Members</a>
+      <a href="join.html">Join DCURS</a>
+      <a href="login.html">Student Login</a>
+    </div>
+  </div>
+
+  <div class="container copyright">
+    © 2026 Dhaka Central University Research Society - DCURS. All rights reserved.
+  </div>
+</footer>
+
+<script>
+function initials(name){
+  return String(name||"M")
+    .trim()
+    .split(/\s+/)
+    .slice(0,2)
+    .map(part=>part[0]||"")
+    .join("")
+    .toUpperCase();
+}
+
+async function loadMemberProfile(){
+
+  const params=new URLSearchParams(window.location.search);
+  const id=params.get("id");
+
+  const profileBox=document.getElementById("memberProfile");
+  const projectBox=document.getElementById("memberProjects");
+  const publicationBox=document.getElementById("memberPublications");
+
+  if(!id){
+    profileBox.innerHTML="Member not found.";
+    projectBox.innerHTML="";
+    publicationBox.innerHTML="";
+    return;
+  }
+
+  try{
+
+    const response=await fetch("/api/public/members/"+encodeURIComponent(id));
+    const data=await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error||"Member not found");
+    }
+
+    const member=data.member;
+
+    document.title=(member.name||"Member")+" | DCURS";
+
+    profileBox.innerHTML=`
+      <div class="profile-head">
+
+        <div class="profile-avatar">
+          ${initials(member.name)}
+        </div>
+
+        <div>
+          <p class="section-label">DCURS MEMBER</p>
+          <h1>${member.name||"Member"}</h1>
+
+          <p class="profile-meta">
+            ${member.department||"Department not specified"}
+          </p>
+
+          <p class="profile-meta">
+            ${member.campus||"Campus not specified"}
+          </p>
+        </div>
+
+      </div>
+
+      <div class="profile-interest">
+        <strong>Research Interest</strong>
+        <p>${member.research_interest||"Not specified"}</p>
+      </div>
+    `;
+
+    if(data.projects.length===0){
+      projectBox.innerHTML=`
+        <p class="empty-box">
+          No approved research projects yet.
+        </p>
+      `;
+    }else{
+      projectBox.innerHTML=data.projects.map(project=>`
+        <article class="profile-entry">
+          <h3>${project.title||"Untitled Project"}</h3>
+          <p><strong>Area:</strong> ${project.area||"Not specified"}</p>
+          <p><strong>Supervisor:</strong> ${project.supervisor||"Not specified"}</p>
+          <p>${project.abstract||""}</p>
+        </article>
+      `).join("");
+    }
+
+    if(data.publications.length===0){
+      publicationBox.innerHTML=`
+        <p class="empty-box">
+          No approved publications yet.
+        </p>
+      `;
+    }else{
+      publicationBox.innerHTML=data.publications.map(pub=>`
+        <article class="profile-entry">
+          <h3>${pub.title||"Untitled Publication"}</h3>
+          <p><strong>Journal / Conference:</strong> ${pub.journal||"Not specified"}</p>
+          <p><strong>Year:</strong> ${pub.year||"Not specified"}</p>
+          <p><strong>Area:</strong> ${pub.area||"Not specified"}</p>
+          ${pub.link ? `
+            <a
+              class="paper-link"
+              href="${pub.link}"
+              target="_blank"
+              rel="noopener">
+              View Publication
+            </a>
+          ` : ""}
+        </article>
+      `).join("");
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    profileBox.innerHTML=`
+      <p>${error.message}</p>
+    `;
+
+    projectBox.innerHTML="";
+    publicationBox.innerHTML="";
+  }
+}
+
+loadMemberProfile();
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

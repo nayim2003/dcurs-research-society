@@ -265,30 +265,38 @@
   </nav>
 </header>
 
-
 <main class="admin-page">
-
   <div class="container">
 
-    <!-- LOGIN -->
+    <!-- ADMIN LOGIN -->
     <section id="adminLoginSection" class="admin-login-wrap">
       <div class="admin-login-card">
         <p class="section-label">ADMIN ACCESS</p>
         <h1>DCURS Admin Login</h1>
-        <p>Sign in to manage members, research projects and publications.</p>
+        <p>Sign in to manage students, research projects and publications.</p>
 
         <form id="adminLoginForm">
           <label>
             Username
-            <input id="adminUsername" type="text" autocomplete="username" required>
+            <input
+              id="adminUsername"
+              type="text"
+              autocomplete="username"
+              required>
           </label>
 
           <label>
             Password
-            <input id="adminPassword" type="password" autocomplete="current-password" required>
+            <input
+              id="adminPassword"
+              type="password"
+              autocomplete="current-password"
+              required>
           </label>
 
-          <button class="btn btn-primary" type="submit">Login</button>
+          <button class="btn btn-primary" type="submit">
+            Login
+          </button>
         </form>
 
         <div id="loginError"></div>
@@ -296,7 +304,7 @@
     </section>
 
 
-    <!-- DASHBOARD -->
+    <!-- ADMIN DASHBOARD -->
     <section id="adminDashboard" class="admin-shell">
 
       <div class="admin-topbar">
@@ -306,11 +314,18 @@
           <p>Manage students, research projects and publications.</p>
         </div>
 
-        <button class="logout-btn" type="button" onclick="logoutAdmin()">Logout</button>
+        <button
+          class="logout-btn"
+          type="button"
+          onclick="logoutAdmin()">
+          Logout
+        </button>
       </div>
 
 
+      <!-- STATISTICS -->
       <div class="stats-grid">
+
         <div class="stat-card">
           <strong id="totalStudents">0</strong>
           <span>Total Students</span>
@@ -330,15 +345,19 @@
           <strong id="totalPublications">0</strong>
           <span>Publications</span>
         </div>
+
       </div>
 
 
-      <!-- STUDENTS -->
+      <!-- STUDENT APPLICATIONS -->
       <section class="admin-section-card">
+
         <h2>Student Applications</h2>
 
         <div class="table-scroll">
+
           <table>
+
             <thead>
               <tr>
                 <th>Name</th>
@@ -352,20 +371,28 @@
 
             <tbody id="studentRows">
               <tr>
-                <td colspan="6" class="empty-row">Loading students...</td>
+                <td colspan="6" class="empty-row">
+                  Loading students...
+                </td>
               </tr>
             </tbody>
+
           </table>
+
         </div>
+
       </section>
 
 
-      <!-- PROJECTS -->
+      <!-- RESEARCH PROJECTS -->
       <section class="admin-section-card">
+
         <h2>Research Projects</h2>
 
         <div class="table-scroll">
+
           <table>
+
             <thead>
               <tr>
                 <th>Title</th>
@@ -378,20 +405,28 @@
 
             <tbody id="projectRows">
               <tr>
-                <td colspan="5" class="empty-row">Loading projects...</td>
+                <td colspan="5" class="empty-row">
+                  Loading projects...
+                </td>
               </tr>
             </tbody>
+
           </table>
+
         </div>
+
       </section>
 
 
       <!-- PUBLICATIONS -->
       <section class="admin-section-card">
+
         <h2>Publications</h2>
 
         <div class="table-scroll">
+
           <table>
+
             <thead>
               <tr>
                 <th>Title</th>
@@ -405,380 +440,1066 @@
 
             <tbody id="publicationRows">
               <tr>
-                <td colspan="6" class="empty-row">Loading publications...</td>
+                <td colspan="6" class="empty-row">
+                  Loading publications...
+                </td>
               </tr>
             </tbody>
+
           </table>
+
         </div>
+
       </section>
 
     </section>
+
   </div>
 </main>
 
 
 <footer class="footer">
+
   <div class="container footer-grid">
+
     <div>
-      <div class="footer-brand">DCURS</div>
-      <p>Dhaka Central University Research Society - DCURS</p>
-      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
+      <div class="footer-brand">
+        DCURS
+      </div>
+
+      <p>
+        Dhaka Central University Research Society - DCURS
+      </p>
+
+      <p class="muted">
+        INQUIRE • ANALYZE • INNOVATE
+      </p>
     </div>
+
 
     <div>
       <h4>Explore</h4>
-      <a href="campuses.html">Campuses</a>
-      <a href="research.html">Research</a>
-      <a href="publications.html">Publications</a>
+
+      <a href="campuses.html">
+        Campuses
+      </a>
+
+      <a href="research.html">
+        Research
+      </a>
+
+      <a href="publications.html">
+        Publications
+      </a>
     </div>
+
 
     <div>
       <h4>Community</h4>
-      <a href="join.html">Join DCURS</a>
-      <a href="login.html">Student Login</a>
+
+      <a href="join.html">
+        Join DCURS
+      </a>
+
+      <a href="login.html">
+        Student Login
+      </a>
     </div>
+
   </div>
 
+
   <div class="container copyright">
-    © 2026 Dhaka Central University Research Society - DCURS. All rights reserved.
+    © 2026 Dhaka Central University Research Society - DCURS.
+    All rights reserved.
   </div>
+
 </footer>
 
 
 <script>
-  let adminToken = localStorage.getItem("adminToken") || "";
 
-  const loginSection = document.getElementById("adminLoginSection");
-  const dashboard = document.getElementById("adminDashboard");
-  const loginError = document.getElementById("loginError");
+let adminToken =
+  localStorage.getItem("adminToken") || "";
 
 
-  function statusBadge(status){
-    const normalized = String(status || "Pending").toLowerCase();
+const loginSection =
+  document.getElementById("adminLoginSection");
 
-    if(normalized === "approved"){
-      return `<span class="approved-badge">Approved</span>`;
+
+const dashboard =
+  document.getElementById("adminDashboard");
+
+
+const loginError =
+  document.getElementById("loginError");
+
+
+
+// ==========================
+// STATUS BADGE
+// ==========================
+
+function statusBadge(status){
+
+  const normalized =
+    String(status || "Pending").toLowerCase();
+
+
+  if(normalized === "approved"){
+
+    return `
+      <span class="approved-badge">
+        Approved
+      </span>
+    `;
+
+  }
+
+
+  if(normalized === "rejected"){
+
+    return `
+      <span class="rejected-badge">
+        Rejected
+      </span>
+    `;
+
+  }
+
+
+  return `
+    <span class="pending-badge">
+      Pending
+    </span>
+  `;
+
+}
+
+
+
+// ==========================
+// SHOW DASHBOARD
+// ==========================
+
+function showDashboard(){
+
+  loginSection.style.display =
+    "none";
+
+
+  dashboard.style.display =
+    "block";
+
+
+  loadStudents();
+
+  loadProjects();
+
+  loadPublications();
+
+}
+
+
+
+// ==========================
+// SHOW LOGIN
+// ==========================
+
+function showLogin(){
+
+  dashboard.style.display =
+    "none";
+
+
+  loginSection.style.display =
+    "flex";
+
+}
+
+
+
+// Already logged in
+
+if(adminToken){
+
+  showDashboard();
+
+}
+
+else{
+
+  showLogin();
+
+}
+
+
+
+// ==========================
+// ADMIN LOGIN
+// ==========================
+
+document
+.getElementById("adminLoginForm")
+.addEventListener(
+  "submit",
+  async function(e){
+
+
+    e.preventDefault();
+
+
+    loginError.innerText = "";
+
+
+
+    try{
+
+
+      const response =
+        await fetch(
+          "/api/admin/login",
+          {
+
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+              "application/json"
+            },
+
+            body:JSON.stringify({
+
+              username:
+                document
+                .getElementById(
+                  "adminUsername"
+                )
+                .value,
+
+              password:
+                document
+                .getElementById(
+                  "adminPassword"
+                )
+                .value
+
+            })
+
+          }
+        );
+
+
+
+      const result =
+        await response.json();
+
+
+
+      if(!response.ok){
+
+        throw new Error(
+          result.error ||
+          "Admin login failed"
+        );
+
+      }
+
+
+
+      adminToken =
+        result.token;
+
+
+      localStorage.setItem(
+        "adminToken",
+        adminToken
+      );
+
+
+      showDashboard();
+
+
     }
 
-    if(normalized === "rejected"){
-      return `<span class="rejected-badge">Rejected</span>`;
+    catch(error){
+
+
+      loginError.innerText =
+        error.message;
+
+
     }
 
-    return `<span class="pending-badge">Pending</span>`;
+
+  }
+);
+
+
+
+// ==========================
+// LOAD STUDENTS
+// ==========================
+
+async function loadStudents(){
+
+
+  const tbody =
+    document.getElementById(
+      "studentRows"
+    );
+
+
+  try{
+
+
+    const response =
+      await fetch(
+        "/api/applications"
+      );
+
+
+    const students =
+      await response.json();
+
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Unable to load students"
+      );
+
+    }
+
+
+
+    document
+    .getElementById(
+      "totalStudents"
+    )
+    .innerText =
+      students.length;
+
+
+
+    document
+    .getElementById(
+      "pendingStudents"
+    )
+    .innerText =
+      students.filter(
+        student =>
+          student.status ===
+          "Pending"
+      ).length;
+
+
+
+    if(students.length === 0){
+
+
+      tbody.innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="6"
+            class="empty-row">
+
+            No student applications yet.
+
+          </td>
+
+        </tr>
+
+      `;
+
+
+      return;
+
+    }
+
+
+
+    tbody.innerHTML =
+      students.map(
+        student => `
+
+          <tr>
+
+            <td>
+              ${student.name || ""}
+            </td>
+
+            <td>
+              ${student.email || ""}
+            </td>
+
+            <td>
+              ${student.department || ""}
+            </td>
+
+            <td>
+              ${student.student_id || ""}
+            </td>
+
+            <td>
+              ${statusBadge(
+                student.status
+              )}
+            </td>
+
+            <td>
+
+              <button
+                class="
+                  action-btn
+                  approve-btn
+                "
+                onclick="
+                  updateStudentStatus(
+                    ${student.id},
+                    'Approved'
+                  )
+                ">
+
+                Approve
+
+              </button>
+
+
+              <button
+                class="
+                  action-btn
+                  reject-btn
+                "
+                onclick="
+                  updateStudentStatus(
+                    ${student.id},
+                    'Rejected'
+                  )
+                ">
+
+                Reject
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("");
+
+
+  }
+
+  catch(error){
+
+
+    console.error(error);
+
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="6"
+          class="empty-row">
+
+          Could not load student applications.
+
+        </td>
+
+      </tr>
+
+    `;
+
+
   }
 
 
-  function showDashboard(){
-    loginSection.style.display = "none";
-    dashboard.style.display = "block";
-
-    loadStudents();
-    loadProjects();
-    loadPublications();
-  }
+}
 
 
-  function showLogin(){
-    dashboard.style.display = "none";
-    loginSection.style.display = "flex";
-  }
+
+// ==========================
+// UPDATE STUDENT
+// ==========================
+
+async function updateStudentStatus(
+  id,
+  status
+){
 
 
-  if(adminToken){
-    showDashboard();
-  }else{
-    showLogin();
-  }
+  try{
 
 
-  document
-    .getElementById("adminLoginForm")
-    .addEventListener("submit", async function(e){
+    const response =
+      await fetch(
 
-      e.preventDefault();
-      loginError.innerText = "";
+        "/api/applications/" + id,
 
-      try{
-        const response = await fetch("/api/admin/login",{
-          method:"POST",
+        {
+
+          method:"PATCH",
+
           headers:{
-            "Content-Type":"application/json"
+            "Content-Type":
+            "application/json"
           },
+
           body:JSON.stringify({
-            username:document.getElementById("adminUsername").value,
-            password:document.getElementById("adminPassword").value
+            status:status
           })
-        });
 
-        const result = await response.json();
-
-        if(!response.ok){
-          throw new Error(result.error || "Admin login failed");
         }
 
-        adminToken = result.token;
-        localStorage.setItem("adminToken",adminToken);
-
-        showDashboard();
-
-      }catch(error){
-        loginError.innerText = error.message;
-      }
-    });
+      );
 
 
-  async function loadStudents(){
 
-    const tbody = document.getElementById("studentRows");
+    if(!response.ok){
 
-    try{
-      const response = await fetch("/api/applications");
-      const students = await response.json();
+      throw new Error(
+        "Student status update failed"
+      );
 
-      if(!response.ok){
-        throw new Error("Unable to load students");
-      }
+    }
 
-      document.getElementById("totalStudents").innerText = students.length;
-      document.getElementById("pendingStudents").innerText =
-        students.filter(s => s.status === "Pending").length;
 
-      if(students.length === 0){
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="empty-row">No student applications yet.</td>
-          </tr>
-        `;
-        return;
-      }
 
-      tbody.innerHTML = students.map(student => `
-        <tr>
-          <td>${student.name || ""}</td>
-          <td>${student.email || ""}</td>
-          <td>${student.department || ""}</td>
-          <td>${student.student_id || ""}</td>
-          <td>${statusBadge(student.status)}</td>
-          <td>
-            <button
-              class="action-btn approve-btn"
-              onclick="updateStudentStatus(${student.id},'Approved')">
-              Approve
-            </button>
+    loadStudents();
 
-            <button
-              class="action-btn reject-btn"
-              onclick="updateStudentStatus(${student.id},'Rejected')">
-              Reject
-            </button>
-          </td>
-        </tr>
-      `).join("");
 
-    }catch(error){
-      console.error(error);
+  }
+
+  catch(error){
+
+
+    alert(
+      error.message
+    );
+
+
+  }
+
+
+}
+
+
+
+// ==========================
+// LOAD PROJECTS
+// ==========================
+
+async function loadProjects(){
+
+
+  const tbody =
+    document.getElementById(
+      "projectRows"
+    );
+
+
+  try{
+
+
+    const response =
+      await fetch(
+        "/api/projects"
+      );
+
+
+    const projects =
+      await response.json();
+
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Unable to load projects"
+      );
+
+    }
+
+
+
+    document
+    .getElementById(
+      "totalProjects"
+    )
+    .innerText =
+      projects.length;
+
+
+
+    if(projects.length === 0){
+
 
       tbody.innerHTML = `
+
         <tr>
-          <td colspan="6" class="empty-row">Could not load student applications.</td>
-        </tr>
-      `;
-    }
-  }
 
+          <td
+            colspan="5"
+            class="empty-row">
 
-  async function updateStudentStatus(id,status){
+            No research projects yet.
 
-    try{
-      const response = await fetch("/api/applications/"+id,{
-        method:"PATCH",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({status:status})
-      });
-
-      if(!response.ok){
-        throw new Error("Student status update failed");
-      }
-
-      loadStudents();
-
-    }catch(error){
-      alert(error.message);
-    }
-  }
-
-
-  async function loadProjects(){
-
-    const tbody = document.getElementById("projectRows");
-
-    try{
-      const response = await fetch("/api/projects");
-      const projects = await response.json();
-
-      if(!response.ok){
-        throw new Error("Unable to load projects");
-      }
-
-      document.getElementById("totalProjects").innerText = projects.length;
-
-      if(projects.length === 0){
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="5" class="empty-row">No research projects yet.</td>
-          </tr>
-        `;
-        return;
-      }
-
-      tbody.innerHTML = projects.map(project => `
-        <tr>
-          <td>${project.title || ""}</td>
-          <td>${project.area || ""}</td>
-          <td>${project.supervisor || ""}</td>
-          <td>${statusBadge(project.status)}</td>
-          <td>
-            <button
-              class="action-btn approve-btn"
-              onclick="updateProjectStatus(${project.id},'Approved')">
-              Approve
-            </button>
-
-            <button
-              class="action-btn reject-btn"
-              onclick="updateProjectStatus(${project.id},'Rejected')">
-              Reject
-            </button>
           </td>
-        </tr>
-      `).join("");
 
-    }catch(error){
-      console.error(error);
+        </tr>
+
+      `;
+
+
+      return;
+
+    }
+
+
+
+    tbody.innerHTML =
+      projects.map(
+        project => `
+
+          <tr>
+
+            <td>
+              ${project.title || ""}
+            </td>
+
+            <td>
+              ${project.area || ""}
+            </td>
+
+            <td>
+              ${project.supervisor || ""}
+            </td>
+
+            <td>
+              ${statusBadge(
+                project.status
+              )}
+            </td>
+
+            <td>
+
+              <button
+                class="
+                  action-btn
+                  approve-btn
+                "
+                onclick="
+                  updateProjectStatus(
+                    ${project.id},
+                    'Approved'
+                  )
+                ">
+
+                Approve
+
+              </button>
+
+
+              <button
+                class="
+                  action-btn
+                  reject-btn
+                "
+                onclick="
+                  updateProjectStatus(
+                    ${project.id},
+                    'Rejected'
+                  )
+                ">
+
+                Reject
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("");
+
+
+  }
+
+  catch(error){
+
+
+    console.error(error);
+
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="5"
+          class="empty-row">
+
+          Could not load research projects.
+
+        </td>
+
+      </tr>
+
+    `;
+
+
+  }
+
+
+}
+
+
+
+// ==========================
+// UPDATE PROJECT
+// ==========================
+
+async function updateProjectStatus(
+  id,
+  status
+){
+
+
+  try{
+
+
+    const response =
+      await fetch(
+
+        "/api/projects/" + id,
+
+        {
+
+          method:"PATCH",
+
+          headers:{
+            "Content-Type":
+            "application/json"
+          },
+
+          body:JSON.stringify({
+            status:status
+          })
+
+        }
+
+      );
+
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Project status update failed"
+      );
+
+    }
+
+
+
+    loadProjects();
+
+
+  }
+
+  catch(error){
+
+
+    alert(
+      error.message
+    );
+
+
+  }
+
+
+}
+
+
+
+// ==========================
+// LOAD PUBLICATIONS
+// ==========================
+
+async function loadPublications(){
+
+
+  const tbody =
+    document.getElementById(
+      "publicationRows"
+    );
+
+
+  try{
+
+
+    const response =
+      await fetch(
+        "/api/publications"
+      );
+
+
+    const publications =
+      await response.json();
+
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Unable to load publications"
+      );
+
+    }
+
+
+
+    document
+    .getElementById(
+      "totalPublications"
+    )
+    .innerText =
+      publications.length;
+
+
+
+    if(publications.length === 0){
+
 
       tbody.innerHTML = `
+
         <tr>
-          <td colspan="5" class="empty-row">Could not load research projects.</td>
-        </tr>
-      `;
-    }
-  }
 
+          <td
+            colspan="6"
+            class="empty-row">
 
-  async function updateProjectStatus(id,status){
+            No publications yet.
 
-    try{
-      const response = await fetch("/api/projects/"+id,{
-        method:"PATCH",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({status:status})
-      });
-
-      if(!response.ok){
-        throw new Error("Project status update failed");
-      }
-
-      loadProjects();
-
-    }catch(error){
-      alert(error.message);
-    }
-  }
-
-
-  async function loadPublications(){
-
-    const tbody = document.getElementById("publicationRows");
-
-    try{
-      const response = await fetch("/api/publications");
-      const publications = await response.json();
-
-      if(!response.ok){
-        throw new Error("Unable to load publications");
-      }
-
-      document.getElementById("totalPublications").innerText = publications.length;
-
-      if(publications.length === 0){
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="empty-row">No publications yet.</td>
-          </tr>
-        `;
-        return;
-      }
-
-      tbody.innerHTML = publications.map(pub => `
-        <tr>
-          <td>${pub.title || ""}</td>
-          <td>${pub.journal || ""}</td>
-          <td>${pub.year || ""}</td>
-          <td>${pub.area || ""}</td>
-          <td>${statusBadge(pub.status)}</td>
-          <td>
-            <button
-              class="action-btn approve-btn"
-              onclick="updatePublicationStatus(${pub.id},'Approved')">
-              Approve
-            </button>
-
-            <button
-              class="action-btn reject-btn"
-              onclick="updatePublicationStatus(${pub.id},'Rejected')">
-              Reject
-            </button>
           </td>
-        </tr>
-      `).join("");
 
-    }catch(error){
-      console.error(error);
-
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6" class="empty-row">Could not load publications.</td>
         </tr>
+
       `;
+
+
+      return;
+
     }
+
+
+
+    tbody.innerHTML =
+      publications.map(
+        publication => `
+
+          <tr>
+
+            <td>
+              ${publication.title || ""}
+            </td>
+
+            <td>
+              ${publication.journal || ""}
+            </td>
+
+            <td>
+              ${publication.year || ""}
+            </td>
+
+            <td>
+              ${publication.area || ""}
+            </td>
+
+            <td>
+              ${statusBadge(
+                publication.status
+              )}
+            </td>
+
+            <td>
+
+              <button
+                class="
+                  action-btn
+                  approve-btn
+                "
+                onclick="
+                  updatePublicationStatus(
+                    ${publication.id},
+                    'Approved'
+                  )
+                ">
+
+                Approve
+
+              </button>
+
+
+              <button
+                class="
+                  action-btn
+                  reject-btn
+                "
+                onclick="
+                  updatePublicationStatus(
+                    ${publication.id},
+                    'Rejected'
+                  )
+                ">
+
+                Reject
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("");
+
+
+  }
+
+  catch(error){
+
+
+    console.error(error);
+
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="6"
+          class="empty-row">
+
+          Could not load publications.
+
+        </td>
+
+      </tr>
+
+    `;
+
+
   }
 
 
-  async function updatePublicationStatus(id,status){
+}
 
-    try{
-      const response = await fetch("/api/publications/"+id,{
-        method:"PATCH",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({status:status})
-      });
 
-      if(!response.ok){
-        throw new Error("Publication status update failed");
-      }
 
-      loadPublications();
+// ==========================
+// UPDATE PUBLICATION
+// ==========================
 
-    }catch(error){
-      alert(error.message);
+async function updatePublicationStatus(
+  id,
+  status
+){
+
+
+  try{
+
+
+    const response =
+      await fetch(
+
+        "/api/publications/" + id,
+
+        {
+
+          method:"PATCH",
+
+          headers:{
+            "Content-Type":
+            "application/json"
+          },
+
+          body:JSON.stringify({
+            status:status
+          })
+
+        }
+
+      );
+
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Publication status update failed"
+      );
+
     }
+
+
+
+    loadPublications();
+
+
+  }
+
+  catch(error){
+
+
+    alert(
+      error.message
+    );
+
+
   }
 
 
-  function logoutAdmin(){
-    localStorage.removeItem("adminToken");
-    adminToken = "";
-    showLogin();
-  }
+}
+
+
+
+// ==========================
+// LOGOUT
+// ==========================
+
+function logoutAdmin(){
+
+
+  localStorage.removeItem(
+    "adminToken"
+  );
+
+
+  adminToken = "";
+
+
+  showLogin();
+
+
+}
+
 </script>
 
+
 <script src="script.js"></script>
+
 
 </body>
 </html>

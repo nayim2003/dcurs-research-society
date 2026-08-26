@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join DCURS | DCURS</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:#f7f9fc}
+.security-note{font-size:12px;color:#667085;margin:-4px 0 14px}
+.form-box select{width:100%;border:1px solid #d6deea;border-radius:10px;padding:14px 15px;background:white;margin-top:7px}
+.error-box{padding:14px 16px;border-radius:10px;background:#fff1f0;color:#b42318;margin-bottom:18px}
+</style>
+</head>
+<body>
+<header class="site-header"><nav class="nav container">
+<a class="brand" href="index.html"><img src="assets/dcurs-logo.png" alt="DCURS Logo"><span><strong>Dhaka Central University</strong><small>Research Society</small></span></a>
+<button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+<div class="nav-links"><a href="index.html">Home</a><a href="campuses.html">Campuses</a><a href="research.html">Research</a><a href="events.html">Events</a><a href="notices.html">Notices</a><a href="documents.html">Documents</a><a href="members.html">Members</a><a href="publications.html">Publications</a><a href="login.html">Student Login</a><a href="join.html" class="nav-cta">Join Us</a></div>
+</nav></header>
+<main>
+<section class="page-hero"><div class="container">
+<p class="section-label">JOIN DCURS</p>
+<h1>Start your<br><span>research journey.</span></h1>
+<p>Create your own password. Applications require admin approval before login.</p>
+</div></section>
+
+<section class="section"><div class="container form-box">
+<div id="successBox" class="success-box" hidden>Registration submitted successfully. Please wait for admin approval.</div>
+<div id="errorBox" class="error-box" hidden></div>
+<h2>Student Registration</h2>
+<form id="registerForm">
+<div class="form-grid">
+<label>Full Name *<input name="name" autocomplete="name" required></label>
+<label>Email Address *<input name="email" type="email" autocomplete="email" required></label>
+<label>Password *<input id="password" name="password" type="password" minlength="8" maxlength="72" autocomplete="new-password" required></label>
+<label>Confirm Password *<input id="confirmPassword" name="confirm_password" type="password" minlength="8" maxlength="72" autocomplete="new-password" required></label>
+<label>Department *<input name="department" required></label>
+<label>Campus *<select name="campus" required>
+<option value="">Select Campus</option>
+<option>Dhaka College</option>
+<option>Eden Mohila College</option>
+<option>Government Titumir College</option>
+<option>Government Bangla College</option>
+<option>Begum Badrunnesa Government Women’s College</option>
+<option>Government Shaheed Suhrawardy College</option>
+<option>Kabi Nazrul Government College</option>
+</select></label>
+<label>Student ID<input name="student_id"></label>
+</div>
+<p class="security-note">Password must be at least 8 characters. Never reuse a password from another important account.</p>
+<label>Research Interests *<textarea name="research_interest" required placeholder="e.g. Data Science, Education, Public Policy"></textarea></label>
+<button class="btn btn-primary" type="submit">Submit Registration</button>
+</form>
+</div></section>
+</main>
+
+<script>
+const form=document.getElementById("registerForm");
+const successBox=document.getElementById("successBox");
+const errorBox=document.getElementById("errorBox");
+
+form.addEventListener("submit",async function(e){
+  e.preventDefault();
+  successBox.hidden=true;
+  errorBox.hidden=true;
+
+  const password=document.getElementById("password").value;
+  const confirmPassword=document.getElementById("confirmPassword").value;
+
+  if(password.length<8){
+    errorBox.textContent="Password must be at least 8 characters.";
+    errorBox.hidden=false;
+    return;
+  }
+
+  if(password!==confirmPassword){
+    errorBox.textContent="Password and confirm password do not match.";
+    errorBox.hidden=false;
+    return;
+  }
+
+  const data=Object.fromEntries(new FormData(form));
+
+  try{
+    const response=await fetch("/api/register",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(data)
+    });
+
+    const result=await response.json();
+
+    if(!response.ok){
+      throw new Error(result.error||"Registration failed");
+    }
+
+    form.reset();
+    successBox.hidden=false;
+  }catch(error){
+    errorBox.textContent=error.message;
+    errorBox.hidden=false;
+  }
+});
+</script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -8,7 +8,7 @@ function required(name) {
   return value;
 }
 
-function appOrigin() {
+function getAppOrigin() {
   const configured = String(process.env.APP_ORIGIN || "").trim();
 
   if (configured) {
@@ -35,34 +35,45 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-async function sendBrevoEmail({ toEmail, toName, subject, textContent, htmlContent }) {
+async function sendBrevoEmail({
+  toEmail,
+  toName,
+  subject,
+  textContent,
+  htmlContent
+}) {
   const apiKey = required("BREVO_API_KEY");
   const senderEmail = required("MAIL_FROM_EMAIL");
-  const senderName = String(process.env.MAIL_FROM_NAME || "DCURS").trim();
+  const senderName = String(
+    process.env.MAIL_FROM_NAME || "DCURS"
+  ).trim();
 
-  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-    method: "POST",
-    headers: {
-      "accept": "application/json",
-      "content-type": "application/json",
-      "api-key": apiKey
-    },
-    body: JSON.stringify({
-      sender: {
-        name: senderName,
-        email: senderEmail
+  const response = await fetch(
+    "https://api.brevo.com/v3/smtp/email",
+    {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey
       },
-      to: [
-        {
-          email: toEmail,
-          name: toName || "Student"
-        }
-      ],
-      subject,
-      textContent,
-      htmlContent
-    })
-  });
+      body: JSON.stringify({
+        sender: {
+          name: senderName,
+          email: senderEmail
+        },
+        to: [
+          {
+            email: toEmail,
+            name: toName || "Student"
+          }
+        ],
+        subject,
+        textContent,
+        htmlContent
+      })
+    }
+  );
 
   if (!response.ok) {
     let details = "";
@@ -71,6 +82,11 @@ async function sendBrevoEmail({ toEmail, toName, subject, textContent, htmlConte
       const data = await response.json();
       details = data?.message || data?.code || "";
     } catch {}
+
+    console.error("Brevo API error:", {
+      status: response.status,
+      details
+    });
 
     throw new Error(
       details
@@ -82,9 +98,14 @@ async function sendBrevoEmail({ toEmail, toName, subject, textContent, htmlConte
   return response.json();
 }
 
-async function sendVerificationEmail({ email, name, token }) {
+async function sendVerificationEmail({
+  email,
+  name,
+  token
+}) {
   const verifyUrl =
-    `${appOrigin()}/verify-email.html?token=${encodeURIComponent(token)}`;
+    `${getAppOrigin()}/verify-email.html?token=` +
+    encodeURIComponent(token);
 
   return sendBrevoEmail({
     toEmail: email,
@@ -92,21 +113,29 @@ async function sendVerificationEmail({ email, name, token }) {
     subject: "Verify your DCURS email",
     textContent:
       `Hello ${name || "Student"},\n\n` +
-      `Verify your DCURS email by opening this link:\n${verifyUrl}\n\n` +
+      `Please verify your DCURS email using this link:\n` +
+      `${verifyUrl}\n\n` +
       `This link expires in 24 hours.\n\n` +
-      `If you did not register for DCURS, you can ignore this email.`,
+      `If you did not register for DCURS, ` +
+      `you can ignore this email.`,
     htmlContent:
       `<p>Hello ${escapeHtml(name || "Student")},</p>` +
       `<p>Please verify your DCURS email address.</p>` +
       `<p><a href="${verifyUrl}">Verify Email</a></p>` +
       `<p>This link expires in 24 hours.</p>` +
-      `<p>If you did not register for DCURS, you can ignore this email.</p>`
+      `<p>If you did not register for DCURS, ` +
+      `you can ignore this email.</p>`
   });
 }
 
-async function sendPasswordResetEmail({ email, name, token }) {
+async function sendPasswordResetEmail({
+  email,
+  name,
+  token
+}) {
   const resetUrl =
-    `${appOrigin()}/reset-password.html?token=${encodeURIComponent(token)}`;
+    `${getAppOrigin()}/reset-password.html?token=` +
+    encodeURIComponent(token);
 
   return sendBrevoEmail({
     toEmail: email,
@@ -114,15 +143,19 @@ async function sendPasswordResetEmail({ email, name, token }) {
     subject: "Reset your DCURS password",
     textContent:
       `Hello ${name || "Student"},\n\n` +
-      `Reset your DCURS password using this link:\n${resetUrl}\n\n` +
+      `Reset your DCURS password using this link:\n` +
+      `${resetUrl}\n\n` +
       `This link expires in 30 minutes.\n\n` +
-      `If you did not request a password reset, you can ignore this email.`,
+      `If you did not request a password reset, ` +
+      `you can ignore this email.`,
     htmlContent:
       `<p>Hello ${escapeHtml(name || "Student")},</p>` +
-      `<p>A password reset was requested for your DCURS account.</p>` +
+      `<p>A password reset was requested for your ` +
+      `DCURS account.</p>` +
       `<p><a href="${resetUrl}">Reset Password</a></p>` +
       `<p>This link expires in 30 minutes.</p>` +
-      `<p>If you did not request this, you can ignore this email.</p>`
+      `<p>If you did not request this, ` +
+      `you can ignore this email.</p>`
   });
 }
 

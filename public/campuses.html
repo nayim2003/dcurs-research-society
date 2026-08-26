@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campuses | Dhaka Central University Research Society</title>
+  <meta name="description" content="Explore the seven associated campuses of Dhaka Central University.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body{background:#f7f9fc}
+    .campus-hero{
+      padding:100px 0 80px;
+      background:linear-gradient(135deg,#ffffff 0%,#eef4fb 100%);
+      border-bottom:1px solid #e4e9f1;
+    }
+    .campus-hero h1{
+      max-width:850px;
+      font-family:"Playfair Display",serif;
+      font-size:clamp(48px,7vw,82px);
+      line-height:1;
+      letter-spacing:-.045em;
+      color:#06244b;
+      margin-bottom:22px;
+    }
+    .campus-hero h1 span{color:#f6ad21}
+    .campus-hero p:not(.section-label){
+      max-width:720px;
+      color:#667085;
+      font-size:18px;
+    }
+    .campus-section{padding:80px 0 110px}
+    .campus-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:22px;
+    }
+    .campus-card{
+      display:grid;
+      grid-template-columns:72px 1fr;
+      gap:20px;
+      background:#fff;
+      border:1px solid #e4e9f1;
+      border-radius:20px;
+      padding:28px;
+      box-shadow:0 10px 30px rgba(6,36,75,.06);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .campus-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 42px rgba(6,36,75,.11);
+    }
+    .campus-number{
+      width:54px;height:54px;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:16px;
+      background:#06244b;
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.08em;
+    }
+    .campus-type{
+      margin:0 0 6px;
+      color:#f6ad21;
+      font-size:11px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+    }
+    .campus-card h2{
+      margin:0 0 9px;
+      color:#06244b;
+      font-size:24px;
+    }
+    .campus-copy{margin:0;color:#667085;font-size:14px}
+    .campus-note{
+      margin-top:26px;
+      padding:20px 24px;
+      border-radius:16px;
+      background:#06244b;
+      color:#dbe6f4;
+    }
+    .campus-note strong{color:#fff}
+    @media(max-width:760px){
+      .campus-grid{grid-template-columns:1fr}
+      .campus-card{grid-template-columns:58px 1fr;padding:22px}
+      .campus-hero{padding:70px 0 55px}
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html">
+      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
+      <span>
+        <strong>Dhaka Central University</strong>
+        <small>Research Society</small>
+      </span>
+    </a>
+
+    <button class="menu-btn" aria-label="Open menu">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="members.html">Members</a>
+      <a href="publications.html">Publications</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="campus-hero">
+    <div class="container">
+      <p class="section-label">SEVEN CAMPUSES</p>
+      <h1>One research community.<br><span>Seven campuses.</span></h1>
+      <p>
+        Explore the seven associated colleges that form the wider academic community
+        of Dhaka Central University.
+      </p>
+    </div>
+  </section>
+
+  <section class="campus-section">
+    <div class="container">
+      <div class="campus-grid">
+        <article class="campus-card">
+        <div class="campus-number">01</div>
+        <div>
+          <p class="campus-type">Associated Campus</p>
+          <h2>Dhaka College</h2>
+          <p class="campus-copy">Part of the seven-college academic community of Dhaka Central University.</p>
+        </div>
+      </article>
+<article class="campus-card">
+        <div class="campus-number">02</div>
+        <div>
+          <p class="campus-type">Associated Campus</p>
+          <h2>Eden Mohila College</h2>
+          <p class="campus-copy">Part of the seven-college academic community of Dhaka Central University.</p>
+        </div>
+      </article>
+<article class="campus-card">
+        <div class="campus-number">03</div>
+        <div>
+          <p class="campus-type">Associated Campus</p>
+          <h2>Government Titumir College</h2>
+          <p class="campus-copy">Part of the seven-college academic community of Dhaka Central University.</p>
+        </div>
+      </article>
+<article class="campus-card">
+        <div class="campus-number">04</div>
+        <div>
+          <p class="campus-type">Associated Campus</p>
+          <h2>Government Bangla College</h2>
+          <p class="campus-copy">Part of the seven-college academic community of Dhaka Central University.</p>
+        </div>
+      </article>
+<article class="campus-card">
+        <div class="campus-number">05</div>
+        <div>
+          <p class="campus-type">Associated Campus</p>
+          <h2>Begum Badrunnesa Government Women’s College</h2>
+          <p class="campus-copy">Part of the seven-college academic community of Dhaka Central University.</p>
+        </div>
+      </article>
+<article class="campus-card">
+        <div class="campus-number">06</div>
+        <div>
+          <p class="campus-type">Associated Campus</p>
+          <h2>Government Shaheed Suhrawardy College</h2>
+          <p class="campus-copy">Part of the seven-college academic community of Dhaka Central University.</p>
+        </div>
+      </article>
+<article class="campus-card">
+        <div class="campus-number">07</div>
+        <div>
+          <p class="campus-type">Associated Campus</p>
+          <h2>Kabi Nazrul Government College</h2>
+          <p class="campus-copy">Part of the seven-college academic community of Dhaka Central University.</p>
+        </div>
+      </article>
+      </div>
+
+      <div class="campus-note">
+        <strong>DCURS vision:</strong> connect student researchers across all seven campuses through
+        shared projects, publications, workshops and research collaboration.
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">DCURS</div>
+      <p>Dhaka Central University Research Society</p>
+      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="join.html">Join Us</a>
+      <a href="login.html">Student Login</a>
+    </div>
+  </div>
+  <div class="container copyright">
+    © 2026 Dhaka Central University Research Society. All rights reserved.
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+name: DCURS Database Backup
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every day at 20:00 UTC (02:00 in UTC+6)
+    - cron: "0 20 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check required secrets
+        env:
+          DATABASE_URL: ${{ secrets.RENDER_DATABASE_URL }}
+          BACKUP_PASSWORD: ${{ secrets.BACKUP_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$DATABASE_URL" ]; then
+            echo "Missing GitHub Actions secret: RENDER_DATABASE_URL"
+            exit 1
+          fi
+
+          if [ -z "$BACKUP_PASSWORD" ]; then
+            echo "Missing GitHub Actions secret: BACKUP_PASSWORD"
+            exit 1
+          fi
+
+      - name: Create and encrypt PostgreSQL backup
+        id: create_backup
+        env:
+          DATABASE_URL: ${{ secrets.RENDER_DATABASE_URL }}
+          BACKUP_PASSWORD: ${{ secrets.BACKUP_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p backup
+
+          TIMESTAMP="$(date -u +"%Y-%m-%dT%H-%M-%SZ")"
+          DUMP_NAME="dcurs-${TIMESTAMP}.dump"
+          DUMP_PATH="backup/${DUMP_NAME}"
+          ENCRYPTED_PATH="${DUMP_PATH}.enc"
+
+          docker run --rm \
+            -e DATABASE_URL="$DATABASE_URL" \
+            -e DUMP_NAME="$DUMP_NAME" \
+            -v "$PWD/backup:/backup" \
+            postgres:18-alpine \
+            sh -c 'pg_dump "$DATABASE_URL" \
+              --format=custom \
+              --no-owner \
+              --no-privileges \
+              --file="/backup/$DUMP_NAME"'
+
+          openssl enc \
+            -aes-256-cbc \
+            -salt \
+            -pbkdf2 \
+            -iter 200000 \
+            -in "$DUMP_PATH" \
+            -out "$ENCRYPTED_PATH" \
+            -pass env:BACKUP_PASSWORD
+
+          rm -f "$DUMP_PATH"
+
+          echo "backup_file=$ENCRYPTED_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload encrypted backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: dcurs-postgres-backup-${{ github.run_id }}
+          path: ${{ steps.create_backup.outputs.backup_file }}
+          retention-days: 30
+          if-no-files-found: error
+          compression-level: 0

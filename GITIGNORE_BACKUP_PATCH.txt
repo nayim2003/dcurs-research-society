@@ -1,0 +1,5 @@
+ADD THESE LINES TO YOUR EXISTING .gitignore
+
+backups/
+*.dump
+*.sql

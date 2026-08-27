@@ -1,0 +1,60 @@
+DCURS DATABASE BACKUP & RESTORE
+
+IMPORTANT FOR YOUR CURRENT RENDER FREE POSTGRES
+Render's current Free Postgres does not provide managed backups or point-in-time recovery.
+It also has a 1 GB storage limit and expires after 30 days.
+
+So do NOT depend on the Free Render Postgres database as the long-term production
+database for thousands of students.
+
+SAFE SHORT-TERM PLAN
+- Back up at least once per week.
+- Back up BEFORE any database/schema change.
+- Back up BEFORE a major server.js deployment.
+- Keep at least 3 recent backup files in a secure location outside Render.
+- Before official/public launch, move the database to a persistent paid database
+  or another production database plan that has reliable backup/recovery.
+
+HOW TO CREATE A MANUAL BACKUP
+
+You need PostgreSQL client tools installed on your computer.
+The command used is pg_dump.
+
+WINDOWS:
+1. Open PowerShell.
+2. Temporarily set DATABASE_URL in that PowerShell session.
+   Do NOT save it in GitHub.
+3. Run:
+   .\scripts\backup-db.ps1
+
+MAC / LINUX:
+1. Temporarily export DATABASE_URL.
+2. Run:
+   bash scripts/backup-db.sh
+
+The backup is stored in:
+backups/dcurs_DATE_TIME.dump
+
+DO NOT COMMIT THE backups/ FOLDER TO GITHUB.
+
+Add this to .gitignore:
+backups/
+*.dump
+
+RESTORE
+
+Restoring overwrites/imports database content and should be done carefully.
+For a new empty PostgreSQL database, the basic command is:
+
+pg_restore --dbname="TARGET_DATABASE_URL" --no-owner --no-privileges your-backup.dump
+
+Before restoring an important production database:
+- Make a fresh backup first.
+- Prefer restoring into a NEW test database.
+- Verify students, events, publications and documents.
+- Only then switch your application to the restored database.
+
+DO NOT:
+- Put DATABASE_URL in a public script.
+- Upload .dump files to a public GitHub repository.
+- Send database credentials in screenshots or chat.

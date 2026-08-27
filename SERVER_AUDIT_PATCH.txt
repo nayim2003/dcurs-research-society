@@ -1,0 +1,57 @@
+SERVER.JS — EXACT AUDIT INTEGRATION PATCH
+
+Do NOT replace your full server.js with an older version.
+Keep your current working Email Verification + Brevo API + Security server.js.
+
+STEP 1 — Near the top imports, add:
+
+const {
+  setupPersistentAudit,
+  mountAuditRoutes
+} = require("./audit-db");
+
+
+STEP 2 — Inside createTables(), near the end BEFORE:
+
+console.log("Database ready");
+
+add:
+
+await setupPersistentAudit(pool);
+
+
+STEP 3 — After the requireAdmin() function is declared, add:
+
+mountAuditRoutes(app, pool, requireAdmin);
+
+
+STEP 4 — Your existing audit(...) calls will now write to PostgreSQL
+as long as security.js has the provided setAuditWriter patch.
+
+OPTIONAL — Make existing audit calls more useful:
+
+Student action:
+audit("student_profile_updated", {
+  actor_type: "student",
+  actor_id: req.user.id
+});
+
+Admin approving student:
+audit("admin_student_status_change", {
+  actor_type: "admin",
+  target_type: "student",
+  target_id: String(req.params.id),
+  status: req.body.status
+});
+
+Admin approving PDF:
+audit("admin_document_status_change", {
+  actor_type: "admin",
+  target_type: "document",
+  target_id: String(req.params.id),
+  status: req.body.status
+});
+
+IMPORTANT:
+Never add password, token, SESSION_SECRET, SMTP/API keys,
+DATABASE_URL, Cloudinary secrets, or reset-token values to audit details.

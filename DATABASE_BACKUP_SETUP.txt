@@ -1,0 +1,87 @@
+DCURS AUTOMATIC DATABASE BACKUP SETUP
+
+IMPORTANT
+---------
+Render Free Postgres does not provide managed backups.
+This workflow creates an encrypted PostgreSQL backup once per day and stores it
+as a GitHub Actions artifact for 30 days.
+
+1. ADD THE WORKFLOW TO GITHUB
+-----------------------------
+Create these folders in the repository if they do not exist:
+
+.github/
+  workflows/
+
+Add the provided file as:
+
+.github/workflows/database-backup.yml
+
+Commit it to your main branch.
+
+2. GET THE EXTERNAL RENDER DATABASE URL
+---------------------------------------
+Render Dashboard -> your PostgreSQL database -> Connect.
+
+Copy the EXTERNAL database URL, not the internal URL.
+
+Do not paste the URL into source code, commits, Issues, or chat.
+
+3. ADD GITHUB ACTIONS SECRETS
+-----------------------------
+GitHub repository -> Settings -> Secrets and variables -> Actions
+-> New repository secret.
+
+Create:
+
+Name:
+RENDER_DATABASE_URL
+
+Value:
+Your Render PostgreSQL EXTERNAL database URL.
+
+Create another secret:
+
+Name:
+BACKUP_PASSWORD
+
+Value:
+A long unique password used only to encrypt backups.
+Keep this password somewhere safe. Do not commit it.
+
+4. TEST IT
+----------
+GitHub repository -> Actions -> DCURS Database Backup
+-> Run workflow.
+
+Wait until the run is green.
+
+At the bottom of the successful run, the encrypted backup appears under
+Artifacts.
+
+5. AUTOMATIC SCHEDULE
+---------------------
+The workflow runs once per day at:
+
+20:00 UTC
+02:00 UTC+6
+
+6. WHAT IS BACKED UP?
+---------------------
+PostgreSQL data, including users, projects, publications, events,
+notifications, auth-token records, documents metadata, and audit logs.
+
+Cloudinary PDF file bytes are NOT part of the PostgreSQL dump. Their URLs and
+metadata are backed up because those are stored in PostgreSQL.
+
+7. SECURITY
+-----------
+Never put these in GitHub code:
+- DATABASE_URL
+- SESSION_SECRET
+- ADMIN_PASSWORD
+- BREVO_API_KEY
+- BACKUP_PASSWORD
+- Cloudinary secrets
+
+Use GitHub Actions Secrets and Render Environment variables instead.

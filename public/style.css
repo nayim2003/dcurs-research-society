@@ -603,114 +603,6 @@ a{
 }
 
 /* =========================================
-   10-PHOTO CONTINUOUS GALLERY
-   RIGHT -> LEFT, NO ROTATION
-========================================= */
-
-.floating-gallery-section{
-  position:relative;
-  z-index:6;
-  margin-top:-90px;
-  padding:20px 0 65px;
-  overflow:hidden;
-}
-
-.floating-gallery{
-  width:100%;
-  overflow:hidden;
-  padding:20px 0 30px;
-}
-
-.floating-gallery-track{
-  --gallery-gap:22px;
-  --loop-offset:11px;
-
-  display:flex;
-  align-items:center;
-  gap:var(--gallery-gap);
-  width:max-content;
-
-  animation:
-    dcursGalleryMove
-    55s
-    linear
-    infinite;
-
-  will-change:transform;
-}
-
-/*
-  The duplicate wrapper becomes transparent to flex layout,
-  so all 20 cards behave as one continuous track.
-*/
-.gallery-duplicate{
-  display:contents;
-}
-
-.moving-photo{
-  position:relative;
-  flex:0 0 250px;
-  width:250px;
-  height:220px;
-  margin:0;
-  overflow:hidden;
-  border:7px solid white;
-  border-radius:18px;
-  background:#e8eef6;
-  box-shadow:0 22px 50px rgba(6,36,75,.20);
-  transform:none;
-  transition:box-shadow .25s ease;
-}
-
-.moving-photo img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transform:none;
-  transition:transform .35s ease;
-}
-
-.moving-photo figcaption{
-  position:absolute;
-  left:14px;
-  bottom:14px;
-  padding:6px 11px;
-  background:rgba(3,26,55,.86);
-  color:white;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.07em;
-  backdrop-filter:blur(8px);
-}
-
-@keyframes dcursGalleryMove{
-  from{
-    transform:translateX(0);
-  }
-
-  to{
-    transform:
-      translateX(
-        calc(-50% - var(--loop-offset))
-      );
-  }
-}
-
-.floating-gallery:hover .floating-gallery-track{
-  animation-play-state:paused;
-}
-
-.moving-photo:hover{
-  box-shadow:0 30px 70px rgba(6,36,75,.30);
-}
-
-.moving-photo:hover img{
-  transform:scale(1.045);
-}
-
-/* =========================================
    COMMON SECTIONS
 ========================================= */
 
@@ -1458,23 +1350,6 @@ th{
     width:235px;
   }
 
-  .floating-gallery-section{
-    margin-top:-70px;
-    padding-bottom:45px;
-  }
-
-  .floating-gallery-track{
-    --gallery-gap:18px;
-    --loop-offset:9px;
-    animation-duration:48s;
-  }
-
-  .moving-photo{
-    flex-basis:220px;
-    width:220px;
-    height:195px;
-  }
-
   .cards.three{
     grid-template-columns:1fr;
   }
@@ -1527,35 +1402,6 @@ th{
   .publication-card,
   .form-box{
     padding:28px;
-  }
-
-  .floating-gallery-section{
-    margin-top:-55px;
-    padding-bottom:35px;
-  }
-
-  .floating-gallery{
-    padding:14px 0 24px;
-  }
-
-  .floating-gallery-track{
-    --gallery-gap:14px;
-    --loop-offset:7px;
-    animation-duration:42s;
-  }
-
-  .moving-photo{
-    flex-basis:190px;
-    width:190px;
-    height:170px;
-    border-width:5px;
-    border-radius:14px;
-  }
-
-  .moving-photo figcaption{
-    left:9px;
-    bottom:9px;
-    font-size:9px;
   }
 }
 
@@ -1639,20 +1485,302 @@ th{
   html{
     scroll-behavior:auto;
   }
+}
 
-  .floating-gallery{
-    overflow-x:auto;
+
+/* =========================================================
+   DCURS HOMEPAGE SLIDER + MOTION UPDATE
+   One full-width photo at a time, right-to-left
+========================================================= */
+
+/* Latest bar: changed from yellow strip to a softer academic tone */
+.dcurs-notice{
+  background:#eaf0f7;
+  color:var(--navy);
+  border-bottom:1px solid #d8e1ec;
+}
+
+.notice-label{
+  background:var(--gold);
+  color:var(--navy);
+}
+
+.notice-inner a{
+  color:var(--navy2);
+}
+
+/* Hero entrance motion */
+.hero-new .eyebrow{
+  opacity:0;
+  animation:dcursFadeUp .7s ease .08s forwards;
+}
+
+.hero-line{
+  display:block;
+  opacity:0;
+  transform:translateY(34px);
+  animation:dcursHeroLine .85s cubic-bezier(.2,.75,.25,1) forwards;
+}
+
+.hero-line:nth-child(1){
+  animation-delay:.18s;
+}
+
+.hero-line:nth-child(2){
+  animation-delay:.34s;
+}
+
+.hero-line:nth-child(3){
+  animation-delay:.50s;
+}
+
+.hero-new .hero-text{
+  opacity:0;
+  animation:dcursFadeUp .75s ease .66s forwards;
+}
+
+.hero-new .hero-actions{
+  opacity:0;
+  animation:dcursFadeUp .75s ease .80s forwards;
+}
+
+.hero-new .hero-stats{
+  opacity:0;
+  animation:dcursFadeUp .75s ease .94s forwards;
+}
+
+.hero-visual{
+  opacity:0;
+  animation:dcursHeroVisual .95s cubic-bezier(.2,.75,.25,1) .35s forwards;
+}
+
+@keyframes dcursHeroLine{
+  from{
+    opacity:0;
+    transform:translateY(34px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes dcursFadeUp{
+  from{
+    opacity:0;
+    transform:translateY(18px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes dcursHeroVisual{
+  from{
+    opacity:0;
+    transform:translateX(24px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0) scale(1);
+  }
+}
+
+/* Reveal major homepage headings as they enter the viewport */
+.reveal-item{
+  opacity:0;
+  transform:translateY(28px);
+  transition:
+    opacity .8s ease,
+    transform .8s cubic-bezier(.2,.75,.25,1);
+}
+
+.reveal-item.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* =========================================================
+   FULL-WIDTH SINGLE PHOTO SLIDER
+========================================================= */
+
+.home-slider-section{
+  position:relative;
+  width:100%;
+  background:#f7f9fc;
+  overflow:hidden;
+  padding:0;
+}
+
+.home-slider{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+}
+
+.home-slider-track{
+  display:flex;
+  width:100%;
+  transform:translateX(0);
+  transition:transform .9s cubic-bezier(.22,.75,.22,1);
+  will-change:transform;
+}
+
+.home-slide{
+  position:relative;
+  flex:0 0 100%;
+  width:100%;
+  height:clamp(320px,42vw,560px);
+  margin:0;
+  overflow:hidden;
+  background:#dce5ef;
+}
+
+.home-slide img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scale(1.015);
+  transition:transform 5s ease;
+}
+
+.home-slide.is-active img{
+  transform:scale(1.06);
+}
+
+.home-slide::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(3,26,55,.62) 0%,
+      rgba(3,26,55,.12) 43%,
+      rgba(3,26,55,0) 68%
+    );
+  pointer-events:none;
+}
+
+.home-slide-caption{
+  position:absolute;
+  z-index:2;
+  left:max(4%,calc((100% - 1160px)/2));
+  bottom:38px;
+  max-width:700px;
+  color:white;
+}
+
+.home-slide-caption span{
+  display:inline-block;
+  margin-bottom:10px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(246,173,33,.94);
+  color:#06244b;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.home-slide-caption strong{
+  display:block;
+  font-family:"Playfair Display",serif;
+  font-size:clamp(28px,4vw,52px);
+  line-height:1.05;
+  text-shadow:0 8px 28px rgba(0,0,0,.3);
+}
+
+.home-slider-dots{
+  position:absolute;
+  z-index:4;
+  left:50%;
+  bottom:17px;
+  transform:translateX(-50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+
+.home-slider-dot{
+  width:7px;
+  height:7px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.5);
+  cursor:pointer;
+  transition:
+    width .25s ease,
+    border-radius .25s ease,
+    background .25s ease;
+}
+
+.home-slider-dot.active{
+  width:25px;
+  border-radius:999px;
+  background:var(--gold);
+}
+
+@media(max-width:800px){
+  .home-slide{
+    height:clamp(260px,62vw,390px);
   }
 
-  .floating-gallery-track{
+  .home-slide-caption{
+    left:5%;
+    right:5%;
+    bottom:34px;
+  }
+
+  .home-slide-caption strong{
+    font-size:clamp(24px,7vw,38px);
+  }
+}
+
+@media(max-width:520px){
+  .home-slide{
+    height:270px;
+  }
+
+  .home-slide-caption{
+    bottom:30px;
+  }
+
+  .home-slide-caption span{
+    font-size:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero-new .eyebrow,
+  .hero-line,
+  .hero-new .hero-text,
+  .hero-new .hero-actions,
+  .hero-new .hero-stats,
+  .hero-visual{
+    opacity:1;
+    transform:none;
     animation:none;
   }
 
-  .gallery-duplicate{
-    display:none;
+  .reveal-item{
+    opacity:1;
+    transform:none;
+    transition:none;
   }
 
-  .moving-photo{
-    flex-shrink:0;
+  .home-slider-track{
+    transition:none;
+  }
+
+  .home-slide img,
+  .home-slide.is-active img{
+    transform:none;
+    transition:none;
   }
 }

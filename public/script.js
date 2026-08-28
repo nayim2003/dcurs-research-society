@@ -1,35 +1,25 @@
 /* =====================================================
-   DCURS MAIN JAVASCRIPT
+   DCURS FINAL SCRIPT
 ===================================================== */
 
 
-
-/* =====================================================
-   DCURS MOBILE MENU
-===================================================== */
-
-
-const dcursMenuButton =
-document.querySelector(".dcurs-menu-btn");
+/* =========================
+   MOBILE MENU
+========================= */
 
 
-const dcursNavigation =
-document.querySelector(".nav-links");
+const dcursMenuBtn = document.querySelector(".menu-btn");
+
+const dcursNavLinks = document.querySelector(".nav-links");
 
 
+if(dcursMenuBtn && dcursNavLinks){
 
-if(
-    dcursMenuButton &&
-    dcursNavigation
-){
-
-    dcursMenuButton.addEventListener(
+    dcursMenuBtn.addEventListener(
         "click",
         ()=>{
 
-            dcursNavigation.classList.toggle(
-                "open"
-            );
+            dcursNavLinks.classList.toggle("open");
 
         }
     );
@@ -40,39 +30,64 @@ if(
 
 
 
-
-/* =====================================================
-   DCURS MOBILE DROPDOWN
-===================================================== */
-
-
-document
-.querySelectorAll(".dcurs-nav-button")
-.forEach(button=>{
+/* =========================
+   CLOSE MOBILE MENU
+========================= */
 
 
-    button.addEventListener(
+document.querySelectorAll(".nav-links a")
+.forEach((dcursLink)=>{
+
+    dcursLink.addEventListener(
         "click",
         ()=>{
 
+            if(dcursNavLinks){
 
-            const parent =
-            button.closest(
-                ".dcurs-nav-group"
-            );
-
-
-            if(parent){
-
-                parent.classList.toggle(
-                    "active"
-                );
+                dcursNavLinks.classList.remove("open");
 
             }
 
-
         }
     );
+
+});
+
+
+
+
+
+
+
+/* =========================
+   HEADER SCROLL EFFECT
+========================= */
+
+
+const dcursHeader = document.querySelector(".site-header");
+
+
+window.addEventListener(
+"scroll",
+()=>{
+
+
+    if(dcursHeader){
+
+        if(window.scrollY > 40){
+
+            dcursHeader.style.boxShadow =
+            "0 10px 30px rgba(6,36,75,.12)";
+
+        }
+        else{
+
+            dcursHeader.style.boxShadow =
+            "none";
+
+        }
+
+    }
 
 
 });
@@ -83,587 +98,217 @@ document
 
 
 
-/* =====================================================
-   DCURS HERO IMAGE SLIDER
-===================================================== */
+/* =========================
+   IMAGE SLIDER
+========================= */
 
 
-(function dcursHeroSlider(){
+const dcursSlides =
+document.querySelectorAll(".dcurs-slider img");
 
 
-const dcursHeroImage =
-document.querySelector(
-    ".dcurs-hero-image"
-);
+let dcursSlideIndex = 0;
 
 
 
-if(!dcursHeroImage)
-return;
+function dcursAutoSlider(){
 
 
+    if(dcursSlides.length === 0){
 
-const dcursHeroImages = [
+        return;
 
-"assets/home/gallery-1.jpg",
+    }
 
-"assets/home/gallery-2.jpg",
 
-"assets/home/gallery-3.jpg",
+    dcursSlides.forEach(
+        (dcursImg)=>{
 
-"assets/home/gallery-4.jpg",
+            dcursImg.style.opacity="0";
 
-"assets/home/gallery-5.jpg"
+        }
+    );
 
-];
 
 
+    dcursSlides[dcursSlideIndex]
+    .style.opacity="1";
 
-let dcursHeroIndex = 0;
 
 
+    dcursSlideIndex++;
 
 
-setInterval(()=>{
 
+    if(dcursSlideIndex >= dcursSlides.length){
 
-dcursHeroIndex++;
+        dcursSlideIndex = 0;
 
-
-
-if(
-dcursHeroIndex >=
-dcursHeroImages.length
-){
-
-    dcursHeroIndex = 0;
-
-}
-
-
-
-dcursHeroImage.style.opacity="0";
-
-
-
-setTimeout(()=>{
-
-
-dcursHeroImage.src =
-dcursHeroImages[
-    dcursHeroIndex
-];
-
-
-
-dcursHeroImage.style.opacity="1";
-
-
-
-},400);
-
-
-
-},5000);
-
-
-
-})();
-
-
-
-
-
-
-
-
-
-/* =====================================================
-   DCURS LOAD EVENTS
-===================================================== */
-
-
-async function dcursLoadEvents(){
-
-
-const dcursEventContainer =
-document.querySelector(
-    ".dcurs-event-grid"
-);
-
-
-
-if(!dcursEventContainer)
-return;
-
-
-
-
-try{
-
-
-const response =
-await fetch(
-    "/api/public/events"
-);
-
-
-
-if(!response.ok)
-return;
-
-
-
-const events =
-await response.json();
-
-
-
-
-if(
-!Array.isArray(events)
-||
-events.length===0
-)
-return;
-
-
-
-
-
-dcursEventContainer.innerHTML =
-
-
-events
-.slice(0,3)
-.map(event=>`
-
-
-<article class="dcurs-event-card">
-
-
-<img
-
-src="${
-event.image ||
-"assets/home/gallery-2.jpg"
-}"
-
-alt="${
-event.title || "DCURS Event"
-}"
-
->
-
-
-
-<div class="dcurs-event-content">
-
-
-
-<span class="dcurs-event-category">
-
-EVENT
-
-</span>
-
-
-
-
-<h3>
-
-${event.title || ""}
-
-</h3>
-
-
-
-
-<p>
-
-${
-event.description ||
-"Upcoming DCURS activity."
-}
-
-</p>
-
-
-
-
-<a href="events.html"
-class="dcurs-link">
-
-View Details →
-
-</a>
-
-
-
-</div>
-
-
-
-</article>
-
-
-
-`)
-.join("");
-
-
-
-
-}
-
-catch(error){
-
-
-console.log(
-"DCURS event error:",
-error
-);
-
-
-}
+    }
 
 
 }
 
 
 
-dcursLoadEvents();
+if(dcursSlides.length > 0){
+
+    dcursAutoSlider();
 
 
-
-
-
-
-
-
-
-/* =====================================================
-   DCURS LOAD NOTICES
-===================================================== */
-
-
-async function dcursLoadNotices(){
-
-
-
-const dcursNoticeList =
-document.querySelector(
-    ".dcurs-notice-box ul"
-);
-
-
-
-if(!dcursNoticeList)
-return;
-
-
-
-
-try{
-
-
-const response =
-await fetch(
-    "/api/public/notices"
-);
-
-
-
-if(!response.ok)
-return;
-
-
-
-
-const notices =
-await response.json();
-
-
-
-
-if(
-!Array.isArray(notices)
-)
-return;
-
-
-
-
-
-dcursNoticeList.innerHTML =
-
-
-notices
-.slice(0,5)
-.map(notice=>`
-
-
-<li>
-
-${
-notice.title ||
-notice.message ||
-"Latest notice"
-}
-
-</li>
-
-
-`)
-.join("");
-
-
-
-
-}
-
-catch(error){
-
-
-console.log(
-"DCURS notice error:",
-error
-);
-
+    setInterval(
+        dcursAutoSlider,
+        10000
+    );
 
 }
 
 
 
-}
-
-
-
-dcursLoadNotices();
 
 
 
 
 
+/* =========================
+   PASSWORD TOGGLE
+========================= */
+
+
+document.querySelectorAll(".password-toggle")
+.forEach(
+(dcursButton)=>{
+
+
+    dcursButton.addEventListener(
+    "click",
+    ()=>{
+
+
+        const dcursInput =
+        dcursButton
+        .parentElement
+        .querySelector("input");
+
+
+
+        if(!dcursInput){
+
+            return;
+
+        }
+
+
+
+        if(dcursInput.type === "password"){
+
+
+            dcursInput.type="text";
+
+
+            dcursButton.innerText=
+            "Hide";
+
+
+        }
+        else{
+
+
+            dcursInput.type="password";
+
+
+            dcursButton.innerText=
+            "Show";
+
+
+        }
+
+
+
+    });
+
+});
 
 
 
 
-/* =====================================================
-   DCURS SCROLL ANIMATION
-===================================================== */
 
 
-const dcursRevealElements =
-document.querySelectorAll(
-
-".dcurs-section-title, \
-.dcurs-news-card, \
-.dcurs-research-card, \
-.dcurs-event-card, \
-.dcurs-publication-card"
-
-);
 
 
+/* =========================
+   SCROLL ANIMATION
+========================= */
 
 
 const dcursObserver =
 new IntersectionObserver(
-
 (entries)=>{
 
 
-entries.forEach(entry=>{
+    entries.forEach(
+    (entry)=>{
 
 
-if(
-entry.isIntersecting
-){
+        if(entry.isIntersecting){
 
 
-entry.target.classList.add(
-"show"
-);
+            entry.target.classList.add(
+                "dcurs-visible"
+            );
 
 
-
-dcursObserver.unobserve(
-entry.target
-);
+        }
 
 
-}
-
-
-
-});
-
+    });
 
 
 },
 {
-
-threshold:.15
-
-}
-
-);
-
-
-
-
-
-dcursRevealElements.forEach(element=>{
-
-
-element.classList.add(
-"dcurs-reveal"
-);
-
-
-
-dcursObserver.observe(
-element
-);
-
-
-
+    threshold:.15
 });
 
 
-
-
-
-
-
-
-
-/* =====================================================
-   DCURS SMOOTH SCROLL
-===================================================== */
 
 
 document
-.querySelectorAll(
-'a[href^="#"]'
-)
-.forEach(link=>{
+.querySelectorAll(".card, .info-card, .dcurs-project-card, .dcurs-member-card")
+.forEach(
+(dcursItem)=>{
 
 
-link.addEventListener(
-"click",
-event=>{
+    dcursItem.classList.add(
+        "dcurs-hidden"
+    );
 
 
-const target =
-document.querySelector(
-link.getAttribute("href")
-);
+    dcursObserver.observe(
+        dcursItem
+    );
 
-
-
-if(target){
-
-
-event.preventDefault();
-
-
-
-target.scrollIntoView({
-
-behavior:"smooth"
 
 });
 
+
+
+
+
+
+
+/* =========================
+   FOOTER YEAR
+========================= */
+
+
+const dcursYear =
+document.querySelector(".dcurs-year");
+
+
+
+if(dcursYear){
+
+    dcursYear.innerText =
+    new Date().getFullYear();
 
 }
-
-
-
-});
-
-
-});
-
-
-
-
-
-
-
-
-
-/* =====================================================
-   DCURS FOOTER YEAR
-===================================================== */
-
-
-const dcursCopyright =
-document.querySelector(
-".dcurs-copyright"
-);
-
-
-
-if(dcursCopyright){
-
-
-dcursCopyright.innerHTML =
-dcursCopyright.innerHTML.replace(
-
-"2026",
-
-new Date()
-.getFullYear()
-
-);
-
-
-}
-
-
-
-
-
-
-
-
-
-/* =====================================================
-   DCURS IMAGE FALLBACK
-===================================================== */
-
-
-document
-.querySelectorAll("img")
-.forEach(image=>{
-
-
-image.addEventListener(
-"error",
-()=>{
-
-
-if(
-!image.dataset.error
-){
-
-
-image.dataset.error =
-"true";
-
-
-
-image.src =
-"assets/dcurs-logo.png";
-
-
-}
-
-
-
-});
-
-
-});

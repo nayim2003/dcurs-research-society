@@ -1232,3 +1232,308 @@ padding:30px;
 
 
 }
+
+/* =====================================
+   DCURS JOIN PAGE DESIGN
+===================================== */
+
+
+.join-page,
+.register-page{
+
+    min-height:80vh;
+
+    padding:80px 0;
+
+}
+
+
+
+
+.join-page .container,
+.register-page .container{
+
+    max-width:900px;
+
+}
+
+
+
+
+.join-card,
+.register-card{
+
+    background:white;
+
+    padding:45px;
+
+    border-radius:28px;
+
+    box-shadow:
+    0 25px 60px rgba(6,36,75,.12);
+
+    border:
+    1px solid #e5edf7;
+
+}
+
+
+
+
+
+.join-card h1,
+.register-card h1{
+
+    font-size:48px;
+
+    color:#06244b;
+
+    margin-bottom:10px;
+
+}
+
+
+
+.join-card h2,
+.register-card h2{
+
+    font-size:28px;
+
+    color:#06244b;
+
+    margin:
+    35px 0 20px;
+
+}
+
+
+
+.join-card p,
+.register-card p{
+
+    color:#64748b;
+
+    margin-bottom:25px;
+
+}
+
+
+
+
+
+
+/* FORM GROUP */
+
+
+.join-card form,
+.register-card form{
+
+    background:transparent;
+
+    padding:0;
+
+    box-shadow:none;
+
+}
+
+
+
+
+.join-card label,
+.register-card label{
+
+    display:block;
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    font-weight:700;
+
+    color:#06244b;
+
+}
+
+
+
+
+
+.join-card input,
+.join-card select,
+.join-card textarea,
+.register-card input,
+.register-card select,
+.register-card textarea{
+
+
+    width:100%;
+
+    padding:15px 18px;
+
+    border-radius:12px;
+
+    border:
+    1px solid #d4dfec;
+
+    background:#f8fbff;
+
+    font-size:15px;
+
+
+}
+
+
+
+
+
+.join-card input:focus,
+.join-card select:focus,
+.join-card textarea:focus,
+.register-card input:focus,
+.register-card select:focus,
+.register-card textarea:focus{
+
+
+    outline:none;
+
+    border-color:#0b3d78;
+
+    background:white;
+
+
+}
+
+
+
+
+
+/* TWO COLUMN FORM */
+
+
+.register-grid,
+.join-form-grid{
+
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:20px;
+
+
+}
+
+
+
+
+
+.register-grid .full,
+.join-form-grid .full{
+
+
+    grid-column:
+    1/-1;
+
+
+}
+
+
+
+
+
+/* SUBMIT BUTTON */
+
+
+.join-card button,
+.register-card button,
+.join-card input[type="submit"],
+.register-card input[type="submit"]{
+
+
+    margin-top:30px;
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:999px;
+
+    background:#06244b;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+
+}
+
+
+
+.join-card button:hover,
+.register-card button:hover{
+
+
+    background:#0b3d78;
+
+
+}
+
+
+
+
+
+/* PASSWORD NOTE */
+
+
+.password-note{
+
+
+    font-size:13px;
+
+    color:#64748b;
+
+    margin-top:-10px;
+
+
+}
+
+
+
+
+
+
+@media(max-width:700px){
+
+
+.register-grid,
+.join-form-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+.join-card,
+.register-card{
+
+    padding:25px;
+
+}
+
+
+.join-card h1,
+.register-card h1{
+
+    font-size:36px;
+
+}
+
+
+}

@@ -1,28 +1,33 @@
-/* =========================================
-   DCURS MAIN SCRIPT
-========================================= */
+/* =====================================================
+   DCURS MAIN JAVASCRIPT
+===================================================== */
 
 
-/* =========================================
-   MOBILE MENU
-========================================= */
 
-const menuBtn =
-document.querySelector(".menu-btn");
+/* =====================================================
+   DCURS MOBILE MENU
+===================================================== */
 
 
-const navLinks =
+const dcursMenuButton =
+document.querySelector(".dcurs-menu-btn");
+
+
+const dcursNavigation =
 document.querySelector(".nav-links");
 
 
 
-if(menuBtn && navLinks){
+if(
+    dcursMenuButton &&
+    dcursNavigation
+){
 
-    menuBtn.addEventListener(
+    dcursMenuButton.addEventListener(
         "click",
         ()=>{
 
-            navLinks.classList.toggle(
+            dcursNavigation.classList.toggle(
                 "open"
             );
 
@@ -33,13 +38,16 @@ if(menuBtn && navLinks){
 
 
 
-/* =========================================
-   MOBILE DROPDOWN
-========================================= */
+
+
+
+/* =====================================================
+   DCURS MOBILE DROPDOWN
+===================================================== */
 
 
 document
-.querySelectorAll(".nav-trigger")
+.querySelectorAll(".dcurs-nav-button")
 .forEach(button=>{
 
 
@@ -47,13 +55,20 @@ document
         "click",
         ()=>{
 
+
             const parent =
-            button.closest(".nav-group");
-
-
-            parent.classList.toggle(
-                "active"
+            button.closest(
+                ".dcurs-nav-group"
             );
+
+
+            if(parent){
+
+                parent.classList.toggle(
+                    "active"
+                );
+
+            }
 
 
         }
@@ -66,25 +81,29 @@ document
 
 
 
-/* =========================================
-   HERO IMAGE SLIDER
-========================================= */
 
 
-(function(){
+/* =====================================================
+   DCURS HERO IMAGE SLIDER
+===================================================== */
 
 
-const heroImage =
-document.querySelector(".du-hero-image");
+(function dcursHeroSlider(){
+
+
+const dcursHeroImage =
+document.querySelector(
+    ".dcurs-hero-image"
+);
 
 
 
-if(!heroImage)
+if(!dcursHeroImage)
 return;
 
 
 
-const images = [
+const dcursHeroImages = [
 
 "assets/home/gallery-1.jpg",
 
@@ -100,36 +119,44 @@ const images = [
 
 
 
-let index = 0;
+let dcursHeroIndex = 0;
+
 
 
 
 setInterval(()=>{
 
 
-index++;
+dcursHeroIndex++;
 
 
-if(index >= images.length){
 
-index = 0;
+if(
+dcursHeroIndex >=
+dcursHeroImages.length
+){
+
+    dcursHeroIndex = 0;
 
 }
 
 
 
-heroImage.style.opacity="0";
+dcursHeroImage.style.opacity="0";
 
 
 
 setTimeout(()=>{
 
 
-heroImage.src =
-images[index];
+dcursHeroImage.src =
+dcursHeroImages[
+    dcursHeroIndex
+];
 
 
-heroImage.style.opacity="1";
+
+dcursHeroImage.style.opacity="1";
 
 
 
@@ -148,23 +175,25 @@ heroImage.style.opacity="1";
 
 
 
-/* =========================================
-   LOAD HOMEPAGE EVENTS
-========================================= */
-
-
-async function loadHomepageEvents(){
 
 
 
-const container =
+/* =====================================================
+   DCURS LOAD EVENTS
+===================================================== */
+
+
+async function dcursLoadEvents(){
+
+
+const dcursEventContainer =
 document.querySelector(
-".event-grid"
+    ".dcurs-event-grid"
 );
 
 
 
-if(!container)
+if(!dcursEventContainer)
 return;
 
 
@@ -175,7 +204,7 @@ try{
 
 const response =
 await fetch(
-"/api/public/events"
+    "/api/public/events"
 );
 
 
@@ -202,56 +231,73 @@ return;
 
 
 
-container.innerHTML =
+dcursEventContainer.innerHTML =
+
 
 events
 .slice(0,3)
 .map(event=>`
 
 
-<article class="event-card">
+<article class="dcurs-event-card">
 
 
 <img
 
 src="${
 event.image ||
-'assets/home/gallery-2.jpg'
+"assets/home/gallery-2.jpg"
 }"
 
-alt="${event.title || 'Event'}"
+alt="${
+event.title || "DCURS Event"
+}"
 
 >
 
 
 
-<div>
+<div class="dcurs-event-content">
 
 
-<span>
+
+<span class="dcurs-event-category">
+
 EVENT
+
 </span>
 
 
+
+
 <h3>
+
 ${event.title || ""}
+
 </h3>
 
 
+
+
 <p>
+
 ${
 event.description ||
 "Upcoming DCURS activity."
 }
+
 </p>
 
 
 
-<a href="events.html">
+
+<a href="events.html"
+class="dcurs-link">
 
 View Details →
 
 </a>
+
 
 
 </div>
@@ -268,11 +314,13 @@ View Details →
 
 
 
-}catch(error){
+}
+
+catch(error){
 
 
 console.log(
-"Event loading error:",
+"DCURS event error:",
 error
 );
 
@@ -280,14 +328,11 @@ error
 }
 
 
-
 }
 
 
 
-
-loadHomepageEvents();
-
+dcursLoadEvents();
 
 
 
@@ -296,23 +341,24 @@ loadHomepageEvents();
 
 
 
-/* =========================================
-   LOAD NOTICES
-========================================= */
+
+/* =====================================================
+   DCURS LOAD NOTICES
+===================================================== */
 
 
-async function loadHomepageNotices(){
+async function dcursLoadNotices(){
 
 
 
-const list =
+const dcursNoticeList =
 document.querySelector(
-".notice-box ul"
+    ".dcurs-notice-box ul"
 );
 
 
 
-if(!list)
+if(!dcursNoticeList)
 return;
 
 
@@ -323,7 +369,7 @@ try{
 
 const response =
 await fetch(
-"/api/public/notices"
+    "/api/public/notices"
 );
 
 
@@ -333,9 +379,9 @@ return;
 
 
 
+
 const notices =
 await response.json();
-
 
 
 
@@ -348,7 +394,9 @@ return;
 
 
 
-list.innerHTML =
+
+dcursNoticeList.innerHTML =
+
 
 notices
 .slice(0,5)
@@ -357,7 +405,11 @@ notices
 
 <li>
 
-${notice.title || notice.message}
+${
+notice.title ||
+notice.message ||
+"Latest notice"
+}
 
 </li>
 
@@ -368,17 +420,17 @@ ${notice.title || notice.message}
 
 
 
+}
 
-}catch(error){
+catch(error){
 
 
 console.log(
-"Notice loading error:",
+"DCURS notice error:",
 error
 );
 
 
-
 }
 
 
@@ -387,7 +439,7 @@ error
 
 
 
-loadHomepageNotices();
+dcursLoadNotices();
 
 
 
@@ -397,28 +449,37 @@ loadHomepageNotices();
 
 
 
+/* =====================================================
+   DCURS SCROLL ANIMATION
+===================================================== */
 
-/* =========================================
-   SCROLL REVEAL
-========================================= */
 
-
-const revealElements =
+const dcursRevealElements =
 document.querySelectorAll(
-".section-title, .news-card, .research-card, .event-card, .publication-grid article"
+
+".dcurs-section-title, \
+.dcurs-news-card, \
+.dcurs-research-card, \
+.dcurs-event-card, \
+.dcurs-publication-card"
+
 );
 
 
 
-const observer =
+
+const dcursObserver =
 new IntersectionObserver(
+
 (entries)=>{
 
 
 entries.forEach(entry=>{
 
 
-if(entry.isIntersecting){
+if(
+entry.isIntersecting
+){
 
 
 entry.target.classList.add(
@@ -427,10 +488,9 @@ entry.target.classList.add(
 
 
 
-observer.unobserve(
+dcursObserver.unobserve(
 entry.target
 );
-
 
 
 }
@@ -453,16 +513,17 @@ threshold:.15
 
 
 
-revealElements.forEach(
-element=>{
+
+dcursRevealElements.forEach(element=>{
 
 
 element.classList.add(
-"reveal"
+"dcurs-reveal"
 );
 
 
-observer.observe(
+
+dcursObserver.observe(
 element
 );
 
@@ -477,9 +538,10 @@ element
 
 
 
-/* =========================================
-   SMOOTH INTERNAL LINKS
-========================================= */
+
+/* =====================================================
+   DCURS SMOOTH SCROLL
+===================================================== */
 
 
 document
@@ -491,12 +553,12 @@ document
 
 link.addEventListener(
 "click",
-function(e){
+event=>{
 
 
 const target =
 document.querySelector(
-this.getAttribute("href")
+link.getAttribute("href")
 );
 
 
@@ -504,7 +566,7 @@ this.getAttribute("href")
 if(target){
 
 
-e.preventDefault();
+event.preventDefault();
 
 
 
@@ -530,25 +592,31 @@ behavior:"smooth"
 
 
 
-/* =========================================
-   CURRENT YEAR FOOTER
-========================================= */
 
 
-const year =
+/* =====================================================
+   DCURS FOOTER YEAR
+===================================================== */
+
+
+const dcursCopyright =
 document.querySelector(
-".copyright"
+".dcurs-copyright"
 );
 
 
 
-if(year){
+if(dcursCopyright){
 
 
-year.innerHTML =
-year.innerHTML.replace(
+dcursCopyright.innerHTML =
+dcursCopyright.innerHTML.replace(
+
 "2026",
-new Date().getFullYear()
+
+new Date()
+.getFullYear()
+
 );
 
 
@@ -560,30 +628,34 @@ new Date().getFullYear()
 
 
 
-/* =========================================
-   IMAGE ERROR FALLBACK
-========================================= */
+
+
+/* =====================================================
+   DCURS IMAGE FALLBACK
+===================================================== */
 
 
 document
 .querySelectorAll("img")
-.forEach(img=>{
+.forEach(image=>{
 
 
-img.addEventListener(
+image.addEventListener(
 "error",
 ()=>{
 
 
 if(
-!img.dataset.failed
+!image.dataset.error
 ){
 
 
-img.dataset.failed="true";
+image.dataset.error =
+"true";
 
 
-img.src =
+
+image.src =
 "assets/dcurs-logo.png";
 
 

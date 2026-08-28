@@ -1,710 +1,603 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | DCURS</title>
-  <link rel="stylesheet" href="style.css">
 
-  <style>
-    body{background:#f7f9fc}
-    .admin-page{padding:55px 0 90px}
-    .admin-login-wrap{min-height:65vh;display:flex;align-items:center;justify-content:center}
-    .admin-login-card{width:100%;max-width:460px;background:#fff;border:1px solid #e4e9f1;border-radius:22px;padding:38px;box-shadow:0 22px 60px rgba(6,36,75,.12)}
-    .admin-login-card h1{color:#06244b;margin-bottom:8px}
-    .admin-login-card p{color:#667085;margin-bottom:24px}
-    .admin-login-card label{display:block;margin-bottom:14px;color:#06244b;font-size:13px;font-weight:700}
-    .admin-login-card input{width:100%;margin-top:7px;padding:13px 14px;border:1px solid #d6deea;border-radius:10px}
-    .admin-login-card button{width:100%;margin-top:8px;border:0;cursor:pointer}
-    #loginError{color:#b42318;margin-top:14px;font-size:14px}
-    .admin-shell{display:none}
-    .admin-topbar{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:28px;background:#fff;border:1px solid #e4e9f1;border-radius:20px;padding:24px 26px}
-    .admin-topbar h1{color:#06244b}
-    .logout-btn{border:0;background:#b42318;color:#fff;padding:11px 18px;border-radius:999px;cursor:pointer;font-weight:700}
-    .stats-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-bottom:30px}
-    .stat-card{background:#06244b;color:#fff;border-radius:18px;padding:20px}
-    .stat-card strong{display:block;font-size:30px;line-height:1;margin-bottom:8px}
-    .stat-card span{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#c9d5e6}
-    .admin-section-card{background:#fff;border:1px solid #e4e9f1;border-radius:20px;padding:26px;margin-bottom:28px}
-    .admin-section-card h2{color:#06244b;margin-bottom:18px}
-    .table-scroll{overflow-x:auto}
-    .table-scroll table{min-width:1000px}
-    .action-btn{border:0;color:#fff;padding:8px 13px;border-radius:999px;cursor:pointer;margin:2px;font-size:12px;font-weight:700}
-    .approve-btn{background:#16a34a}
-    .reject-btn{background:#dc2626}
-    .neutral-btn{background:#0b356b}
-    .warning-btn{background:#b7791f}
-    .pending-badge,.approved-badge,.rejected-badge{display:inline-block;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800}
-    .pending-badge{background:#fff4d6;color:#8a5b00}
-    .approved-badge{background:#e7f7ec;color:#176b35}
-    .rejected-badge{background:#feeceb;color:#b42318}
-    .empty-row{color:#667085;text-align:center;padding:20px}
-    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-    .form-grid input,.form-grid textarea,.form-grid select{width:100%;padding:12px;border:1px solid #d6deea;border-radius:10px;background:white}
-    .form-grid textarea{min-height:110px;resize:vertical}
-    .form-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-    .attendee-box{margin-top:20px;padding:18px;border:1px solid #e4e9f1;border-radius:14px;background:#f8fafc}
-    @media(max-width:1100px){.stats-grid{grid-template-columns:repeat(3,1fr)}}
-    @media(max-width:800px){.form-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:600px){.admin-topbar{align-items:flex-start;flex-direction:column}.stats-grid{grid-template-columns:1fr}}
-  </style>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Admin Dashboard | DCURS
+</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+
 </head>
+
 
 <body>
 
+
+
+
 <header class="site-header">
-  <nav class="nav container">
-    <a class="brand" href="index.html">
-      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
-      <span>
-        <strong>Dhaka Central University</strong>
-        <small>Research Society</small>
-      </span>
-    </a>
 
-    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="campuses.html">Campuses</a>
-      <a href="research.html">Research</a>
-      <a href="events.html">Events</a>
-      <a href="notices.html">Notices</a>
-      <a href="members.html">Members</a>
-      <a href="publications.html">Publications</a>
-      <a href="login.html">Student Login</a>
-      <a href="join.html" class="nav-cta">Join Us</a>
-    </div>
-  </nav>
+<nav class="nav container">
+
+
+<a href="index.html" class="brand">
+
+
+<img src="assets/dcurs-logo.png"
+alt="DCURS Logo">
+
+
+
+<span>
+
+<strong>
+Dhaka Central University
+</strong>
+
+
+<small>
+Research Society
+</small>
+
+
+</span>
+
+
+</a>
+
+
+
+
+
+<div class="nav-links">
+
+
+<a href="index.html">
+Website
+</a>
+
+
+<a href="admin.html"
+class="nav-cta">
+
+Admin
+
+</a>
+
+
+
+</div>
+
+
+
+</nav>
+
+
 </header>
 
-<main class="admin-page">
-  <div class="container">
 
-    <section id="adminLoginSection" class="admin-login-wrap">
-      <div class="admin-login-card">
-        <p class="section-label">ADMIN ACCESS</p>
-        <h1>DCURS Admin Login</h1>
-        <p>Manage students, research, publications, events and notifications.</p>
 
-        <form id="adminLoginForm">
-          <label>Username<input id="adminUsername" type="text" autocomplete="username" required></label>
-          <label>Password<input id="adminPassword" type="password" autocomplete="current-password" required></label>
-          <button class="btn btn-primary" type="submit">Login</button>
-        </form>
 
-        <div id="loginError"></div>
-      </div>
-    </section>
 
-    <section id="adminDashboard" class="admin-shell">
 
-      <div class="admin-topbar">
-        <div>
-          <p class="section-label">ADMIN PANEL</p>
-          <h1>DCURS Dashboard</h1>
-        </div>
-        <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
-      </div>
 
-      <div class="stats-grid">
-        <div class="stat-card"><strong id="totalStudents">0</strong><span>Students</span></div>
-        <div class="stat-card"><strong id="pendingStudents">0</strong><span>Pending</span></div>
-        <div class="stat-card"><strong id="totalProjects">0</strong><span>Projects</span></div>
-        <div class="stat-card"><strong id="totalPublications">0</strong><span>Publications</span></div>
-        <div class="stat-card"><strong id="totalEvents">0</strong><span>Events</span></div>
-        <div class="stat-card"><strong id="totalNotifications">0</strong><span>Notifications</span></div>
-      </div>
 
-      <section class="admin-section-card">
-        <h2>Student Applications</h2>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Name</th><th>Email</th><th>Department</th><th>Campus</th><th>Student ID</th><th>Status</th><th>Action</th></tr>
-            </thead>
-            <tbody id="studentRows"></tbody>
-          </table>
-        </div>
-      </section>
 
-      <section class="admin-section-card">
-        <h2>Research Projects</h2>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Title</th><th>Area</th><th>Supervisor</th><th>Status</th><th>Action</th></tr>
-            </thead>
-            <tbody id="projectRows"></tbody>
-          </table>
-        </div>
-      </section>
+<main class="dcurs-admin-page">
 
-      <section class="admin-section-card">
-        <h2>Publications</h2>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Title</th><th>Journal</th><th>Year</th><th>Area</th><th>Status</th><th>Action</th></tr>
-            </thead>
-            <tbody id="publicationRows"></tbody>
-          </table>
-        </div>
-      </section>
 
-      <section class="admin-section-card">
-        <h2>Create / Edit Event</h2>
+<div class="container">
 
-        <form id="eventForm">
-          <input type="hidden" id="eventId">
 
-          <div class="form-grid">
-            <input id="eventTitle" placeholder="Event Title" required>
-            <input id="eventDate" type="date" required>
-            <input id="eventTime" placeholder="Time">
-            <input id="eventVenue" placeholder="Venue">
 
-            <select id="eventCampus">
-              <option value="">Open / General</option>
-              <option>Dhaka College</option>
-              <option>Eden Mohila College</option>
-              <option>Government Titumir College</option>
-              <option>Government Bangla College</option>
-              <option>Begum Badrunnesa Government Women’s College</option>
-              <option>Government Shaheed Suhrawardy College</option>
-              <option>Kabi Nazrul Government College</option>
-            </select>
 
-            <input id="registrationDeadline" type="date">
-            <input id="eventCapacity" type="number" min="1" placeholder="Capacity">
 
-            <select id="eventStatus">
-              <option value="Published">Published</option>
-              <option value="Draft">Draft</option>
-            </select>
+<div class="dcurs-admin-header">
 
-            <textarea id="eventDescription" placeholder="Event Description"></textarea>
-          </div>
 
-          <div class="form-actions">
-            <button type="submit">Save Event</button>
-            <button type="button" class="action-btn warning-btn" onclick="resetEventForm()">Clear</button>
-          </div>
+<div>
 
-          <p id="eventMessage"></p>
-        </form>
-      </section>
 
-      <section class="admin-section-card">
-        <h2>Event Management</h2>
+<p class="section-label">
+ADMIN PANEL
+</p>
 
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Title</th><th>Date</th><th>Campus</th><th>Registered</th><th>Status</th><th>Action</th></tr>
-            </thead>
-            <tbody id="eventRows"></tbody>
-          </table>
-        </div>
 
-        <div id="attendeeBox"></div>
-      </section>
+<h1>
+Dashboard
+</h1>
 
-      <section class="admin-section-card">
-        <h2>Create / Edit Notification</h2>
 
-        <form id="notificationForm">
-          <input type="hidden" id="notificationId">
+<p>
+Manage DCURS research community,
+documents and activities.
+</p>
 
-          <div class="form-grid">
-            <input id="notificationTitle" placeholder="Notification Title" required>
 
-            <select id="notificationType">
-              <option value="Info">Info</option>
-              <option value="Important">Important</option>
-              <option value="Event">Event</option>
-              <option value="Research">Research</option>
-              <option value="Publication">Publication</option>
-            </select>
+</div>
 
-            <select id="notificationAudience" onchange="toggleNotificationTargets()">
-              <option value="all">All Students + Public Notice</option>
-              <option value="campus">Specific Campus</option>
-              <option value="student">Specific Student</option>
-            </select>
 
-            <select id="notificationCampus" style="display:none">
-              <option value="">Select Campus</option>
-              <option>Dhaka College</option>
-              <option>Eden Mohila College</option>
-              <option>Government Titumir College</option>
-              <option>Government Bangla College</option>
-              <option>Begum Badrunnesa Government Women’s College</option>
-              <option>Government Shaheed Suhrawardy College</option>
-              <option>Kabi Nazrul Government College</option>
-            </select>
 
-            <select id="notificationStudent" style="display:none">
-              <option value="">Select Student</option>
-            </select>
+<button
+class="dcurs-admin-logout"
+onclick="logoutAdmin()">
 
-            <select id="notificationPublished">
-              <option value="true">Published</option>
-              <option value="false">Draft</option>
-            </select>
+Logout
 
-            <textarea id="notificationMessage" placeholder="Notification Message" required></textarea>
-          </div>
+</button>
 
-          <div class="form-actions">
-            <button type="submit">Save Notification</button>
-            <button type="button" class="action-btn warning-btn" onclick="resetNotificationForm()">Clear</button>
-          </div>
 
-          <p id="notificationMessageStatus"></p>
-        </form>
-      </section>
 
-      <section class="admin-section-card">
-        <h2>Notification Management</h2>
+</div>
 
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Title</th><th>Type</th><th>Audience</th><th>Target</th><th>Published</th><th>Action</th></tr>
-            </thead>
-            <tbody id="notificationRows"></tbody>
-          </table>
-        </div>
-      </section>
 
-    </section>
-  </div>
+
+
+
+
+
+
+
+<!-- STATS -->
+
+
+<div class="dcurs-admin-stats">
+
+
+
+
+
+<div class="dcurs-admin-card">
+
+
+<span>
+Students
+</span>
+
+
+<strong id="studentCount">
+0
+</strong>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="dcurs-admin-card">
+
+
+<span>
+Applications
+</span>
+
+
+<strong id="applicationCount">
+0
+</strong>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="dcurs-admin-card">
+
+
+<span>
+Documents
+</span>
+
+
+<strong id="documentCount">
+0
+</strong>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="dcurs-admin-card">
+
+
+<span>
+Events
+</span>
+
+
+<strong id="eventCount">
+0
+</strong>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ACTIONS -->
+
+
+<section class="dcurs-admin-section">
+
+
+<h2>
+Quick Actions
+</h2>
+
+
+
+
+
+<div class="dcurs-admin-actions">
+
+
+
+
+
+<a href="admin-documents.html"
+class="dcurs-admin-action">
+
+
+<strong>
+Documents
+</strong>
+
+
+<span>
+Manage research files
+</span>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a href="admin-audit-logs.html"
+class="dcurs-admin-action">
+
+
+<strong>
+Audit Logs
+</strong>
+
+
+<span>
+Security activities
+</span>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a href="events.html"
+class="dcurs-admin-action">
+
+
+<strong>
+Events
+</strong>
+
+
+<span>
+View activities
+</span>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a href="members.html"
+class="dcurs-admin-action">
+
+
+<strong>
+Members
+</strong>
+
+
+<span>
+Research community
+</span>
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- RECENT ACTIVITY -->
+
+
+<section class="dcurs-admin-section">
+
+
+<h2>
+Recent Activity
+</h2>
+
+
+
+
+
+<div class="dcurs-admin-table-wrap">
+
+
+<table class="dcurs-admin-table">
+
+
+<thead>
+
+<tr>
+
+<th>
+Activity
+</th>
+
+
+<th>
+User
+</th>
+
+
+<th>
+Date
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody id="activityRows">
+
+
+<tr>
+
+<td colspan="3">
+Loading...
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+
+</table>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+
 </main>
 
+
+
+
+
+
+
+
+
+<footer class="footer">
+
+
+<div class="container dcurs-copyright">
+
+
+© 2026 DCURS Admin Panel
+
+
+</div>
+
+
+</footer>
+
+
+
+
+
+
+
+
+
 <script>
-let adminToken=localStorage.getItem("adminToken")||"";
-let eventCache=[];
-let notificationCache=[];
-let studentCache=[];
 
-const loginSection=document.getElementById("adminLoginSection");
-const dashboard=document.getElementById("adminDashboard");
-const loginError=document.getElementById("loginError");
 
-function adminHeaders(includeJson=false){
-  const headers={Authorization:"Bearer "+adminToken};
-  if(includeJson) headers["Content-Type"]="application/json";
-  return headers;
+const adminToken =
+localStorage.getItem(
+"adminToken"
+);
+
+
+
+if(!adminToken){
+
+location.href="admin-login.html";
+
 }
 
-function statusBadge(status){
-  const normalized=String(status||"Pending").toLowerCase();
 
-  if(normalized==="approved" || normalized==="published"){
-    return `<span class="approved-badge">${status}</span>`;
-  }
 
-  if(normalized==="rejected"){
-    return `<span class="rejected-badge">Rejected</span>`;
-  }
 
-  return `<span class="pending-badge">${status||"Pending"}</span>`;
+
+async function loadAdminStats(){
+
+
+try{
+
+
+const response =
+await fetch(
+"/api/admin/stats",
+{
+
+headers:{
+
+Authorization:
+"Bearer "+adminToken
+
 }
 
-function showDashboard(){
-  loginSection.style.display="none";
-  dashboard.style.display="block";
-  loadStudents();
-  loadProjects();
-  loadPublications();
-  loadEvents();
-  loadNotifications();
 }
 
-function showLogin(){
-  dashboard.style.display="none";
-  loginSection.style.display="flex";
+);
+
+
+
+const data =
+await response.json();
+
+
+
+
+studentCount.innerText =
+data.students || 0;
+
+
+applicationCount.innerText =
+data.applications || 0;
+
+
+documentCount.innerText =
+data.documents || 0;
+
+
+eventCount.innerText =
+data.events || 0;
+
+
+
 }
 
-async function adminFetch(url,options={}){
-  const response=await fetch(url,options);
+catch(error){
 
-  if(response.status===401 || response.status===403){
-    localStorage.removeItem("adminToken");
-    adminToken="";
-    showLogin();
-    throw new Error("Admin session expired");
-  }
+console.log(error);
 
-  return response;
 }
 
-if(adminToken) showDashboard();
-else showLogin();
 
-document.getElementById("adminLoginForm").addEventListener("submit",async function(e){
-  e.preventDefault();
-  loginError.innerText="";
 
-  try{
-    const response=await fetch("/api/admin/login",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        username:document.getElementById("adminUsername").value,
-        password:document.getElementById("adminPassword").value
-      })
-    });
-
-    const result=await response.json();
-
-    if(!response.ok){
-      throw new Error(result.error||"Admin login failed");
-    }
-
-    adminToken=result.token;
-    localStorage.setItem("adminToken",adminToken);
-    showDashboard();
-
-  }catch(error){
-    loginError.innerText=error.message;
-  }
-});
-
-async function loadStudents(){
-  const response=await adminFetch("/api/applications",{headers:adminHeaders()});
-  studentCache=await response.json();
-
-  document.getElementById("totalStudents").innerText=studentCache.length;
-  document.getElementById("pendingStudents").innerText=
-    studentCache.filter(s=>s.status==="Pending").length;
-
-  document.getElementById("studentRows").innerHTML=studentCache.length
-    ? studentCache.map(student=>`
-      <tr>
-        <td>${student.name||""}</td>
-        <td>${student.email||""}</td>
-        <td>${student.department||""}</td>
-        <td>${student.campus||""}</td>
-        <td>${student.student_id||""}</td>
-        <td>${statusBadge(student.status)}</td>
-        <td>
-          <button class="action-btn approve-btn" onclick="updateStudentStatus(${student.id},'Approved')">Approve</button>
-          <button class="action-btn reject-btn" onclick="updateStudentStatus(${student.id},'Rejected')">Reject</button>
-        </td>
-      </tr>
-    `).join("")
-    : `<tr><td colspan="7" class="empty-row">No student applications yet.</td></tr>`;
-
-  const approved=studentCache.filter(s=>s.status==="Approved");
-
-  document.getElementById("notificationStudent").innerHTML=
-    `<option value="">Select Student</option>`+
-    approved.map(s=>`<option value="${s.id}">${s.name} — ${s.campus||""}</option>`).join("");
 }
 
-async function updateStudentStatus(id,status){
-  await adminFetch("/api/applications/"+id,{
-    method:"PATCH",
-    headers:adminHeaders(true),
-    body:JSON.stringify({status})
-  });
 
-  loadStudents();
-}
 
-async function loadProjects(){
-  const response=await adminFetch("/api/projects",{headers:adminHeaders()});
-  const projects=await response.json();
 
-  document.getElementById("totalProjects").innerText=projects.length;
-
-  document.getElementById("projectRows").innerHTML=projects.length
-    ? projects.map(project=>`
-      <tr>
-        <td>${project.title||""}</td>
-        <td>${project.area||""}</td>
-        <td>${project.supervisor||""}</td>
-        <td>${statusBadge(project.status)}</td>
-        <td>
-          <button class="action-btn approve-btn" onclick="updateProjectStatus(${project.id},'Approved')">Approve</button>
-          <button class="action-btn reject-btn" onclick="updateProjectStatus(${project.id},'Rejected')">Reject</button>
-        </td>
-      </tr>
-    `).join("")
-    : `<tr><td colspan="5" class="empty-row">No research projects yet.</td></tr>`;
-}
-
-async function updateProjectStatus(id,status){
-  await adminFetch("/api/projects/"+id,{
-    method:"PATCH",
-    headers:adminHeaders(true),
-    body:JSON.stringify({status})
-  });
-
-  loadProjects();
-}
-
-async function loadPublications(){
-  const response=await adminFetch("/api/publications",{headers:adminHeaders()});
-  const publications=await response.json();
-
-  document.getElementById("totalPublications").innerText=publications.length;
-
-  document.getElementById("publicationRows").innerHTML=publications.length
-    ? publications.map(publication=>`
-      <tr>
-        <td>${publication.title||""}</td>
-        <td>${publication.journal||""}</td>
-        <td>${publication.year||""}</td>
-        <td>${publication.area||""}</td>
-        <td>${statusBadge(publication.status)}</td>
-        <td>
-          <button class="action-btn approve-btn" onclick="updatePublicationStatus(${publication.id},'Approved')">Approve</button>
-          <button class="action-btn reject-btn" onclick="updatePublicationStatus(${publication.id},'Rejected')">Reject</button>
-        </td>
-      </tr>
-    `).join("")
-    : `<tr><td colspan="6" class="empty-row">No publications yet.</td></tr>`;
-}
-
-async function updatePublicationStatus(id,status){
-  await adminFetch("/api/publications/"+id,{
-    method:"PATCH",
-    headers:adminHeaders(true),
-    body:JSON.stringify({status})
-  });
-
-  loadPublications();
-}
-
-document.getElementById("eventForm").addEventListener("submit",async function(e){
-  e.preventDefault();
-
-  const id=document.getElementById("eventId").value;
-
-  const payload={
-    title:document.getElementById("eventTitle").value,
-    event_date:document.getElementById("eventDate").value,
-    event_time:document.getElementById("eventTime").value,
-    venue:document.getElementById("eventVenue").value,
-    campus:document.getElementById("eventCampus").value,
-    registration_deadline:document.getElementById("registrationDeadline").value,
-    capacity:document.getElementById("eventCapacity").value || null,
-    status:document.getElementById("eventStatus").value,
-    description:document.getElementById("eventDescription").value
-  };
-
-  const response=await adminFetch(
-    id ? "/api/admin/events/"+id : "/api/admin/events",
-    {
-      method:id ? "PATCH" : "POST",
-      headers:adminHeaders(true),
-      body:JSON.stringify(payload)
-    }
-  );
-
-  const data=await response.json();
-
-  document.getElementById("eventMessage").innerText=
-    response.ok ? "Event saved successfully." : (data.error||"Unable to save event");
-
-  if(response.ok){
-    resetEventForm();
-    loadEvents();
-  }
-});
-
-function resetEventForm(){
-  document.getElementById("eventForm").reset();
-  document.getElementById("eventId").value="";
-}
-
-function editEvent(id){
-  const event=eventCache.find(e=>e.id===id);
-  if(!event) return;
-
-  document.getElementById("eventId").value=event.id;
-  document.getElementById("eventTitle").value=event.title||"";
-  document.getElementById("eventDate").value=(event.event_date||"").slice(0,10);
-  document.getElementById("eventTime").value=event.event_time||"";
-  document.getElementById("eventVenue").value=event.venue||"";
-  document.getElementById("eventCampus").value=event.campus||"";
-  document.getElementById("registrationDeadline").value=(event.registration_deadline||"").slice(0,10);
-  document.getElementById("eventCapacity").value=event.capacity||"";
-  document.getElementById("eventStatus").value=event.status||"Published";
-  document.getElementById("eventDescription").value=event.description||"";
-}
-
-async function loadEvents(){
-  const response=await adminFetch("/api/admin/events",{headers:adminHeaders()});
-  eventCache=await response.json();
-
-  document.getElementById("totalEvents").innerText=eventCache.length;
-
-  document.getElementById("eventRows").innerHTML=eventCache.length
-    ? eventCache.map(event=>`
-      <tr>
-        <td>${event.title||""}</td>
-        <td>${(event.event_date||"").slice(0,10)}</td>
-        <td>${event.campus||"General"}</td>
-        <td>${event.registered_count||0}</td>
-        <td>${statusBadge(event.status)}</td>
-        <td>
-          <button class="action-btn neutral-btn" onclick="editEvent(${event.id})">Edit</button>
-          <button class="action-btn warning-btn" onclick="showAttendees(${event.id})">Attendees</button>
-          <button class="action-btn reject-btn" onclick="deleteEvent(${event.id})">Delete</button>
-        </td>
-      </tr>
-    `).join("")
-    : `<tr><td colspan="6" class="empty-row">No events yet.</td></tr>`;
-}
-
-async function showAttendees(id){
-  const response=await adminFetch("/api/admin/events/"+id+"/attendees",{headers:adminHeaders()});
-  const attendees=await response.json();
-
-  document.getElementById("attendeeBox").innerHTML=`
-    <div class="attendee-box">
-      <h3>Registered Attendees (${attendees.length})</h3>
-      ${
-        attendees.length
-        ? attendees.map(a=>`
-          <p><strong>${a.name}</strong> — ${a.department||""} — ${a.campus||""} — ${a.email||""}</p>
-        `).join("")
-        : "<p>No registrations yet.</p>"
-      }
-    </div>
-  `;
-}
-
-async function deleteEvent(id){
-  if(!confirm("Delete this event and all registrations?")) return;
-
-  await adminFetch("/api/admin/events/"+id,{
-    method:"DELETE",
-    headers:adminHeaders()
-  });
-
-  document.getElementById("attendeeBox").innerHTML="";
-  loadEvents();
-}
-
-function toggleNotificationTargets(){
-  const audience=document.getElementById("notificationAudience").value;
-
-  document.getElementById("notificationCampus").style.display=
-    audience==="campus" ? "block" : "none";
-
-  document.getElementById("notificationStudent").style.display=
-    audience==="student" ? "block" : "none";
-}
-
-document.getElementById("notificationForm").addEventListener("submit",async function(e){
-  e.preventDefault();
-
-  const id=document.getElementById("notificationId").value;
-  const audience=document.getElementById("notificationAudience").value;
-
-  const payload={
-    title:document.getElementById("notificationTitle").value,
-    message:document.getElementById("notificationMessage").value,
-    type:document.getElementById("notificationType").value,
-    audience,
-    campus:audience==="campus" ? document.getElementById("notificationCampus").value : null,
-    target_student_id:audience==="student" ? document.getElementById("notificationStudent").value : null,
-    published:document.getElementById("notificationPublished").value==="true"
-  };
-
-  const response=await adminFetch(
-    id ? "/api/admin/notifications/"+id : "/api/admin/notifications",
-    {
-      method:id ? "PATCH" : "POST",
-      headers:adminHeaders(true),
-      body:JSON.stringify(payload)
-    }
-  );
-
-  const data=await response.json();
-
-  document.getElementById("notificationMessageStatus").innerText=
-    response.ok ? "Notification saved successfully." : (data.error||"Unable to save notification");
-
-  if(response.ok){
-    resetNotificationForm();
-    loadNotifications();
-  }
-});
-
-function resetNotificationForm(){
-  document.getElementById("notificationForm").reset();
-  document.getElementById("notificationId").value="";
-  toggleNotificationTargets();
-}
-
-function editNotification(id){
-  const n=notificationCache.find(item=>item.id===id);
-  if(!n) return;
-
-  document.getElementById("notificationId").value=n.id;
-  document.getElementById("notificationTitle").value=n.title||"";
-  document.getElementById("notificationMessage").value=n.message||"";
-  document.getElementById("notificationType").value=n.type||"Info";
-  document.getElementById("notificationAudience").value=n.audience||"all";
-  document.getElementById("notificationPublished").value=String(n.published);
-  toggleNotificationTargets();
-  document.getElementById("notificationCampus").value=n.campus||"";
-  document.getElementById("notificationStudent").value=n.target_student_id||"";
-}
-
-async function loadNotifications(){
-  const response=await adminFetch("/api/admin/notifications",{headers:adminHeaders()});
-  notificationCache=await response.json();
-
-  document.getElementById("totalNotifications").innerText=notificationCache.length;
-
-  document.getElementById("notificationRows").innerHTML=notificationCache.length
-    ? notificationCache.map(n=>`
-      <tr>
-        <td>${n.title||""}</td>
-        <td>${n.type||""}</td>
-        <td>${n.audience||""}</td>
-        <td>${
-          n.audience==="campus"
-          ? (n.campus||"")
-          : n.audience==="student"
-          ? (n.target_student_name||"Student")
-          : "Everyone"
-        }</td>
-        <td>${n.published ? "Yes" : "No"}</td>
-        <td>
-          <button class="action-btn neutral-btn" onclick="editNotification(${n.id})">Edit</button>
-          <button class="action-btn reject-btn" onclick="deleteNotification(${n.id})">Delete</button>
-        </td>
-      </tr>
-    `).join("")
-    : `<tr><td colspan="6" class="empty-row">No notifications yet.</td></tr>`;
-}
-
-async function deleteNotification(id){
-  if(!confirm("Delete this notification?")) return;
-
-  await adminFetch("/api/admin/notifications/"+id,{
-    method:"DELETE",
-    headers:adminHeaders()
-  });
-
-  loadNotifications();
-}
 
 function logoutAdmin(){
-  localStorage.removeItem("adminToken");
-  adminToken="";
-  showLogin();
+
+
+localStorage.removeItem(
+"adminToken"
+);
+
+
+location.href=
+"admin-login.html";
+
+
 }
+
+
+
+
+
+loadAdminStats();
+
+
+
 </script>
 
-<script src="script.js"></script>
+
+
 </body>
+
 </html>

@@ -14,7 +14,7 @@ Student Login | DCURS
 
 
 <meta name="description"
-content="DCURS Student Login">
+content="DCURS Student Portal Login">
 
 
 <link rel="stylesheet" href="style.css">
@@ -27,17 +27,12 @@ content="DCURS Student Login">
 
 
 
-
-<!-- HEADER -->
-
 <header class="site-header">
-
 
 <nav class="nav container">
 
 
-<a href="index.html"
-class="brand">
+<a href="index.html" class="brand">
 
 
 <img src="assets/dcurs-logo.png"
@@ -67,9 +62,7 @@ Research Society
 
 
 <button class="dcurs-menu-btn">
-
 ☰
-
 </button>
 
 
@@ -108,9 +101,7 @@ Join DCURS
 </a>
 
 
-
 </div>
-
 
 
 
@@ -127,15 +118,10 @@ Join DCURS
 
 
 
-<!-- LOGIN -->
-
-
 <main class="login-page">
 
 
 <div class="container">
-
-
 
 
 
@@ -144,31 +130,20 @@ Join DCURS
 
 
 <p class="section-label">
-
 STUDENT PORTAL
-
 </p>
-
-
 
 
 
 <h1>
-
 Welcome Back
-
 </h1>
 
 
 
-
 <p>
-
-Login to access your DCURS
-research community account.
-
+Login to access your DCURS research account.
 </p>
-
 
 
 
@@ -180,13 +155,8 @@ research community account.
 
 
 
-
-
-
 <label>
-
 Email Address
-
 </label>
 
 
@@ -209,23 +179,19 @@ required
 
 
 
-
-
 <label>
-
 Password
-
 </label>
 
 
 
 
-<div style="position:relative">
+<div class="password-box">
 
 
 <input
 
-id="password"
+id="loginPassword"
 
 type="password"
 
@@ -239,33 +205,23 @@ required
 
 
 
-
 <button
 
 type="button"
 
-id="showPassword"
+id="togglePassword"
 
-style="
-position:absolute;
-right:12px;
-top:10px;
-border:none;
-background:none;
-cursor:pointer;
-font-size:18px;
-"
+class="password-toggle"
 
 >
 
-👁
+Show
 
 </button>
 
 
 
 </div>
-
 
 
 
@@ -292,6 +248,7 @@ Login
 
 
 
+
 <div class="auth-links">
 
 
@@ -300,7 +257,6 @@ Login
 Forgot Password?
 
 </a>
-
 
 
 
@@ -320,10 +276,13 @@ Create Account
 
 
 
+<p id="loginMessage"></p>
+
+
+
+
+
 </div>
-
-
-
 
 
 </div>
@@ -339,15 +298,10 @@ Create Account
 
 
 
-<!-- FOOTER -->
-
-
 <footer class="footer">
 
 
 <div class="container dcurs-footer-grid">
-
-
 
 
 
@@ -363,9 +317,7 @@ DCURS
 
 
 <p>
-
 Dhaka Central University Research Society
-
 </p>
 
 
@@ -408,7 +360,6 @@ Events
 
 
 
-
 <div>
 
 
@@ -423,7 +374,7 @@ Join DCURS
 
 
 <a href="login.html">
-Student Login
+Login
 </a>
 
 
@@ -432,10 +383,7 @@ Student Login
 
 
 
-
-
 </div>
-
 
 
 
@@ -443,12 +391,9 @@ Student Login
 
 <div class="container dcurs-copyright">
 
-
 © 2026 DCURS. All rights reserved.
 
-
 </div>
-
 
 
 
@@ -462,10 +407,7 @@ Student Login
 
 
 
-
 <script src="script.js"></script>
-
-
 
 
 
@@ -479,50 +421,59 @@ document.getElementById(
 
 
 
-const password =
+const passwordInput =
 document.getElementById(
-"password"
+"loginPassword"
 );
 
 
 
-const showPassword =
+const togglePassword =
 document.getElementById(
-"showPassword"
+"togglePassword"
+);
+
+
+
+const loginMessage =
+document.getElementById(
+"loginMessage"
 );
 
 
 
 
 
-showPassword.addEventListener(
+togglePassword.addEventListener(
 "click",
 ()=>{
 
 
 if(
-password.type === "password"
+passwordInput.type === "password"
 ){
 
 
-password.type="text";
+passwordInput.type="text";
 
-showPassword.innerHTML="🙈";
-
-
-}else{
+togglePassword.innerText="Hide";
 
 
-password.type="password";
+}
 
-showPassword.innerHTML="👁";
+else{
+
+
+passwordInput.type="password";
+
+togglePassword.innerText="Show";
 
 
 }
 
 
-
 });
+
 
 
 
@@ -537,6 +488,7 @@ async(e)=>{
 
 
 e.preventDefault();
+
 
 
 
@@ -557,9 +509,7 @@ await fetch(
 "/api/login",
 {
 
-
 method:"POST",
-
 
 headers:{
 
@@ -568,10 +518,8 @@ headers:{
 
 },
 
-
 body:
 JSON.stringify(data)
-
 
 }
 
@@ -588,10 +536,10 @@ await response.json();
 
 
 
+
+
 if(response.ok){
 
-
-if(result.token){
 
 
 localStorage.setItem(
@@ -600,28 +548,45 @@ result.token
 );
 
 
-}
+
+
+loginMessage.style.color=
+"green";
 
 
 
-alert(
-"Login successful"
-);
+loginMessage.innerText=
+"Login successful...";
 
+
+
+
+
+setTimeout(()=>{
 
 
 location.href=
-"dashboard.html";
+"student-dashboard.html";
+
+
+},800);
 
 
 
-}else{
 
 
-alert(
+}
+
+else{
+
+
+loginMessage.style.color=
+"red";
+
+
+loginMessage.innerText=
 result.error ||
-"Invalid email or password"
-);
+"Invalid login";
 
 
 }
@@ -638,18 +603,20 @@ catch(error){
 console.log(error);
 
 
-alert(
-"Something went wrong"
-);
+
+loginMessage.style.color=
+"red";
+
+
+loginMessage.innerText=
+"Server error";
 
 
 }
 
 
 
-}
-
-);
+});
 
 
 

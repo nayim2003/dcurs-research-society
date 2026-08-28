@@ -1,177 +1,577 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events | DCURS</title>
-  <link rel="stylesheet" href="style.css">
 
-  <style>
-    body{background:#f7f9fc}
-    .events-section{padding:70px 0 100px}
-    .events-head{margin-bottom:32px}
-    .events-head h1{font-family:"Playfair Display",serif;color:#06244b;font-size:clamp(42px,6vw,70px)}
-    .events-head p{color:#667085;max-width:720px;margin-top:10px}
-    .events-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-    .event-card{background:white;border:1px solid #e4e9f1;border-radius:20px;padding:28px;box-shadow:0 12px 30px rgba(6,36,75,.06)}
-    .event-date{display:inline-block;background:#06244b;color:white;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800;margin-bottom:14px}
-    .event-card h2{color:#06244b;margin-bottom:10px}
-    .event-card p{color:#667085;margin:5px 0}
-    .event-description{margin-top:15px!important;padding-top:15px;border-top:1px solid #e4e9f1}
-    .event-meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
-    .event-meta span{background:#f1f5f9;color:#475569;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:700}
-    .empty-events{background:white;border:1px solid #e4e9f1;border-radius:18px;padding:35px;text-align:center;color:#667085}
-    @media(max-width:760px){.events-grid{grid-template-columns:1fr}}
-  </style>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Events | DCURS
+</title>
+
+
+<meta name="description"
+content="DCURS research events, workshops and seminars">
+
+
+<link rel="stylesheet" href="style.css">
+
+
 </head>
+
 
 <body>
 
+
+
+<!-- HEADER -->
+
 <header class="site-header">
-  <nav class="nav container">
-    <a class="brand" href="index.html">
-      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
-      <span>
-        <strong>Dhaka Central University</strong>
-        <small>Research Society</small>
-      </span>
-    </a>
 
-    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+<nav class="nav container">
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="campuses.html">Campuses</a>
-      <a href="about.html">About</a>
-      <a href="research.html">Research</a>
-      <a href="events.html">Events</a>
-      <a href="members.html">Members</a>
-      <a href="publications.html">Publications</a>
-      <a href="login.html">Student Login</a>
-      <a href="join.html" class="nav-cta">Join Us</a>
-    </div>
-  </nav>
+
+<a href="index.html" class="brand">
+
+
+<img src="assets/dcurs-logo.png"
+alt="DCURS Logo">
+
+
+<span>
+
+<strong>
+Dhaka Central University
+</strong>
+
+
+<small>
+Research Society
+</small>
+
+
+</span>
+
+
+</a>
+
+
+
+
+<button class="dcurs-menu-btn">
+☰
+</button>
+
+
+
+
+
+<div class="nav-links">
+
+
+<a href="index.html">
+Home
+</a>
+
+
+<a href="about.html">
+About
+</a>
+
+
+<a href="research.html">
+Research
+</a>
+
+
+<a href="events.html">
+Events
+</a>
+
+
+<a href="publications.html">
+Publications
+</a>
+
+
+<a href="login.html">
+Login
+</a>
+
+
+
+<a href="join.html"
+class="nav-cta">
+
+Join DCURS
+
+</a>
+
+
+
+</div>
+
+
+
+</nav>
+
+
 </header>
 
-<main>
-  <section class="page-hero">
-    <div class="container">
-      <p class="section-label">EVENTS</p>
-      <h1>Learn. Discuss.<br><span>Collaborate.</span></h1>
-      <p>Explore upcoming DCURS seminars, workshops, research talks and academic activities.</p>
-    </div>
-  </section>
 
-  <section class="events-section">
-    <div class="container">
 
-      <div class="events-head">
-        <h1>Upcoming Events</h1>
-        <p>Published events from the DCURS administration appear here automatically.</p>
-      </div>
 
-      <div id="eventsGrid" class="events-grid">
-        <div class="empty-events">Loading events...</div>
-      </div>
 
-    </div>
-  </section>
-</main>
+
+
+
+
+<!-- PAGE HERO -->
+
+
+<section class="dcurs-page-hero">
+
+
+<div class="container">
+
+
+<p class="section-label">
+ACTIVITIES
+</p>
+
+
+<h1>
+Events & Activities
+</h1>
+
+
+<p>
+Workshops, seminars and research activities
+organized by DCURS.
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- EVENTS -->
+
+
+<section class="dcurs-section">
+
+
+<div class="container">
+
+
+
+<div class="dcurs-event-grid">
+
+
+
+
+
+<article class="dcurs-event-card">
+
+
+<img src="assets/home/gallery-2.jpg"
+alt="Research Workshop">
+
+
+
+<div class="dcurs-event-content">
+
+
+<div class="dcurs-event-date">
+
+12 AUG 2026
+
+</div>
+
+
+
+<span class="dcurs-event-category">
+
+WORKSHOP
+
+</span>
+
+
+
+<h3>
+Research Methodology Workshop
+</h3>
+
+
+
+<p>
+
+Hands-on training session on
+research design, methodology
+and academic writing.
+
+</p>
+
+
+
+<a href="#"
+class="dcurs-link">
+
+View Details →
+
+</a>
+
+
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+<article class="dcurs-event-card">
+
+
+<img src="assets/home/gallery-3.jpg"
+alt="Research Seminar">
+
+
+
+<div class="dcurs-event-content">
+
+
+<div class="dcurs-event-date">
+
+25 SEP 2026
+
+</div>
+
+
+
+<span class="dcurs-event-category">
+
+SEMINAR
+
+</span>
+
+
+
+<h3>
+Academic Research Seminar
+</h3>
+
+
+
+<p>
+
+A discussion session with
+researchers and academic
+professionals.
+
+</p>
+
+
+
+<a href="#"
+class="dcurs-link">
+
+View Details →
+
+</a>
+
+
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+<article class="dcurs-event-card">
+
+
+<img src="assets/home/gallery-4.jpg"
+alt="Conference">
+
+
+
+<div class="dcurs-event-content">
+
+
+<div class="dcurs-event-date">
+
+15 NOV 2026
+
+</div>
+
+
+
+<span class="dcurs-event-category">
+
+CONFERENCE
+
+</span>
+
+
+
+<h3>
+Student Research Conference
+</h3>
+
+
+
+<p>
+
+Students can present their
+research ideas and findings.
+
+</p>
+
+
+
+<a href="#"
+class="dcurs-link">
+
+View Details →
+
+</a>
+
+
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+<article class="dcurs-event-card">
+
+
+<img src="assets/home/gallery-5.jpg"
+alt="Training Program">
+
+
+
+<div class="dcurs-event-content">
+
+
+<div class="dcurs-event-date">
+
+05 DEC 2026
+
+</div>
+
+
+
+<span class="dcurs-event-category">
+
+TRAINING
+
+</span>
+
+
+
+<h3>
+Data Analysis Training
+</h3>
+
+
+
+<p>
+
+Learn practical data analysis
+tools and techniques.
+
+</p>
+
+
+
+<a href="#"
+class="dcurs-link">
+
+View Details →
+
+</a>
+
+
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- FOOTER -->
+
 
 <footer class="footer">
-  <div class="container footer-grid">
-    <div>
-      <div class="footer-brand">DCURS</div>
-      <p>Dhaka Central University Research Society - DCURS</p>
-      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
-    </div>
 
-    <div>
-      <h4>Explore</h4>
-      <a href="campuses.html">Campuses</a>
-      <a href="research.html">Research</a>
-      <a href="publications.html">Publications</a>
-    </div>
 
-    <div>
-      <h4>Community</h4>
-      <a href="members.html">Members</a>
-      <a href="join.html">Join DCURS</a>
-      <a href="login.html">Student Login</a>
-    </div>
-  </div>
+<div class="container dcurs-footer-grid">
 
-  <div class="container copyright">
-    © 2026 Dhaka Central University Research Society - DCURS. All rights reserved.
-  </div>
+
+<div>
+
+
+<div class="dcurs-footer-brand">
+
+DCURS
+
+</div>
+
+
+<p>
+
+Dhaka Central University Research Society
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<h4>
+Explore
+</h4>
+
+
+<a href="about.html">
+About
+</a>
+
+
+<a href="research.html">
+Research
+</a>
+
+
+<a href="events.html">
+Events
+</a>
+
+
+<a href="publications.html">
+Publications
+</a>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<h4>
+Community
+</h4>
+
+
+<a href="join.html">
+Join DCURS
+</a>
+
+
+<a href="login.html">
+Student Login
+</a>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="container dcurs-copyright">
+
+© 2026 DCURS. All rights reserved.
+
+</div>
+
+
+
 </footer>
 
-<script>
-function formatDate(value){
-  if(!value) return "Date not set";
-  return new Date(value).toLocaleDateString(undefined,{
-    year:"numeric",
-    month:"long",
-    day:"numeric"
-  });
-}
 
-async function loadEvents(){
-  const grid=document.getElementById("eventsGrid");
 
-  try{
-    const response=await fetch("/api/public/events");
-    const events=await response.json();
 
-    if(!response.ok){
-      throw new Error(events.error||"Unable to load events");
-    }
 
-    if(events.length===0){
-      grid.innerHTML=`
-        <div class="empty-events">
-          No published events are available yet.
-        </div>
-      `;
-      return;
-    }
-
-    grid.innerHTML=events.map(event=>`
-      <article class="event-card">
-        <span class="event-date">${formatDate(event.event_date)}</span>
-
-        <h2>${event.title||"Untitled Event"}</h2>
-
-        <p><strong>Time:</strong> ${event.event_time||"To be announced"}</p>
-        <p><strong>Venue:</strong> ${event.venue||"To be announced"}</p>
-        <p><strong>Campus:</strong> ${event.campus||"Open / General"}</p>
-
-        <p class="event-description">
-          ${event.description||"Event details will be announced soon."}
-        </p>
-
-        <div class="event-meta">
-          <span>${event.registered_count||0} registered</span>
-          ${event.capacity ? `<span>Capacity: ${event.capacity}</span>` : ""}
-          ${event.registration_deadline ? `<span>Register by: ${formatDate(event.registration_deadline)}</span>` : ""}
-        </div>
-      </article>
-    `).join("");
-
-  }catch(error){
-    console.error(error);
-
-    grid.innerHTML=`
-      <div class="empty-events">
-        Unable to load events.
-      </div>
-    `;
-  }
-}
-
-loadEvents();
-</script>
 
 <script src="script.js"></script>
+
+
 </body>
+
 </html>

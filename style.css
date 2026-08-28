@@ -1,36 +1,49 @@
 /* =====================================================
-   DCURS GLOBAL DESIGN SYSTEM
+   DCURS FINAL DESIGN SYSTEM
+   PART 1 : GLOBAL + HEADER
 ===================================================== */
+
+
+/* =========================
+   VARIABLES
+========================= */
 
 
 :root{
 
---dcurs-navy:#06244b;
---dcurs-blue:#0b3d78;
---dcurs-gold:#f6ad21;
+    --dcurs-navy:#06244b;
+    --dcurs-blue:#0b3d78;
+    --dcurs-gold:#f6ad21;
 
---dcurs-bg:#f6f8fc;
---dcurs-white:#ffffff;
+    --dcurs-bg:#f7f9fc;
+    --dcurs-white:#ffffff;
 
---dcurs-text:#162033;
---dcurs-muted:#64748b;
+    --dcurs-text:#172033;
+    --dcurs-muted:#64748b;
 
---dcurs-border:#dbe4ef;
+    --dcurs-border:#dce5f0;
 
---dcurs-radius:20px;
+    --dcurs-radius:22px;
 
---dcurs-shadow:
-0 20px 50px rgba(6,36,75,.12);
+    --dcurs-shadow:
+    0 20px 50px rgba(6,36,75,.12);
 
 }
 
 
 
+
+
+/* =========================
+   RESET
+========================= */
+
+
 *{
 
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 
 }
 
@@ -38,7 +51,7 @@ box-sizing:border-box;
 
 html{
 
-scroll-behavior:smooth;
+    scroll-behavior:smooth;
 
 }
 
@@ -46,18 +59,18 @@ scroll-behavior:smooth;
 
 body{
 
-font-family:
-"Inter",
-Arial,
-sans-serif;
+    font-family:
+    "Inter",
+    Arial,
+    sans-serif;
 
-background:
-var(--dcurs-bg);
+    background:
+    var(--dcurs-bg);
 
-color:
-var(--dcurs-text);
+    color:
+    var(--dcurs-text);
 
-line-height:1.6;
+    line-height:1.6;
 
 }
 
@@ -65,8 +78,8 @@ line-height:1.6;
 
 img{
 
-max-width:100%;
-display:block;
+    max-width:100%;
+    display:block;
 
 }
 
@@ -74,109 +87,33 @@ display:block;
 
 a{
 
-text-decoration:none;
-
-color:inherit;
+    text-decoration:none;
+    color:inherit;
 
 }
 
+
+
+button{
+
+    font-family:inherit;
+
+}
+
+
+
+
+
+/* =========================
+   CONTAINER
+========================= */
 
 
 .container{
 
-width:min(1180px,92%);
+    width:min(1180px,92%);
 
-margin:auto;
-
-}
-
-
-
-
-
-/* =====================================================
-HEADER
-===================================================== */
-
-
-.site-header{
-
-background:white;
-
-height:82px;
-
-border-bottom:
-1px solid var(--dcurs-border);
-
-position:sticky;
-
-top:0;
-
-z-index:999;
-
-}
-
-
-
-.nav{
-
-height:100%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-}
-
-
-
-.brand{
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-
-
-.brand img{
-
-width:55px;
-
-height:55px;
-
-object-fit:contain;
-
-}
-
-
-
-.brand strong{
-
-display:block;
-
-font-size:18px;
-
-letter-spacing:.05em;
-
-color:var(--dcurs-navy);
-
-}
-
-
-
-.brand small{
-
-font-size:11px;
-
-color:var(--dcurs-muted);
-
-letter-spacing:.1em;
+    margin:auto;
 
 }
 
@@ -184,98 +121,24 @@ letter-spacing:.1em;
 
 
 
-.nav-links{
-
-display:flex;
-
-align-items:center;
-
-gap:8px;
-
-}
+/* =========================
+   TYPOGRAPHY
+========================= */
 
 
+h1,
+h2,
+h3,
+h4{
 
-.nav-links a,
-.nav-trigger{
+    font-family:
+    Georgia,
+    serif;
 
-padding:10px 14px;
+    color:
+    var(--dcurs-navy);
 
-font-size:14px;
-
-font-weight:700;
-
-border-radius:10px;
-
-border:none;
-
-background:none;
-
-cursor:pointer;
-
-}
-
-
-
-.nav-links a:hover,
-.nav-trigger:hover{
-
-background:#eef4fb;
-
-color:var(--dcurs-navy);
-
-}
-
-
-
-.nav-cta{
-
-background:
-var(--dcurs-navy)!important;
-
-color:white!important;
-
-border-radius:999px!important;
-
-padding:
-12px 22px!important;
-
-}
-
-
-
-.menu-btn,
-.dcurs-menu-btn{
-
-display:none;
-
-font-size:26px;
-
-border:none;
-
-background:none;
-
-}
-
-
-
-
-
-/* =====================================================
-TYPOGRAPHY
-===================================================== */
-
-
-h1,h2,h3{
-
-font-family:
-"Georgia",
-serif;
-
-color:
-var(--dcurs-navy);
-
-line-height:1.2;
+    line-height:1.2;
 
 }
 
@@ -283,7 +146,8 @@ line-height:1.2;
 
 h1{
 
-font-size:60px;
+    font-size:
+    clamp(42px,6vw,72px);
 
 }
 
@@ -291,9 +155,8 @@ font-size:60px;
 
 h2{
 
-font-size:42px;
-
-margin-bottom:20px;
+    font-size:
+    clamp(32px,4vw,48px);
 
 }
 
@@ -301,7 +164,7 @@ margin-bottom:20px;
 
 h3{
 
-font-size:24px;
+    font-size:24px;
 
 }
 
@@ -309,19 +172,8 @@ font-size:24px;
 
 p{
 
-color:
-var(--dcurs-muted);
-
-}
-
-
-
-
-
-.section,
-.dcurs-section{
-
-padding:90px 0;
+    color:
+    var(--dcurs-muted);
 
 }
 
@@ -331,18 +183,18 @@ padding:90px 0;
 
 .section-label{
 
-font-size:12px;
+    color:
+    var(--dcurs-gold);
 
-font-weight:800;
+    font-size:12px;
 
-letter-spacing:.18em;
+    font-weight:900;
 
-color:
-var(--dcurs-gold);
+    letter-spacing:.18em;
 
-text-transform:uppercase;
+    text-transform:uppercase;
 
-margin-bottom:15px;
+    margin-bottom:15px;
 
 }
 
@@ -350,59 +202,265 @@ margin-bottom:15px;
 
 
 
-/* =====================================================
-BUTTONS
-===================================================== */
+/* =========================
+   HEADER
+========================= */
+
+
+.site-header{
+
+    height:82px;
+
+    background:white;
+
+    border-bottom:
+    1px solid var(--dcurs-border);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:999;
+
+}
+
+
+
+
+
+.nav{
+
+    height:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+
+
+
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+
+
+
+
+.brand img{
+
+    width:58px;
+
+    height:58px;
+
+    object-fit:contain;
+
+}
+
+
+
+
+
+.brand strong{
+
+    display:block;
+
+    color:
+    var(--dcurs-navy);
+
+    font-size:18px;
+
+    letter-spacing:.03em;
+
+}
+
+
+
+
+
+.brand small{
+
+    display:block;
+
+    color:
+    var(--dcurs-muted);
+
+    font-size:11px;
+
+    letter-spacing:.12em;
+
+}
+
+
+
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+
+.nav-links{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+
+
+
+.nav-links a{
+
+    padding:
+    10px 15px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:
+    var(--dcurs-navy);
+
+    transition:.25s;
+
+}
+
+
+
+
+
+.nav-links a:hover{
+
+    background:#edf4fb;
+
+}
+
+
+
+
+
+.nav-cta{
+
+    background:
+    var(--dcurs-navy)!important;
+
+    color:white!important;
+
+    border-radius:999px!important;
+
+    padding:
+    12px 24px!important;
+
+}
+
+
+
+
+
+.menu-btn,
+.dcurs-menu-btn{
+
+    display:none;
+
+    background:none;
+
+    border:none;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+/* =========================
+   BUTTONS
+========================= */
 
 
 .btn,
 .dcurs-button{
 
-display:inline-flex;
+    display:inline-flex;
 
-align-items:center;
+    align-items:center;
 
-justify-content:center;
+    justify-content:center;
 
-padding:
-14px 28px;
+    padding:
+    14px 30px;
 
-border-radius:
-999px;
+    border-radius:999px;
 
-font-weight:800;
+    font-weight:800;
 
-cursor:pointer;
+    cursor:pointer;
 
-border:none;
+    transition:.3s;
 
 }
+
+
 
 
 
 .btn-primary,
 .dcurs-button-primary{
 
-background:
-var(--dcurs-gold);
+    background:
+    var(--dcurs-gold);
 
-color:
-var(--dcurs-navy);
+    color:
+    var(--dcurs-navy);
 
 }
+
+
+
+
+
+.btn-primary:hover,
+.dcurs-button-primary:hover{
+
+    transform:
+    translateY(-3px);
+
+}
+
+
 
 
 
 .btn-secondary,
 .dcurs-button-outline{
 
-border:
-1px solid var(--dcurs-navy);
+    border:
+    1px solid white;
 
-color:
-var(--dcurs-navy);
+    color:white;
 
-background:white;
+    background:transparent;
 
 }
 
@@ -410,164 +468,100 @@ background:white;
 
 
 
-/* =====================================================
-CARDS
-===================================================== */
+/* =========================
+   BASIC SECTION
+========================= */
+
+
+.section,
+.dcurs-section{
+
+    padding:
+    90px 0;
+
+}
+
+
+
+
+
+.page-section{
+
+    padding:
+    80px 0;
+
+}
+
+
+
+
+
+/* =========================
+   COMMON CARD
+========================= */
 
 
 .card,
 .info-card,
-.dcurs-news-card,
-.dcurs-event-card,
+.dcurs-info-card,
+.dcurs-project-card,
 .dcurs-publication-card,
-.campus-card{
+.dcurs-event-card{
 
-background:white;
+    background:white;
 
-border:
-1px solid var(--dcurs-border);
+    border:
+    1px solid var(--dcurs-border);
 
-border-radius:
-var(--dcurs-radius);
+    border-radius:
+    var(--dcurs-radius);
 
-padding:28px;
+    padding:30px;
 
-box-shadow:
-0 10px 30px rgba(0,0,0,.04);
-
-transition:.3s;
+    transition:.3s;
 
 }
+
+
 
 
 
 .card:hover,
 .info-card:hover,
 .dcurs-event-card:hover,
-.campus-card:hover{
+.dcurs-publication-card:hover{
 
-transform:
-translateY(-6px);
+    transform:
+    translateY(-6px);
 
-box-shadow:
-var(--dcurs-shadow);
-
-}
-
-
-
-
-
-/* =====================================================
-FORMS
-===================================================== */
-
-
-form{
-
-background:white;
-
-padding:40px;
-
-border-radius:25px;
-
-box-shadow:
-var(--dcurs-shadow);
-
-}
-
-
-
-label{
-
-display:block;
-
-font-weight:700;
-
-margin-bottom:8px;
-
-color:
-var(--dcurs-navy);
-
-}
-
-
-
-input,
-select,
-textarea{
-
-width:100%;
-
-padding:
-14px 16px;
-
-border:
-1px solid #ccd8e8;
-
-border-radius:12px;
-
-background:#f8fbff;
-
-font-size:15px;
-
-margin-bottom:18px;
-
-}
-
-
-
-input:focus,
-select:focus,
-textarea:focus{
-
-outline:none;
-
-border-color:
-var(--dcurs-blue);
-
-background:white;
-
-}
-
-
-
-button[type="submit"]{
-
-background:
-var(--dcurs-navy);
-
-color:white;
-
-padding:
-14px 30px;
-
-border:none;
-
-border-radius:999px;
-
-font-weight:700;
-
-cursor:pointer;
+    box-shadow:
+    var(--dcurs-shadow);
 
 }
 /* =====================================================
-   DCURS HERO
+   DCURS FINAL DESIGN SYSTEM
+   PART 2 : HOME + CONTENT SECTIONS
 ===================================================== */
+
+
+
+/* =========================
+   HERO SECTION
+========================= */
 
 
 .hero,
 .dcurs-hero{
 
-position:relative;
+    min-height:680px;
 
-min-height:650px;
+    position:relative;
 
-display:flex;
+    display:flex;
 
-align-items:center;
+    align-items:center;
 
-overflow:hidden;
+    overflow:hidden;
 
 }
 
@@ -575,743 +569,68 @@ overflow:hidden;
 
 .dcurs-hero-image{
 
-position:absolute;
+    position:absolute;
 
-inset:0;
+    inset:0;
 
-width:100%;
+    width:100%;
 
-height:100%;
+    height:100%;
 
-object-fit:cover;
+    object-fit:cover;
+
+    transition:.5s;
 
 }
+
+
 
 
 
 .dcurs-hero-overlay{
 
-position:absolute;
+    position:absolute;
 
-inset:0;
+    inset:0;
 
-background:
-linear-gradient(
-90deg,
-rgba(3,25,55,.92),
-rgba(3,25,55,.55),
-rgba(3,25,55,.2)
-);
+    background:
+
+    linear-gradient(
+    90deg,
+    rgba(3,22,48,.95),
+    rgba(3,22,48,.65),
+    rgba(3,22,48,.25)
+    );
 
 }
+
+
 
 
 
 .hero-copy,
 .dcurs-hero-content{
 
-position:relative;
+    position:relative;
 
-z-index:2;
+    z-index:2;
 
-max-width:700px;
-
-color:white;
+    max-width:720px;
 
 }
+
+
 
 
 
 .hero-copy h1,
 .dcurs-hero-title{
 
-font-size:
-clamp(50px,7vw,90px);
+    color:white;
 
-color:white;
+    font-size:
 
-}
-
-
-
-.hero-copy span,
-.dcurs-hero-title span{
-
-color:
-var(--dcurs-gold);
-
-}
-
-
-
-.hero-text,
-.dcurs-hero-description{
-
-font-size:18px;
-
-color:#dbeafe;
-
-margin:
-25px 0;
-
-max-width:600px;
-
-}
-
-
-
-.hero-actions,
-.dcurs-hero-buttons{
-
-display:flex;
-
-gap:15px;
-
-}
-
-
-
-
-
-/* =====================================================
-   STATS
-===================================================== */
-
-
-.hero-stats,
-.dcurs-stats-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(4,1fr);
-
-gap:20px;
-
-}
-
-
-
-.hero-stats{
-
-margin-top:50px;
-
-}
-
-
-
-.hero-stats div,
-.dcurs-stat{
-
-text-align:center;
-
-padding:20px;
-
-}
-
-
-
-.hero-stats strong,
-.dcurs-stat strong{
-
-display:block;
-
-font-size:42px;
-
-color:
-var(--dcurs-gold);
-
-}
-
-
-
-.hero-stats span,
-.dcurs-stat span{
-
-font-size:12px;
-
-text-transform:uppercase;
-
-letter-spacing:.12em;
-
-}
-
-
-
-
-
-/* =====================================================
-   CAMPUS PAGE
-===================================================== */
-
-
-.campus-grid,
-.dcurs-campus-grid,
-.cards.three{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:25px;
-
-}
-
-
-
-
-
-.campus-card h3{
-
-margin:
-15px 0;
-
-}
-
-
-
-.campus-card .number,
-.dcurs-campus-item{
-
-display:inline-flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:
-var(--dcurs-navy);
-
-color:white;
-
-width:40px;
-
-height:40px;
-
-border-radius:12px;
-
-font-weight:800;
-
-}
-
-
-
-
-
-.campus-card a,
-.text-link{
-
-color:
-var(--dcurs-navy);
-
-font-weight:800;
-
-font-size:14px;
-
-}
-
-
-
-
-
-/* =====================================================
-   LOGIN PAGE
-===================================================== */
-
-
-.auth-page,
-.login-page{
-
-min-height:80vh;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-padding:
-70px 0;
-
-}
-
-
-
-.auth-card,
-.login-card{
-
-width:min(450px,90%);
-
-background:white;
-
-padding:45px;
-
-border-radius:25px;
-
-box-shadow:
-var(--dcurs-shadow);
-
-}
-
-
-
-.auth-card h1,
-.login-card h1{
-
-font-size:38px;
-
-margin-bottom:15px;
-
-}
-
-
-
-.auth-card p{
-
-margin-bottom:30px;
-
-}
-
-
-
-.login-card button{
-
-width:100%;
-
-margin-top:10px;
-
-}
-
-
-
-
-
-.auth-links{
-
-display:flex;
-
-justify-content:space-between;
-
-margin-top:20px;
-
-font-size:14px;
-
-color:
-var(--dcurs-blue);
-
-font-weight:700;
-
-}
-
-
-
-
-
-/* =====================================================
-   JOIN / REGISTER PAGE
-===================================================== */
-
-
-.register-page,
-.join-page{
-
-padding:
-80px 0;
-
-}
-
-
-
-.register-card,
-.join-card{
-
-max-width:800px;
-
-margin:auto;
-
-background:white;
-
-padding:45px;
-
-border-radius:25px;
-
-box-shadow:
-var(--dcurs-shadow);
-
-}
-
-
-
-.register-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(2,1fr);
-
-gap:20px;
-
-}
-
-
-
-.register-grid .full{
-
-grid-column:
-1/-1;
-
-}
-
-
-
-
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-
-.footer{
-
-background:
-#031a36;
-
-color:white;
-
-padding:
-70px 0 20px;
-
-}
-
-
-
-.footer-grid,
-.dcurs-footer-grid{
-
-display:grid;
-
-grid-template-columns:
-2fr 1fr 1fr;
-
-gap:40px;
-
-}
-
-
-
-.footer h4{
-
-color:white;
-
-margin-bottom:20px;
-
-}
-
-
-
-.footer a{
-
-display:block;
-
-color:#cbd5e1;
-
-margin-bottom:10px;
-
-}
-
-
-
-.footer a:hover{
-
-color:white;
-
-}
-
-
-
-.footer-brand,
-.dcurs-footer-brand{
-
-font-size:36px;
-
-font-weight:900;
-
-color:
-var(--dcurs-gold);
-
-}
-
-
-
-.copyright,
-.dcurs-copyright{
-
-border-top:
-1px solid rgba(255,255,255,.15);
-
-margin-top:40px;
-
-padding-top:20px;
-
-text-align:center;
-
-color:#94a3b8;
-
-}
-
-
-
-
-
-/* =====================================================
-   SCROLL ANIMATION
-===================================================== */
-
-
-.reveal,
-.dcurs-reveal{
-
-opacity:0;
-
-transform:
-translateY(30px);
-
-transition:.7s;
-
-}
-
-
-
-.reveal.show,
-.dcurs-reveal.show{
-
-opacity:1;
-
-transform:
-translateY(0);
-
-}
-
-
-
-
-
-/* =====================================================
-   MOBILE RESPONSIVE
-===================================================== */
-
-
-@media(max-width:900px){
-
-
-.nav-links{
-
-display:none;
-
-position:absolute;
-
-top:82px;
-
-left:0;
-
-right:0;
-
-background:white;
-
-padding:25px;
-
-flex-direction:column;
-
-}
-
-
-
-.nav-links.open{
-
-display:flex;
-
-}
-
-
-
-.menu-btn,
-.dcurs-menu-btn{
-
-display:block;
-
-}
-
-
-
-.campus-grid,
-.dcurs-campus-grid,
-.cards.three,
-.hero-stats,
-.dcurs-stats-grid,
-.footer-grid,
-.dcurs-footer-grid{
-
-grid-template-columns:
-1fr;
-
-}
-
-
-
-.register-grid{
-
-grid-template-columns:
-1fr;
-
-}
-
-
-
-.hero-copy h1,
-.dcurs-hero-title{
-
-font-size:55px;
-
-}
-
-
-
-.hero-actions,
-.dcurs-hero-buttons{
-
-flex-direction:column;
-
-align-items:flex-start;
-
-}
-
-
-
-}
-
-
-
-
-@media(max-width:600px){
-
-
-h1{
-
-font-size:42px;
-
-}
-
-
-
-h2{
-
-font-size:34px;
-
-}
-
-
-
-.section,
-.dcurs-section{
-
-padding:60px 0;
-
-}
-
-
-
-.auth-card,
-.login-card,
-.register-card,
-.join-card{
-
-padding:30px;
-
-}
-
-
-}
-
-/* =====================================
-   DCURS JOIN PAGE DESIGN
-===================================== */
-
-
-.join-page,
-.register-page{
-
-    min-height:80vh;
-
-    padding:80px 0;
-
-}
-
-
-
-
-.join-page .container,
-.register-page .container{
-
-    max-width:900px;
-
-}
-
-
-
-
-.join-card,
-.register-card{
-
-    background:white;
-
-    padding:45px;
-
-    border-radius:28px;
-
-    box-shadow:
-    0 25px 60px rgba(6,36,75,.12);
-
-    border:
-    1px solid #e5edf7;
-
-}
-
-
-
-
-
-.join-card h1,
-.register-card h1{
-
-    font-size:48px;
-
-    color:#06244b;
-
-    margin-bottom:10px;
-
-}
-
-
-
-.join-card h2,
-.register-card h2{
-
-    font-size:28px;
-
-    color:#06244b;
-
-    margin:
-    35px 0 20px;
-
-}
-
-
-
-.join-card p,
-.register-card p{
-
-    color:#64748b;
+    clamp(50px,7vw,90px);
 
     margin-bottom:25px;
 
@@ -1321,14 +640,1137 @@ padding:30px;
 
 
 
+.hero-copy h1 span,
+.dcurs-hero-title span{
 
-/* FORM GROUP */
+    color:
+    var(--dcurs-gold);
+
+}
+
+
+
+
+
+.hero-text,
+.dcurs-hero-description{
+
+    color:#dbeafe;
+
+    font-size:18px;
+
+    max-width:620px;
+
+    margin-bottom:35px;
+
+}
+
+
+
+
+
+.hero-actions,
+.dcurs-hero-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   STATS
+========================= */
+
+
+.hero-stats,
+.dcurs-stats-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+
+
+
+
+.hero-stats{
+
+    margin-top:50px;
+
+}
+
+
+
+
+
+.hero-stats div,
+.dcurs-stat{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.hero-stats strong,
+.dcurs-stat strong{
+
+    display:block;
+
+    color:
+    var(--dcurs-navy);
+
+    font-size:40px;
+
+}
+
+
+
+
+
+.hero-stats span,
+.dcurs-stat span{
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.12em;
+
+    color:
+    var(--dcurs-muted);
+
+}
+
+
+
+
+
+
+
+/* =========================
+   PAGE HERO
+========================= */
+
+
+.dcurs-page-hero{
+
+    padding:
+    100px 0;
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #06244b,
+    #0b3d78
+    );
+
+}
+
+
+
+
+
+.dcurs-page-hero h1{
+
+    color:white;
+
+    margin:15px 0;
+
+}
+
+
+
+
+
+.dcurs-page-hero p:not(.section-label){
+
+    color:#dbeafe;
+
+    max-width:650px;
+
+    font-size:18px;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   NEWS SECTION
+========================= */
+
+
+.dcurs-news-layout{
+
+    display:grid;
+
+    grid-template-columns:
+
+    1.5fr 1fr;
+
+    gap:30px;
+
+}
+
+
+
+
+
+.dcurs-news-box,
+.dcurs-notice-box{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:22px;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-news-card{
+
+    padding:
+
+    20px 0;
+
+    border-bottom:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-news-card:last-child{
+
+    border:none;
+
+}
+
+
+
+
+
+.dcurs-news-category,
+.dcurs-event-category{
+
+    color:
+    var(--dcurs-gold);
+
+    font-size:11px;
+
+    font-weight:900;
+
+    letter-spacing:.12em;
+
+}
+
+
+
+
+
+.dcurs-news-card h4{
+
+    font-size:22px;
+
+    margin:
+    10px 0;
+
+}
+
+
+
+
+
+.dcurs-link{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    font-weight:800;
+
+    color:
+    var(--dcurs-navy);
+
+}
+
+
+
+
+
+
+
+/* =========================
+   RESEARCH
+========================= */
+
+
+.dcurs-research{
+
+    background:
+    var(--dcurs-navy);
+
+    padding:
+    100px 0;
+
+}
+
+
+
+
+
+.dcurs-research h2{
+
+    color:white;
+
+}
+
+
+
+
+
+.dcurs-research-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+
+
+
+
+.dcurs-research-card{
+
+    background:
+
+    rgba(255,255,255,.08);
+
+    padding:35px;
+
+    border-radius:20px;
+
+    border:
+
+    1px solid rgba(255,255,255,.15);
+
+}
+
+
+
+
+
+.dcurs-research-card h3{
+
+    color:white;
+
+    margin:
+
+    15px 0;
+
+}
+
+
+
+
+
+.dcurs-research-card p{
+
+    color:#cbd5e1;
+
+}
+
+
+
+
+
+.dcurs-research-number{
+
+    color:
+    var(--dcurs-gold);
+
+    font-size:28px;
+
+    font-weight:900;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   EVENTS
+========================= */
+
+
+.dcurs-event-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-event-card{
+
+    padding:0;
+
+    overflow:hidden;
+
+}
+
+
+
+
+
+.dcurs-event-card img{
+
+    width:100%;
+
+    height:230px;
+
+    object-fit:cover;
+
+}
+
+
+
+
+
+.dcurs-event-content{
+
+    padding:25px;
+
+}
+
+
+
+
+
+.dcurs-event-date{
+
+    display:inline-block;
+
+    background:
+    var(--dcurs-navy);
+
+    color:white;
+
+    padding:
+
+    8px 15px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    margin-bottom:15px;
+
+}
+
+
+
+
+
+/* =========================
+   JOIN SECTION
+========================= */
+
+
+.dcurs-join{
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #06244b,
+    #0b3d78
+    );
+
+    color:white;
+
+    text-align:center;
+
+    padding:
+    100px 0;
+
+}
+
+
+
+
+
+.dcurs-join h2{
+
+    color:white;
+
+}
+
+
+
+
+
+.dcurs-join p{
+
+    color:#dbeafe;
+
+    max-width:600px;
+
+    margin:
+
+    20px auto 35px;
+
+}
+/* =====================================================
+   DCURS FINAL DESIGN SYSTEM
+   PART 3 : INNER PAGES
+===================================================== */
+
+
+
+/* =========================
+   ABOUT PAGE
+========================= */
+
+
+.dcurs-two-column{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:50px;
+
+    align-items:center;
+
+}
+
+
+
+
+
+.dcurs-info-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-info-card{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:22px;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-info-number{
+
+    font-size:32px;
+
+    font-weight:900;
+
+    color:
+    var(--dcurs-gold);
+
+    margin-bottom:15px;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   CAMPUS PAGE
+========================= */
+
+
+.dcurs-campus-card-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-campus-card{
+
+    background:white;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    transition:.3s;
+
+}
+
+
+
+
+
+.dcurs-campus-card:hover{
+
+    transform:
+    translateY(-8px);
+
+    box-shadow:
+    var(--dcurs-shadow);
+
+}
+
+
+
+
+
+.dcurs-campus-card img{
+
+    width:100%;
+
+    height:230px;
+
+    object-fit:cover;
+
+}
+
+
+
+
+
+.dcurs-campus-card div{
+
+    padding:25px;
+
+}
+
+
+
+
+
+.dcurs-campus-card span{
+
+    color:
+    var(--dcurs-gold);
+
+    font-size:22px;
+
+    font-weight:900;
+
+}
+
+
+
+
+
+.dcurs-campus-card h3{
+
+    margin:
+
+    10px 0;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   MEMBERS PAGE
+========================= */
+
+
+.dcurs-member-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-member-card{
+
+    background:white;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+}
+
+
+
+
+
+.dcurs-member-card img{
+
+    width:100%;
+
+    height:280px;
+
+    object-fit:cover;
+
+}
+
+
+
+
+
+.dcurs-member-card div{
+
+    padding:25px;
+
+}
+
+
+
+
+
+.dcurs-member-role{
+
+    color:
+
+    var(--dcurs-gold);
+
+    font-size:12px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+}
+
+
+
+
+
+.dcurs-research-member-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-profile-card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-profile-image img{
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    margin:auto;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   RESEARCH PAGE
+========================= */
+
+
+.dcurs-project-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-project-card{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:22px;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-project-card span{
+
+    color:
+
+    var(--dcurs-gold);
+
+    font-size:28px;
+
+    font-weight:900;
+
+}
+
+
+
+
+
+.dcurs-project-card h3{
+
+    margin:
+
+    15px 0;
+
+}
+
+
+
+
+
+.dcurs-process-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-process-grid div{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:22px;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-process-grid strong{
+
+    font-size:40px;
+
+    color:
+
+    var(--dcurs-gold);
+
+}
+
+
+
+
+
+
+
+/* =========================
+   PUBLICATION PAGE
+========================= */
+
+
+.dcurs-publication-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-publication-card{
+
+    background:white;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+    padding:30px;
+
+    border-radius:22px;
+
+}
+
+
+
+
+
+.dcurs-publication-tag{
+
+    display:inline-block;
+
+    background:#edf4fb;
+
+    color:
+
+    var(--dcurs-navy);
+
+    padding:
+
+    7px 14px;
+
+    border-radius:999px;
+
+    font-size:11px;
+
+    font-weight:900;
+
+}
+
+
+
+
+
+.dcurs-author{
+
+    color:
+
+    var(--dcurs-gold);
+
+    font-size:13px;
+
+    font-weight:700;
+
+    margin:
+
+    15px 0;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   FORMS
+========================= */
+
+
+.join-page,
+.login-page{
+
+    padding:
+
+    90px 0;
+
+}
+
+
+
+
+
+.join-card,
+.login-card{
+
+    max-width:850px;
+
+    margin:auto;
+
+    background:white;
+
+    padding:45px;
+
+    border-radius:25px;
+
+    border:
+
+    1px solid var(--dcurs-border);
+
+    box-shadow:
+    var(--dcurs-shadow);
+
+}
+
+
+
+
+
+.login-card{
+
+    max-width:450px;
+
+}
+
+
+
 
 
 .join-card form,
-.register-card form{
+.login-card form{
 
-    background:transparent;
+    background:none;
 
     padding:0;
 
@@ -1339,18 +1781,20 @@ padding:30px;
 
 
 
-.join-card label,
-.register-card label{
+
+label{
 
     display:block;
 
-    margin-top:18px;
-
     margin-bottom:8px;
+
+    margin-top:18px;
 
     font-weight:700;
 
-    color:#06244b;
+    color:
+
+    var(--dcurs-navy);
 
 }
 
@@ -1358,48 +1802,41 @@ padding:30px;
 
 
 
-.join-card input,
-.join-card select,
-.join-card textarea,
-.register-card input,
-.register-card select,
-.register-card textarea{
-
+input,
+select,
+textarea{
 
     width:100%;
 
-    padding:15px 18px;
+    padding:
+
+    15px 18px;
 
     border-radius:12px;
 
     border:
-    1px solid #d4dfec;
+
+    1px solid #ccd8e8;
 
     background:#f8fbff;
 
-    font-size:15px;
-
-
 }
 
 
 
 
 
-.join-card input:focus,
-.join-card select:focus,
-.join-card textarea:focus,
-.register-card input:focus,
-.register-card select:focus,
-.register-card textarea:focus{
-
+input:focus,
+select:focus,
+textarea:focus{
 
     outline:none;
 
-    border-color:#0b3d78;
+    border-color:
+
+    var(--dcurs-blue);
 
     background:white;
-
 
 }
 
@@ -1407,34 +1844,27 @@ padding:30px;
 
 
 
-/* TWO COLUMN FORM */
-
-
-.register-grid,
-.join-form-grid{
-
+.register-grid{
 
     display:grid;
 
     grid-template-columns:
+
     repeat(2,1fr);
 
     gap:20px;
 
-
 }
 
 
 
 
 
-.register-grid .full,
-.join-form-grid .full{
-
+.register-grid .full{
 
     grid-column:
-    1/-1;
 
+    1/-1;
 
 }
 
@@ -1442,46 +1872,122 @@ padding:30px;
 
 
 
-/* SUBMIT BUTTON */
+.auth-links{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:25px;
+
+    font-weight:700;
+
+    color:
+
+    var(--dcurs-blue);
+
+}
+/* =====================================================
+   DCURS FINAL DESIGN SYSTEM
+   PART 4 : DASHBOARD + FOOTER + RESPONSIVE
+===================================================== */
 
 
-.join-card button,
-.register-card button,
-.join-card input[type="submit"],
-.register-card input[type="submit"]{
 
 
-    margin-top:30px;
 
-    width:100%;
+/* =========================
+   STUDENT DASHBOARD
+========================= */
 
-    padding:16px;
 
-    border:none;
+.dcurs-dashboard-page,
+.dcurs-admin-page{
 
-    border-radius:999px;
+    padding:
+    80px 0;
 
-    background:#06244b;
+    background:
+    var(--dcurs-bg);
+
+}
+
+
+
+
+
+.dcurs-dashboard-header,
+.dcurs-admin-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+
+
+
+
+.dcurs-dashboard-card{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:25px;
+
+    border:
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-profile-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:35px;
+
+}
+
+
+
+
+
+.dcurs-profile-avatar{
+
+    width:85px;
+
+    height:85px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+    var(--dcurs-navy);
 
     color:white;
 
-    font-size:16px;
+    font-size:30px;
 
-    font-weight:800;
-
-    cursor:pointer;
-
-
-}
-
-
-
-.join-card button:hover,
-.register-card button:hover{
-
-
-    background:#0b3d78;
-
+    font-weight:900;
 
 }
 
@@ -1489,18 +1995,253 @@ padding:30px;
 
 
 
-/* PASSWORD NOTE */
+.dcurs-profile-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:20px;
+
+}
 
 
-.password-note{
 
+
+
+.dcurs-profile-grid div{
+
+    background:
+    var(--dcurs-bg);
+
+    padding:20px;
+
+    border-radius:15px;
+
+}
+
+
+
+
+
+.dcurs-profile-grid span{
+
+    display:block;
+
+    font-size:12px;
+
+    color:
+    var(--dcurs-muted);
+
+}
+
+
+
+
+
+.dcurs-profile-grid strong{
+
+    display:block;
+
+    margin-top:8px;
+
+    color:
+    var(--dcurs-navy);
+
+}
+
+
+
+
+
+
+
+.dcurs-dashboard-actions{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+
+
+
+
+.dcurs-dashboard-action{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    border:
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-dashboard-action strong{
+
+    display:block;
+
+    color:
+    var(--dcurs-navy);
+
+    font-size:18px;
+
+}
+
+
+
+
+
+.dcurs-dashboard-action span{
+
+    font-size:14px;
+
+    color:
+    var(--dcurs-muted);
+
+}
+
+
+
+
+
+
+
+/* =========================
+   ADMIN DASHBOARD
+========================= */
+
+
+.dcurs-admin-stats{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,1fr);
+
+    gap:25px;
+
+}
+
+
+
+
+
+.dcurs-admin-card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:22px;
+
+    border:
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-admin-card span{
+
+    color:
+    var(--dcurs-muted);
 
     font-size:13px;
 
-    color:#64748b;
+}
 
-    margin-top:-10px;
 
+
+
+
+.dcurs-admin-card strong{
+
+    display:block;
+
+    margin-top:10px;
+
+    font-size:45px;
+
+    color:
+    var(--dcurs-navy);
+
+}
+
+
+
+
+
+.dcurs-admin-actions{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+
+
+
+
+.dcurs-admin-action{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    border:
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-admin-action strong{
+
+    display:block;
+
+    font-size:20px;
+
+    color:
+    var(--dcurs-navy);
+
+}
+
+
+
+
+
+.dcurs-admin-action span{
+
+    color:
+    var(--dcurs-muted);
+
+    font-size:14px;
 
 }
 
@@ -1509,29 +2250,521 @@ padding:30px;
 
 
 
-@media(max-width:700px){
+
+/* =========================
+   TABLES
+========================= */
 
 
-.register-grid,
-.join-form-grid{
+.dcurs-admin-table-wrap{
 
-    grid-template-columns:1fr;
+    background:white;
+
+    padding:25px;
+
+    border-radius:22px;
+
+    overflow:auto;
+
+    border:
+    1px solid var(--dcurs-border);
 
 }
+
+
+
+
+
+.dcurs-admin-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+
+
+
+.dcurs-admin-table th{
+
+    background:#eef4fb;
+
+    color:
+    var(--dcurs-navy);
+
+}
+
+
+
+
+
+.dcurs-admin-table th,
+.dcurs-admin-table td{
+
+    padding:15px;
+
+    border-bottom:
+
+    1px solid var(--dcurs-border);
+
+    text-align:left;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   DOCUMENT LIST
+========================= */
+
+
+.dcurs-document-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:15px;
+
+    border-bottom:
+
+    1px solid var(--dcurs-border);
+
+}
+
+
+
+
+
+.dcurs-document-item span{
+
+    color:
+    var(--dcurs-gold);
+
+    font-weight:700;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   FOOTER
+========================= */
+
+
+.footer{
+
+    background:
+    #031a36;
+
+    color:white;
+
+    padding:
+    70px 0 20px;
+
+}
+
+
+
+
+
+.footer-grid,
+.dcurs-footer-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    2fr 1fr 1fr;
+
+    gap:40px;
+
+}
+
+
+
+
+
+.footer h4{
+
+    color:white;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+
+.footer a{
+
+    display:block;
+
+    color:#cbd5e1;
+
+    margin-bottom:10px;
+
+}
+
+
+
+
+
+.footer a:hover{
+
+    color:white;
+
+}
+
+
+
+
+
+.dcurs-footer-brand{
+
+    font-size:38px;
+
+    font-weight:900;
+
+    color:
+    var(--dcurs-gold);
+
+}
+
+
+
+
+
+.dcurs-copyright,
+.copyright{
+
+    margin-top:40px;
+
+    padding-top:20px;
+
+    border-top:
+
+    1px solid rgba(255,255,255,.15);
+
+    text-align:center;
+
+    color:#94a3b8;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   PASSWORD BOX
+========================= */
+
+
+.password-box{
+
+    position:relative;
+
+}
+
+
+
+
+
+.password-toggle{
+
+    position:absolute;
+
+    right:10px;
+
+    top:10px;
+
+    border:none;
+
+    background:
+    var(--dcurs-navy);
+
+    color:white;
+
+    padding:7px 14px;
+
+    border-radius:999px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+
+
+/* =========================
+   ANIMATION
+========================= */
+
+
+.dcurs-reveal{
+
+    opacity:0;
+
+    transform:
+    translateY(30px);
+
+    transition:.7s;
+
+}
+
+
+
+
+
+.dcurs-reveal.show{
+
+    opacity:1;
+
+    transform:
+    translateY(0);
+
+}
+
+
+
+
+
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+
+@media(max-width:1000px){
+
+
+.nav-links{
+
+    position:absolute;
+
+    top:82px;
+
+    left:0;
+
+    right:0;
+
+    background:white;
+
+    padding:25px;
+
+    display:none;
+
+    flex-direction:column;
+
+}
+
+
+
+.nav-links.open{
+
+    display:flex;
+
+}
+
+
+
+.menu-btn,
+.dcurs-menu-btn{
+
+    display:block;
+
+}
+
+
+
+
+
+.dcurs-stats-grid,
+.hero-stats,
+.dcurs-admin-stats{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+}
+
+
+
+
+
+.dcurs-research-grid{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+}
+
+
+
+
+
+.dcurs-event-grid,
+.dcurs-campus-card-grid,
+.dcurs-member-grid,
+.dcurs-publication-grid,
+.dcurs-info-grid,
+.dcurs-project-grid,
+.dcurs-process-grid,
+.dcurs-dashboard-actions,
+.dcurs-admin-actions{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+}
+
+
+
+
+
+.dcurs-profile-grid{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+}
+
+
+
+}
+
+
+
+
+
+@media(max-width:600px){
+
+
+
+h1{
+
+    font-size:40px;
+
+}
+
+
+
+h2{
+
+    font-size:32px;
+
+}
+
+
+
+
+
+.hero-actions,
+.dcurs-hero-buttons{
+
+    flex-direction:column;
+
+}
+
+
+
+
+
+.dcurs-two-column{
+
+    grid-template-columns:
+    1fr;
+
+}
+
+
+
+
+
+.dcurs-stats-grid,
+.hero-stats,
+.dcurs-admin-stats,
+.dcurs-research-grid,
+.dcurs-event-grid,
+.dcurs-campus-card-grid,
+.dcurs-member-grid,
+.dcurs-publication-grid,
+.dcurs-info-grid,
+.dcurs-project-grid,
+.dcurs-process-grid,
+.dcurs-dashboard-actions,
+.dcurs-admin-actions,
+.dcurs-profile-grid{
+
+    grid-template-columns:
+    1fr;
+
+}
+
+
+
+
+
+.dcurs-footer-grid,
+.footer-grid{
+
+    grid-template-columns:
+    1fr;
+
+}
+
+
+
+
+
+.dcurs-dashboard-header,
+.dcurs-admin-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:20px;
+
+}
+
+
+
 
 
 .join-card,
-.register-card{
+.login-card{
 
     padding:25px;
 
 }
 
 
-.join-card h1,
-.register-card h1{
 
-    font-size:36px;
+
+
+.register-grid{
+
+    grid-template-columns:
+    1fr;
 
 }
 

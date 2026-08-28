@@ -1,81 +1,662 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Login | DCURS</title>
-<link rel="stylesheet" href="style.css">
-<style>
-body{background:#f7f9fc}
-.login-wrap{min-height:75vh;display:flex;align-items:center;justify-content:center;padding:60px 20px}
-.login-card{width:100%;max-width:470px;background:white;padding:40px;border-radius:22px;border:1px solid #e4e9f1;box-shadow:0 20px 50px rgba(6,36,75,.1)}
-.login-card h1{color:#06244b;margin-bottom:8px}
-.login-card p{color:#667085;margin-bottom:22px}
-.login-card label{display:block;font-weight:700;color:#06244b;margin-bottom:14px}
-.login-card input{width:100%;margin-top:7px;padding:13px;border:1px solid #d6deea;border-radius:10px}
-.login-card button{width:100%;border:0}
-.links{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;font-size:13px}
-.links a{color:#0b356b;font-weight:700}
-#error{color:#b42318;margin-top:14px}
-</style>
-</head>
-<body>
-<header class="site-header"><nav class="nav container">
-<a class="brand" href="index.html"><img src="assets/dcurs-logo.png" alt="DCURS Logo"><span><strong>Dhaka Central University</strong><small>Research Society</small></span></a>
-<button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
-<div class="nav-links"><a href="index.html">Home</a><a href="campuses.html">Campuses</a><a href="research.html">Research</a><a href="events.html">Events</a><a href="notices.html">Notices</a><a href="documents.html">Documents</a><a href="members.html">Members</a><a href="publications.html">Publications</a><a href="join.html" class="nav-cta">Join Us</a></div>
-</nav></header>
 
-<main class="login-wrap">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Student Login | DCURS
+</title>
+
+
+<meta name="description"
+content="DCURS Student Login">
+
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+
+
+
+<!-- HEADER -->
+
+<header class="site-header">
+
+
+<nav class="nav container">
+
+
+<a href="index.html"
+class="brand">
+
+
+<img src="assets/dcurs-logo.png"
+alt="DCURS Logo">
+
+
+
+<span>
+
+<strong>
+Dhaka Central University
+</strong>
+
+
+<small>
+Research Society
+</small>
+
+
+</span>
+
+
+</a>
+
+
+
+
+
+<button class="dcurs-menu-btn">
+
+☰
+
+</button>
+
+
+
+
+
+
+<div class="nav-links">
+
+
+<a href="index.html">
+Home
+</a>
+
+
+<a href="about.html">
+About
+</a>
+
+
+<a href="research.html">
+Research
+</a>
+
+
+<a href="events.html">
+Events
+</a>
+
+
+<a href="join.html"
+class="nav-cta">
+
+Join DCURS
+
+</a>
+
+
+
+</div>
+
+
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+
+
+<!-- LOGIN -->
+
+
+<main class="login-page">
+
+
+<div class="container">
+
+
+
+
+
 <div class="login-card">
-<p class="section-label">STUDENT ACCESS</p>
-<h1>Student Login</h1>
-<p>Your email must be verified and your account must be approved.</p>
+
+
+
+<p class="section-label">
+
+STUDENT PORTAL
+
+</p>
+
+
+
+
+
+<h1>
+
+Welcome Back
+
+</h1>
+
+
+
+
+<p>
+
+Login to access your DCURS
+research community account.
+
+</p>
+
+
+
+
+
+
+
 
 <form id="loginForm">
-<label>Email<input id="email" type="email" autocomplete="email" required></label>
-<label>Password<input id="password" type="password" autocomplete="current-password" required></label>
-<button class="btn btn-primary" type="submit">Login</button>
+
+
+
+
+
+
+<label>
+
+Email Address
+
+</label>
+
+
+
+<input
+
+type="email"
+
+name="email"
+
+placeholder="Enter your email"
+
+required
+
+>
+
+
+
+
+
+
+
+
+
+<label>
+
+Password
+
+</label>
+
+
+
+
+<div style="position:relative">
+
+
+<input
+
+id="password"
+
+type="password"
+
+name="password"
+
+placeholder="Enter password"
+
+required
+
+>
+
+
+
+
+<button
+
+type="button"
+
+id="showPassword"
+
+style="
+position:absolute;
+right:12px;
+top:10px;
+border:none;
+background:none;
+cursor:pointer;
+font-size:18px;
+"
+
+>
+
+👁
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<button type="submit">
+
+Login
+
+</button>
+
+
+
+
+
 </form>
 
-<div id="error"></div>
 
-<div class="links">
-<a href="forgot-password.html">Forgot password?</a>
-<a href="resend-verification.html">Resend verification email</a>
+
+
+
+
+
+
+<div class="auth-links">
+
+
+<a href="forgot-password.html">
+
+Forgot Password?
+
+</a>
+
+
+
+
+<a href="join.html">
+
+Create Account
+
+</a>
+
+
+
 </div>
+
+
+
+
+
+
+
 </div>
+
+
+
+
+
+</div>
+
+
 </main>
 
-<script>
-loginForm.addEventListener("submit",async e=>{
-  e.preventDefault();
-  error.innerText="";
 
-  try{
-    const response=await fetch("/api/login",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        email:email.value,
-        password:password.value
-      })
-    });
 
-    const data=await response.json();
 
-    if(!response.ok){
-      throw new Error(data.error||"Login failed");
-    }
 
-    localStorage.setItem("token",data.token);
-    localStorage.setItem("user",JSON.stringify(data.user));
-    location.href="student-dashboard.html";
-  }catch(err){
-    error.innerText=err.message;
-  }
-});
-</script>
+
+
+
+
+<!-- FOOTER -->
+
+
+<footer class="footer">
+
+
+<div class="container dcurs-footer-grid">
+
+
+
+
+
+<div>
+
+
+<div class="dcurs-footer-brand">
+
+DCURS
+
+</div>
+
+
+
+<p>
+
+Dhaka Central University Research Society
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<h4>
+Explore
+</h4>
+
+
+<a href="about.html">
+About
+</a>
+
+
+<a href="research.html">
+Research
+</a>
+
+
+<a href="events.html">
+Events
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+
+<h4>
+Community
+</h4>
+
+
+<a href="join.html">
+Join DCURS
+</a>
+
+
+<a href="login.html">
+Student Login
+</a>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="container dcurs-copyright">
+
+
+© 2026 DCURS. All rights reserved.
+
+
+</div>
+
+
+
+
+</footer>
+
+
+
+
+
+
+
+
+
+
 <script src="script.js"></script>
+
+
+
+
+
+<script>
+
+
+const loginForm =
+document.getElementById(
+"loginForm"
+);
+
+
+
+const password =
+document.getElementById(
+"password"
+);
+
+
+
+const showPassword =
+document.getElementById(
+"showPassword"
+);
+
+
+
+
+
+showPassword.addEventListener(
+"click",
+()=>{
+
+
+if(
+password.type === "password"
+){
+
+
+password.type="text";
+
+showPassword.innerHTML="🙈";
+
+
+}else{
+
+
+password.type="password";
+
+showPassword.innerHTML="👁";
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+
+loginForm.addEventListener(
+"submit",
+async(e)=>{
+
+
+e.preventDefault();
+
+
+
+const data =
+Object.fromEntries(
+new FormData(loginForm)
+);
+
+
+
+
+
+try{
+
+
+const response =
+await fetch(
+"/api/login",
+{
+
+
+method:"POST",
+
+
+headers:{
+
+"Content-Type":
+"application/json"
+
+},
+
+
+body:
+JSON.stringify(data)
+
+
+}
+
+);
+
+
+
+
+
+const result =
+await response.json();
+
+
+
+
+
+if(response.ok){
+
+
+if(result.token){
+
+
+localStorage.setItem(
+"token",
+result.token
+);
+
+
+}
+
+
+
+alert(
+"Login successful"
+);
+
+
+
+location.href=
+"dashboard.html";
+
+
+
+}else{
+
+
+alert(
+result.error ||
+"Invalid email or password"
+);
+
+
+}
+
+
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+alert(
+"Something went wrong"
+);
+
+
+}
+
+
+
+}
+
+);
+
+
+
+</script>
+
+
+
 </body>
+
 </html>

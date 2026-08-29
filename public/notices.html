@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notices | DCURS</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{background:#f7f9fc}
+    .notice-section{padding:70px 0 100px}
+    .notice-list{display:grid;gap:18px}
+    .notice-card{background:white;border:1px solid #e4e9f1;border-radius:18px;padding:26px;box-shadow:0 10px 30px rgba(6,36,75,.05)}
+    .notice-card h2{color:#06244b;margin-bottom:8px}
+    .notice-card p{color:#667085}
+    .notice-meta{margin-top:15px;display:flex;gap:8px;flex-wrap:wrap}
+    .notice-meta span{padding:6px 10px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:11px;font-weight:700}
+    .empty-notice{background:white;padding:35px;border:1px solid #e4e9f1;border-radius:18px;text-align:center;color:#667085}
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html">
+      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
+      <span>
+        <strong>Dhaka Central University</strong>
+        <small>Research Society</small>
+      </span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="notices.html">Notices</a>
+      <a href="members.html">Members</a>
+      <a href="publications.html">Publications</a>
+      <a href="login.html">Student Login</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">NOTICE BOARD</p>
+      <h1>Updates from<br><span>DCURS.</span></h1>
+      <p>Public announcements and important society notices appear here.</p>
+    </div>
+  </section>
+
+  <section class="notice-section">
+    <div class="container">
+      <div id="noticeList" class="notice-list">
+        <div class="empty-notice">Loading notices...</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">DCURS</div>
+      <p>Dhaka Central University Research Society - DCURS</p>
+      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
+    </div>
+
+    <div>
+      <h4>Explore</h4>
+      <a href="campuses.html">Campuses</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="notices.html">Notices</a>
+    </div>
+
+    <div>
+      <h4>Community</h4>
+      <a href="members.html">Members</a>
+      <a href="join.html">Join DCURS</a>
+      <a href="login.html">Student Login</a>
+    </div>
+  </div>
+
+  <div class="container copyright">
+    © 2026 Dhaka Central University Research Society - DCURS. All rights reserved.
+  </div>
+</footer>
+
+<script>
+function formatDate(value){
+  if(!value) return "";
+  return new Date(value).toLocaleDateString(undefined,{
+    year:"numeric",
+    month:"long",
+    day:"numeric"
+  });
+}
+
+async function loadNotices(){
+  const box=document.getElementById("noticeList");
+
+  try{
+    const response=await fetch("/api/public/notices");
+    const notices=await response.json();
+
+    if(!response.ok){
+      throw new Error(notices.error||"Unable to load notices");
+    }
+
+    if(!notices.length){
+      box.innerHTML=`
+        <div class="empty-notice">
+          No public notices available yet.
+        </div>
+      `;
+      return;
+    }
+
+    box.innerHTML=notices.map(n=>`
+      <article class="notice-card">
+        <h2>${n.title||"Notice"}</h2>
+        <p>${n.message||""}</p>
+
+        <div class="notice-meta">
+          <span>${n.type||"Info"}</span>
+          <span>${formatDate(n.created_at)}</span>
+        </div>
+      </article>
+    `).join("");
+
+  }catch(error){
+    console.error(error);
+
+    box.innerHTML=`
+      <div class="empty-notice">
+        Unable to load notices.
+      </div>
+    `;
+  }
+}
+
+loadNotices();
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campuses | DCURS</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{background:#f7f9fc}
+    .campus-page{padding:70px 0 100px}
+    .campus-title{text-align:center;margin-bottom:45px}
+    .campus-title h1{color:#06244b;font-size:48px;margin-bottom:10px}
+    .campus-title p{color:#667085}
+    .campus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+    .campus-card{display:block;background:white;border:1px solid #e4e9f1;border-radius:20px;padding:28px;box-shadow:0 12px 30px rgba(6,36,75,.08);transition:.2s}
+    .campus-card:hover{transform:translateY(-4px);box-shadow:0 18px 42px rgba(6,36,75,.1)}
+    .campus-number{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:14px;background:#06244b;color:white;font-weight:700;margin-bottom:18px}
+    .campus-card h2{color:#06244b;font-size:24px;margin-bottom:8px}
+    .campus-card p{color:#667085}
+    .campus-link{display:inline-flex;margin-top:16px;color:#0b356b;font-weight:700;font-size:13px}
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html">
+      <img src="assets/dcurs-logo.png" alt="DCURS Logo">
+      <span>
+        <strong>Dhaka Central University</strong>
+        <small>Research Society</small>
+      </span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="members.html">Members</a>
+      <a href="publications.html">Publications</a>
+      <a href="login.html">Student Login</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+</header>
+
+<main class="campus-page">
+  <div class="container">
+
+    <div class="campus-title">
+      <p class="section-label">SEVEN CAMPUSES</p>
+      <h1>Dhaka Central University Campuses</h1>
+      <p>Select a campus to view its approved DCURS members.</p>
+    </div>
+
+    <div class="campus-grid">
+
+      <a class="campus-card" href="members.html?campus=Dhaka%20College">
+        <div class="campus-number">01</div>
+        <h2>Dhaka College</h2>
+        <p>View approved DCURS members from Dhaka College.</p>
+        <span class="campus-link">View Members →</span>
+      </a>
+
+      <a class="campus-card" href="members.html?campus=Eden%20Mohila%20College">
+        <div class="campus-number">02</div>
+        <h2>Eden Mohila College</h2>
+        <p>View approved DCURS members from Eden Mohila College.</p>
+        <span class="campus-link">View Members →</span>
+      </a>
+
+      <a class="campus-card" href="members.html?campus=Government%20Titumir%20College">
+        <div class="campus-number">03</div>
+        <h2>Government Titumir College</h2>
+        <p>View approved DCURS members from Government Titumir College.</p>
+        <span class="campus-link">View Members →</span>
+      </a>
+
+      <a class="campus-card" href="members.html?campus=Government%20Bangla%20College">
+        <div class="campus-number">04</div>
+        <h2>Government Bangla College</h2>
+        <p>View approved DCURS members from Government Bangla College.</p>
+        <span class="campus-link">View Members →</span>
+      </a>
+
+      <a class="campus-card" href="members.html?campus=Begum%20Badrunnesa%20Government%20Women%E2%80%99s%20College">
+        <div class="campus-number">05</div>
+        <h2>Begum Badrunnesa Government Women’s College</h2>
+        <p>View approved DCURS members from this campus.</p>
+        <span class="campus-link">View Members →</span>
+      </a>
+
+      <a class="campus-card" href="members.html?campus=Government%20Shaheed%20Suhrawardy%20College">
+        <div class="campus-number">06</div>
+        <h2>Government Shaheed Suhrawardy College</h2>
+        <p>View approved DCURS members from this campus.</p>
+        <span class="campus-link">View Members →</span>
+      </a>
+
+      <a class="campus-card" href="members.html?campus=Kabi%20Nazrul%20Government%20College">
+        <div class="campus-number">07</div>
+        <h2>Kabi Nazrul Government College</h2>
+        <p>View approved DCURS members from Kabi Nazrul Government College.</p>
+        <span class="campus-link">View Members →</span>
+      </a>
+
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">DCURS</div>
+      <p>Dhaka Central University Research Society - DCURS</p>
+      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
+    </div>
+
+    <div>
+      <h4>Explore</h4>
+      <a href="campuses.html">Campuses</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+    </div>
+
+    <div>
+      <h4>Community</h4>
+      <a href="members.html">Members</a>
+      <a href="join.html">Join DCURS</a>
+      <a href="login.html">Student Login</a>
+    </div>
+  </div>
+
+  <div class="container copyright">
+    © 2026 Dhaka Central University Research Society - DCURS. All rights reserved.
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

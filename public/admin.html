@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | DCURS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="dcurs-dashboard-body">
+<header class="site-header">
+<nav class="nav container">
+<a href="index.html" class="brand">
+<img src="assets/dcurs-logo.png" alt="DCURS Logo">
+<span><strong>Dhaka Central University</strong><small>Research Society</small></span>
+</a>
+<button class="menu-btn" type="button" aria-label="Open menu">☰</button>
+<div class="nav-links">
+<a href="index.html">Website</a>
+<a href="admin-documents.html">Documents</a>
+<a href="admin-audit.html">Audit Logs</a>
+<a href="admin.html" class="nav-cta">Admin</a>
+</div>
+</nav>
+</header>
+
+<main class="dcurs-dashboard-page">
+<div class="container">
+<section class="dcurs-dashboard-header">
+<div>
+<p class="section-label">ADMIN CONTROL CENTER</p>
+<h1>Dashboard</h1>
+<p>Manage members, research documents, events and platform activity from one place.</p>
+</div>
+<button class="dcurs-dashboard-logout" type="button" id="dcursAdminLogout">Logout</button>
+</section>
+
+<section class="dcurs-admin-welcome">
+<div>
+<span class="dcurs-dashboard-eyebrow">DCURS ADMIN</span>
+<h2>Research Society Overview</h2>
+<p>Keep the community organized and monitor recent activity.</p>
+</div>
+<div class="dcurs-admin-status"><i></i> System online</div>
+</section>
+
+<section class="dcurs-admin-stats" aria-label="Dashboard statistics">
+<article class="dcurs-stat-card"><span>Students</span><strong id="studentCount">—</strong><small>Total registered students</small></article>
+<article class="dcurs-stat-card"><span>Applications</span><strong id="applicationCount">—</strong><small>Pending applications</small></article>
+<article class="dcurs-stat-card"><span>Documents</span><strong id="documentCount">—</strong><small>Research submissions</small></article>
+<article class="dcurs-stat-card"><span>Events</span><strong id="eventCount">—</strong><small>Published events</small></article>
+</section>
+
+<section class="dcurs-admin-section">
+<div class="dcurs-section-title-row"><div><p class="section-label">MANAGEMENT</p><h2>Quick Actions</h2></div><span>Choose a workspace</span></div>
+<div class="dcurs-admin-actions">
+<a href="admin-documents.html" class="dcurs-admin-action"><b class="dcurs-action-icon">01</b><strong>Documents</strong><span>Review and manage research files</span><em>Open workspace →</em></a>
+<a href="admin-audit.html" class="dcurs-admin-action"><b class="dcurs-action-icon">02</b><strong>Audit Logs</strong><span>Inspect security and account activity</span><em>View activity →</em></a>
+<a href="events.html" class="dcurs-admin-action"><b class="dcurs-action-icon">03</b><strong>Events</strong><span>Review upcoming society activities</span><em>View events →</em></a>
+<a href="members.html" class="dcurs-admin-action"><b class="dcurs-action-icon">04</b><strong>Members</strong><span>Explore the research community</span><em>View members →</em></a>
+</div>
+</section>
+
+<section class="dcurs-admin-section">
+<div class="dcurs-section-title-row"><div><p class="section-label">ACTIVITY</p><h2>Recent Activity</h2></div><a href="admin-audit.html">View all →</a></div>
+<div class="dcurs-admin-table-wrap">
+<table class="dcurs-admin-table">
+<thead><tr><th>Activity</th><th>Actor</th><th>Time</th></tr></thead>
+<tbody id="activityRows"><tr><td colspan="3" class="dcurs-table-empty">Loading activity…</td></tr></tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+
+<footer class="footer"><div class="container dcurs-copyright">© <span class="dcurs-year">2026</span> DCURS Admin Panel</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

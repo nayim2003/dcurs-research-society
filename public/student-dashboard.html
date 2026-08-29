@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | DCURS</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:#f7f9fc}
+.dashboard{padding:55px 20px 90px}
+.dashboard-header{background:white;padding:28px;border-radius:20px;box-shadow:0 15px 40px rgba(0,0,0,.08);display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.student-info h1{color:#06244b}
+.logout{background:#b42318;color:white;padding:11px 22px;border-radius:25px;cursor:pointer}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.card{background:white;padding:28px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,.08)}
+.card h2{color:#06244b;margin-bottom:12px}
+input,textarea,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:10px;background:white}
+textarea{height:110px;resize:vertical}
+button{background:#06244b;color:white;border:none;padding:11px 18px;border-radius:25px;cursor:pointer}
+.status{background:#fff3cd;padding:8px 15px;border-radius:20px}
+.entry{border-bottom:1px solid #ddd;padding:11px 0}
+.entry:last-child{border-bottom:0}
+.full-span{grid-column:1/-1}
+.notification-item,.event-entry,.document-entry{border:1px solid #e4e9f1;border-radius:14px;padding:15px;margin-bottom:11px}
+.notification-item.unread{border-color:#f6ad21;background:#fffaf0}
+.notification-count{display:inline-flex;min-width:28px;height:28px;align-items:center;justify-content:center;border-radius:999px;background:#b42318;color:white;font-weight:800;font-size:12px}
+.document-entry h3,.event-entry h3,.notification-item h3{color:#06244b}
+.document-entry p,.event-entry p,.notification-item p{color:#667085;font-size:14px}
+.file-note{font-size:12px;color:#667085;margin:8px 0}
+.doc-link{display:inline-flex;margin-top:7px;color:#0b356b;font-weight:700}
+@media(max-width:700px){.dashboard-header{align-items:flex-start;flex-direction:column;gap:16px}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+<nav class="nav container">
+<a class="brand" href="index.html">
+<img src="assets/dcurs-logo.png" alt="DCURS Logo">
+<span><strong>Dhaka Central University</strong><small>Research Society</small></span>
+</a>
+<button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="campuses.html">Campuses</a>
+<a href="research.html">Research</a>
+<a href="events.html">Events</a>
+<a href="notices.html">Notices</a>
+<a href="documents.html">Documents</a>
+<a href="members.html">Members</a>
+<a href="publications.html">Publications</a>
+<a href="join.html" class="nav-cta">Join Us</a>
+</div>
+</nav>
+</header>
+
+<section class="dashboard">
+<div class="container">
+
+<div class="dashboard-header">
+<div class="student-info">
+<h1 id="welcome">Welcome Student</h1>
+<p>DCURS Research Portal</p>
+</div>
+<div class="logout" onclick="logout()">Logout</div>
+</div>
+
+<div class="cards">
+
+<div class="card full-span">
+<h2>Notifications <span id="unreadCount" class="notification-count">0</span></h2>
+<div id="notificationList">Loading notifications...</div>
+<button onclick="markAllNotificationsRead()">Mark All Read</button>
+</div>
+
+<div class="card">
+<h2>Profile</h2>
+<div id="profile">Loading...</div>
+</div>
+
+<div class="card">
+<h2>Membership Status</h2>
+<span class="status" id="status">Loading</span>
+</div>
+
+<div class="card">
+<h2>Edit Profile</h2>
+<form id="profileForm">
+<input id="profileName" placeholder="Full Name" required>
+<input id="profileDepartment" placeholder="Department" required>
+<select id="profileCampus">
+<option value="">Select Campus</option>
+<option>Dhaka College</option>
+<option>Eden Mohila College</option>
+<option>Government Titumir College</option>
+<option>Government Bangla College</option>
+<option>Begum Badrunnesa Government Women’s College</option>
+<option>Government Shaheed Suhrawardy College</option>
+<option>Kabi Nazrul Government College</option>
+</select>
+<input id="profileStudentId" placeholder="Student ID">
+<textarea id="profileResearchInterest" placeholder="Research Interest"></textarea>
+<textarea id="profileBio" placeholder="Short Bio"></textarea>
+<button type="submit">Save Profile</button>
+</form>
+<p id="profileMessage"></p>
+</div>
+
+<div class="card">
+<h2>Research Project</h2>
+<form id="projectForm">
+<input id="title" placeholder="Project Title" required>
+<input id="area" placeholder="Research Area" required>
+<textarea id="abstract" placeholder="Project Abstract"></textarea>
+<input id="supervisor" placeholder="Supervisor Name">
+<button type="submit">Submit Project</button>
+</form>
+<p id="projectMessage"></p>
+</div>
+
+<div class="card">
+<h2>Publication</h2>
+<form id="publicationForm">
+<input id="pubTitle" placeholder="Publication Title" required>
+<input id="journal" placeholder="Journal / Conference" required>
+<input id="year" placeholder="Publication Year">
+<input id="pubArea" placeholder="Research Area">
+<input id="pubLink" placeholder="DOI / Link">
+<button type="submit">Submit Publication</button>
+</form>
+<p id="pubMessage"></p>
+</div>
+
+<div class="card">
+<h2>Upload PDF Document</h2>
+<form id="documentForm">
+<input id="documentTitle" name="title" placeholder="Document Title" required>
+<select id="documentCategory" name="category">
+<option>Research Paper</option>
+<option>Publication</option>
+<option>Working Paper</option>
+<option>Conference Paper</option>
+<option>Report</option>
+<option>Other</option>
+</select>
+<textarea id="documentDescription" name="description" placeholder="Short Description"></textarea>
+<input id="documentFile" name="file" type="file" accept="application/pdf,.pdf" required>
+<p class="file-note">PDF only. Maximum file size: 15 MB.</p>
+<button type="submit">Upload PDF</button>
+</form>
+<p id="documentMessage"></p>
+</div>
+
+<div class="card">
+<h2>My Research Projects</h2>
+<div id="myProjects">Loading...</div>
+</div>
+
+<div class="card">
+<h2>My Publications</h2>
+<div id="myPublications">Loading...</div>
+</div>
+
+<div class="card full-span">
+<h2>My PDF Documents</h2>
+<div id="myDocuments">Loading...</div>
+</div>
+
+<div class="card full-span">
+<h2>Upcoming Events</h2>
+<div id="studentEvents">Loading events...</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<script>
+const token=localStorage.getItem("token");
+if(!token) location.href="login.html";
+
+function authHeaders(json=false){
+  const h={Authorization:"Bearer "+token};
+  if(json) h["Content-Type"]="application/json";
+  return h;
+}
+
+function logout(){
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  location.href="login.html";
+}
+
+async function apiFetch(url,options={}){
+  const r=await fetch(url,options);
+  if(r.status===401||r.status===403){
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    location.href="login.html";
+    throw new Error("Session expired");
+  }
+  return r;
+}
+
+function sizeText(bytes){
+  const n=Number(bytes||0);
+  if(!n) return "";
+  if(n<1024*1024) return (n/1024).toFixed(1)+" KB";
+  return (n/(1024*1024)).toFixed(1)+" MB";
+}
+
+async function loadNotifications(){
+  const r=await apiFetch("/api/notifications/student",{headers:authHeaders()});
+  const data=await r.json();
+  document.getElementById("unreadCount").innerText=data.filter(n=>!n.is_read).length;
+  document.getElementById("notificationList").innerHTML=data.length?data.map(n=>`
+    <article class="notification-item ${n.is_read?"":"unread"}">
+      <h3>${n.title||"Notification"}</h3>
+      <p>${n.message||""}</p>
+      ${n.is_read?"":`<button onclick="markNotificationRead(${n.id})">Mark Read</button>`}
+    </article>
+  `).join(""):"<p>No notifications yet.</p>";
+}
+
+async function markNotificationRead(id){
+  await apiFetch("/api/notifications/"+id+"/read",{method:"POST",headers:authHeaders()});
+  loadNotifications();
+}
+
+async function markAllNotificationsRead(){
+  await apiFetch("/api/notifications/read-all",{method:"POST",headers:authHeaders()});
+  loadNotifications();
+}
+
+async function loadProfile(){
+  const r=await apiFetch("/api/profile",{headers:authHeaders()});
+  const d=await r.json();
+  document.getElementById("welcome").innerText="Welcome, "+d.name;
+  document.getElementById("profile").innerHTML=`
+    <p><strong>Name:</strong> ${d.name||""}</p>
+    <p><strong>Email:</strong> ${d.email||""}</p>
+    <p><strong>Department:</strong> ${d.department||"N/A"}</p>
+    <p><strong>Campus:</strong> ${d.campus||"N/A"}</p>
+    <p><strong>Student ID:</strong> ${d.student_id||"N/A"}</p>
+    <p><strong>Research Interest:</strong> ${d.research_interest||"N/A"}</p>
+    <p><strong>Bio:</strong> ${d.bio||"N/A"}</p>`;
+  document.getElementById("status").innerText=d.status;
+  profileName.value=d.name||"";
+  profileDepartment.value=d.department||"";
+  profileCampus.value=d.campus||"";
+  profileStudentId.value=d.student_id||"";
+  profileResearchInterest.value=d.research_interest||"";
+  profileBio.value=d.bio||"";
+}
+
+profileForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const r=await apiFetch("/api/profile",{
+    method:"PATCH",headers:authHeaders(true),
+    body:JSON.stringify({
+      name:profileName.value,
+      department:profileDepartment.value,
+      campus:profileCampus.value,
+      student_id:profileStudentId.value,
+      research_interest:profileResearchInterest.value,
+      bio:profileBio.value
+    })
+  });
+  const d=await r.json();
+  profileMessage.innerText=r.ok?"Profile updated successfully.":(d.error||"Profile update failed");
+  if(r.ok) loadProfile();
+});
+
+projectForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const r=await apiFetch("/api/projects",{
+    method:"POST",headers:authHeaders(true),
+    body:JSON.stringify({
+      title:title.value,area:area.value,abstract:abstract.value,supervisor:supervisor.value
+    })
+  });
+  const d=await r.json();
+  projectMessage.innerText=d.message||d.error||"";
+  if(r.ok){projectForm.reset();loadProjects();}
+});
+
+publicationForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const r=await apiFetch("/api/publications",{
+    method:"POST",headers:authHeaders(true),
+    body:JSON.stringify({
+      title:pubTitle.value,journal:journal.value,year:year.value,area:pubArea.value,link:pubLink.value
+    })
+  });
+  const d=await r.json();
+  pubMessage.innerText=d.message||d.error||"";
+  if(r.ok){publicationForm.reset();loadPublications();}
+});
+
+documentForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  documentMessage.innerText="Uploading PDF...";
+
+  const file=documentFile.files[0];
+  if(!file){
+    documentMessage.innerText="Please choose a PDF file.";
+    return;
+  }
+
+  if(file.size>15*1024*1024){
+    documentMessage.innerText="PDF must be 15 MB or smaller.";
+    return;
+  }
+
+  const form=new FormData();
+  form.append("title",documentTitle.value);
+  form.append("category",documentCategory.value);
+  form.append("description",documentDescription.value);
+  form.append("file",file);
+
+  try{
+    const r=await apiFetch("/api/documents",{
+      method:"POST",
+      headers:{Authorization:"Bearer "+token},
+      body:form
+    });
+    const d=await r.json();
+    documentMessage.innerText=d.message||d.error||"";
+    if(r.ok){
+      documentForm.reset();
+      loadDocuments();
+    }
+  }catch(err){
+    documentMessage.innerText=err.message;
+  }
+});
+
+async function loadProjects(){
+  const r=await apiFetch("/api/projects/student",{headers:authHeaders()});
+  const d=await r.json();
+  myProjects.innerHTML=d.length?d.map(p=>`
+    <div class="entry"><strong>${p.title}</strong><p>${p.area||""}</p><p>Status: ${p.status}</p></div>
+  `).join(""):"<p>No projects submitted yet.</p>";
+}
+
+async function loadPublications(){
+  const r=await apiFetch("/api/publications/student",{headers:authHeaders()});
+  const d=await r.json();
+  myPublications.innerHTML=d.length?d.map(p=>`
+    <div class="entry"><strong>${p.title}</strong><p>${p.journal||""}</p><p>Status: ${p.status}</p></div>
+  `).join(""):"<p>No publications submitted yet.</p>";
+}
+
+async function loadDocuments(){
+  const r=await apiFetch("/api/documents/student",{headers:authHeaders()});
+  const d=await r.json();
+  myDocuments.innerHTML=d.length?d.map(doc=>`
+    <article class="document-entry">
+      <h3>${doc.title}</h3>
+      <p><strong>Category:</strong> ${doc.category||""}</p>
+      <p><strong>Status:</strong> ${doc.status}</p>
+      <p><strong>File:</strong> ${doc.original_name||"PDF"} ${sizeText(doc.file_size)}</p>
+      ${doc.description?`<p>${doc.description}</p>`:""}
+      <a class="doc-link" href="${doc.file_url}" target="_blank" rel="noopener">Open PDF</a>
+    </article>
+  `).join(""):"<p>No PDF documents uploaded yet.</p>";
+}
+
+async function loadEvents(){
+  const r=await apiFetch("/api/events/student",{headers:authHeaders()});
+  const d=await r.json();
+  studentEvents.innerHTML=d.length?d.map(ev=>`
+    <article class="event-entry">
+      <h3>${ev.title}</h3>
+      <p>${ev.event_date?new Date(ev.event_date).toLocaleDateString():"TBA"} • ${ev.event_time||"TBA"}</p>
+      <p>${ev.venue||"Venue TBA"}</p>
+      ${ev.registered
+        ? `<button onclick="cancelEventRegistration(${ev.id})">Cancel Registration</button>`
+        : `<button onclick="registerForEvent(${ev.id})">Register</button>`}
+    </article>
+  `).join(""):"<p>No events available.</p>";
+}
+
+async function registerForEvent(id){
+  const r=await apiFetch("/api/events/"+id+"/register",{method:"POST",headers:authHeaders()});
+  const d=await r.json();
+  if(!r.ok) alert(d.error||"Registration failed");
+  loadEvents();
+}
+
+async function cancelEventRegistration(id){
+  const r=await apiFetch("/api/events/"+id+"/register",{method:"DELETE",headers:authHeaders()});
+  const d=await r.json();
+  if(!r.ok) alert(d.error||"Cancellation failed");
+  loadEvents();
+}
+
+loadNotifications();
+loadProfile();
+loadProjects();
+loadPublications();
+loadDocuments();
+loadEvents();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

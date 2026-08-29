@@ -905,6 +905,27 @@ app.post(
 );
 
 /* =========================
+   ADMIN DASHBOARD STATS
+========================= */
+
+app.get("/api/admin/stats", requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        (SELECT COUNT(*)::int FROM users WHERE role='student') AS students,
+        (SELECT COUNT(*)::int FROM users WHERE role='student' AND status='Pending') AS applications,
+        (SELECT COUNT(*)::int FROM documents) AS documents,
+        (SELECT COUNT(*)::int FROM events) AS events
+    `);
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Admin stats error:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+/* =========================
    ADMIN STUDENTS
 ========================= */
 
@@ -2219,41 +2240,6 @@ app.get("/api/public/publications", async (req, res) => {
     console.error("Public publications error:", error);
     res.status(500).json({ error: "Something went wrong" });
   }
-});
-
-
-/* =========================
-   ADMIN SUPPORT ROUTES
-========================= */
-
-app.get("/api/admin/stats", requireAdmin, async (req, res) => {
-  try {
-    const [students, applications, documents, events] =
-      await Promise.all([
-        pool.query("SELECT COUNT(*)::int AS count FROM users"),
-        pool.query("SELECT COUNT(*)::int AS count FROM applications"),
-        pool.query("SELECT COUNT(*)::int AS count FROM documents"),
-        pool.query("SELECT COUNT(*)::int AS count FROM events")
-      ]);
-
-    res.json({
-      students: students.rows[0].count,
-      applications: applications.rows[0].count,
-      documents: documents.rows[0].count,
-      events: events.rows[0].count
-    });
-  } catch (error) {
-    console.error("Admin stats error:", error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-});
-
-app.get("/admin", (req, res) => {
-  res.redirect("/admin.html");
-});
-
-app.get("/admin-audit", (req, res) => {
-  res.redirect("/admin-audit.html");
 });
 
 app.get("/health", (req, res) => {

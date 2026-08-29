@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | DCURS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="dcurs-dashboard-body">
+<header class="site-header">
+<nav class="nav container">
+<a href="index.html" class="brand">
+<img src="assets/dcurs-logo.png" alt="DCURS Logo">
+<span><strong>Dhaka Central University</strong><small>Research Society</small></span>
+</a>
+<button class="menu-btn" type="button" aria-label="Open menu">☰</button>
+<div class="nav-links">
+<a href="index.html">Website</a><a href="research.html">Research</a><a href="events.html">Events</a>
+<a href="student-dashboard.html" class="nav-cta">Dashboard</a>
+</div>
+</nav>
+</header>
+
+<main class="dcurs-dashboard-page">
+<div class="container">
+<section class="dcurs-dashboard-header">
+<div>
+<p class="section-label">STUDENT PORTAL</p>
+<h1>Welcome back<span class="dcurs-title-dot">.</span></h1>
+<p id="studentWelcome">Your DCURS research workspace is ready.</p>
+</div>
+<button class="dcurs-dashboard-logout" type="button" id="dcursStudentLogout">Logout</button>
+</section>
+
+<section class="dcurs-student-hero">
+<div class="dcurs-profile-avatar" id="studentAvatar">DC</div>
+<div class="dcurs-student-identity">
+<span class="dcurs-dashboard-eyebrow">RESEARCH MEMBER</span>
+<h2 id="studentName">Student Name</h2>
+<p id="studentEmail">Loading email…</p>
+</div>
+<div class="dcurs-member-status"><i></i><span id="studentStatus">Active</span></div>
+</section>
+
+<section class="dcurs-dashboard-card dcurs-profile-panel">
+<div class="dcurs-panel-heading"><div><p class="section-label">YOUR PROFILE</p><h2>Member information</h2></div><a href="member-profile.html" class="dcurs-text-link">Profile →</a></div>
+<div class="dcurs-profile-grid">
+<div><span>Campus</span><strong id="studentCampus">—</strong></div>
+<div><span>Department</span><strong id="studentDepartment">—</strong></div>
+<div><span>Student ID</span><strong id="studentId">—</strong></div>
+<div><span>Research Interest</span><strong id="studentInterest">—</strong></div>
+</div>
+</section>
+
+<section class="dcurs-dashboard-section">
+<div class="dcurs-section-title-row"><div><p class="section-label">WORKSPACE</p><h2>Quick Actions</h2></div><span>Everything you need</span></div>
+<div class="dcurs-dashboard-actions">
+<a href="documents.html" class="dcurs-dashboard-action"><b class="dcurs-action-icon">01</b><strong>My Documents</strong><span>Submit and track research files</span><em>Open →</em></a>
+<a href="publications.html" class="dcurs-dashboard-action"><b class="dcurs-action-icon">02</b><strong>Publications</strong><span>Explore and manage research works</span><em>Open →</em></a>
+<a href="events.html" class="dcurs-dashboard-action"><b class="dcurs-action-icon">03</b><strong>Events</strong><span>Discover upcoming activities</span><em>Open →</em></a>
+<a href="research.html" class="dcurs-dashboard-action"><b class="dcurs-action-icon">04</b><strong>Research</strong><span>Explore research areas and projects</span><em>Open →</em></a>
+</div>
+</section>
+
+<section class="dcurs-dashboard-section">
+<div class="dcurs-section-title-row"><div><p class="section-label">SUBMISSIONS</p><h2>My Documents</h2></div><a href="documents.html">Manage →</a></div>
+<div class="dcurs-dashboard-list" id="documentList"><div class="dcurs-list-loading">Loading your documents…</div></div>
+</section>
+</div>
+</main>
+
+<footer class="footer"><div class="container dcurs-copyright">© <span class="dcurs-year">2026</span> Dhaka Central University Research Society</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

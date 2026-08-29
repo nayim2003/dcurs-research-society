@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publications | DCURS</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body{background:#f7f9fc}
+    .publications{padding:60px 20px}
+    .title{color:#06244b;font-size:42px;margin-bottom:40px}
+    .pub-card{background:white;padding:30px;border-radius:20px;margin-bottom:25px;box-shadow:0 15px 35px rgba(0,0,0,.08)}
+    .pub-card h2{color:#06244b}
+    .pub-card p{color:#64748b;line-height:1.7}
+    .badge{display:inline-block;background:#d1fadf;color:#067647;padding:8px 18px;border-radius:20px;font-weight:600}
+    .empty{background:white;padding:30px;border-radius:20px;text-align:center;color:#64748b}
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html">
+      <img src="assets/dcurs-logo.png" alt="Dhaka Central University Research Society Logo">
+      <span>
+        <strong>Dhaka Central University</strong>
+        <small>Research Society</small>
+      </span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-label="Open navigation menu">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="events.html">Events</a>
+      <a href="members.html">Members</a>
+      <a href="publications.html">Publications</a>
+      <a href="login.html">Student Login</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">PUBLICATIONS</p>
+      <h1>Research that<br><span>gets shared.</span></h1>
+      <p>Explore approved publications from members of the DCURS community.</p>
+    </div>
+  </section>
+
+  <section class="publications">
+    <div class="container">
+      <h1 class="title">DCURS Publication Archive</h1>
+      <div id="publications">Loading publications...</div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">DCURS</div>
+      <p>Dhaka Central University Research Society - DCURS</p>
+      <p class="muted">INQUIRE • ANALYZE • INNOVATE</p>
+    </div>
+
+    <div>
+      <h4>Explore</h4>
+      <a href="campuses.html">Campuses</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+      <a href="events.html">Events</a>
+    </div>
+
+    <div>
+      <h4>Community</h4>
+      <a href="members.html">Members</a>
+      <a href="join.html">Join DCURS</a>
+      <a href="login.html">Student Login</a>
+    </div>
+  </div>
+
+  <div class="container copyright">
+    © 2026 Dhaka Central University Research Society - DCURS. All rights reserved.
+  </div>
+</footer>
+
+<script>
+async function loadPublications(){
+  const box=document.getElementById("publications");
+  try{
+    const response=await fetch("/api/public/publications");
+    if(!response.ok) throw new Error("Failed to load publications");
+    const data=await response.json();
+
+    if(data.length===0){
+      box.className="empty";
+      box.innerHTML="No approved publications available yet.";
+      return;
+    }
+
+    box.className="";
+    box.innerHTML=data.map(pub=>`
+      <div class="pub-card">
+        <h2>${pub.title || "Untitled Publication"}</h2>
+        <p><strong>Journal / Conference:</strong> ${pub.journal || "Not specified"}</p>
+        <p><strong>Year:</strong> ${pub.year || "Not specified"}</p>
+        <p><strong>Research Area:</strong> ${pub.area || "Not specified"}</p>
+        <p><strong>Author:</strong> ${pub.name || "Unknown"}</p>
+        <p><strong>Department:</strong> ${pub.department || "Unknown"}</p>
+        ${pub.link ? `<p><a href="${pub.link}" target="_blank" rel="noopener">View Paper</a></p>` : ""}
+        <span class="badge">Approved Publication</span>
+      </div>
+    `).join("");
+  }catch(error){
+    console.error(error);
+    box.className="empty";
+    box.innerHTML="Unable to load publications.";
+  }
+}
+loadPublications();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | DCURS</title>
+<link rel="stylesheet" href="style.css?v=20260830">
+<style>
+/* Guaranteed dashboard styling */
+.dcurs-admin-page{min-height:calc(100vh - 160px);padding:48px 0 80px;background:#f5f7fb}
+.dcurs-admin-page .container{max-width:1180px;margin:auto;padding:0 22px}
+.dcurs-admin-header{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:30px}
+.dcurs-admin-header .section-label{margin:0 0 8px;color:#1677ff;font-size:12px;font-weight:800;letter-spacing:.12em}
+.dcurs-admin-header h1{margin:0;color:#06244b;font-size:38px;line-height:1.1}
+.dcurs-admin-header p:not(.section-label){margin:9px 0 0;color:#667085}
+.dcurs-admin-logout{border:0;background:#06244b;color:#fff;padding:12px 20px;border-radius:999px;font-weight:800;cursor:pointer}
+.dcurs-admin-stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 28px}
+.dcurs-admin-card{background:#fff!important;border:1px solid #e4e9f1!important;border-radius:18px!important;padding:22px!important;box-shadow:0 8px 25px rgba(6,36,75,.06)!important}
+.dcurs-admin-card span{display:block;color:#667085;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.dcurs-admin-card strong{display:block;color:#06244b;font-size:34px;margin-top:9px}
+.dcurs-admin-section{background:#fff!important;border:1px solid #e4e9f1!important;border-radius:20px!important;padding:25px!important;margin:0 0 24px!important;box-shadow:0 8px 25px rgba(6,36,75,.05)!important}
+.dcurs-admin-section h2{margin:0 0 18px;color:#06244b;font-size:22px}
+.dcurs-admin-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.dcurs-admin-action{display:flex!important;flex-direction:column;gap:7px;text-decoration:none!important;background:#f8fafc!important;border:1px solid #e4e9f1!important;border-radius:14px!important;padding:18px!important;transition:.2s ease}
+.dcurs-admin-action:hover{transform:translateY(-2px);border-color:#b8c7da!important;box-shadow:0 10px 25px rgba(6,36,75,.08)}
+.dcurs-admin-action strong{color:#06244b;font-size:15px}
+.dcurs-admin-action span{color:#667085;font-size:13px;line-height:1.45}
+.dcurs-admin-table-wrap{overflow:auto;border:1px solid #e4e9f1;border-radius:14px}
+.dcurs-admin-table{width:100%;border-collapse:collapse;min-width:600px}
+.dcurs-admin-table th,.dcurs-admin-table td{padding:14px 16px;text-align:left;border-bottom:1px solid #edf1f6}
+.dcurs-admin-table th{background:#f7f9fc;color:#475467;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.dcurs-admin-table td{color:#344054}
+.dcurs-copyright{padding:26px 22px;text-align:center;color:#98a2b3;font-size:13px}
+@media(max-width:900px){.dcurs-admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.dcurs-admin-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:560px){.dcurs-admin-header{align-items:flex-start;flex-direction:column}.dcurs-admin-header h1{font-size:32px}.dcurs-admin-stats,.dcurs-admin-actions{grid-template-columns:1fr!important}}
+</style>
+</head>
+<body>
+<header class="site-header">
+<nav class="nav container">
+<a href="index.html" class="brand"><img src="assets/dcurs-logo.png" alt="DCURS Logo"><span><strong>Dhaka Central University</strong><small>Research Society</small></span></a>
+<div class="nav-links"><a href="index.html">Website</a><a href="admin.html" class="nav-cta">Admin</a></div>
+</nav>
+</header>
+
+<main class="dcurs-admin-page">
+<div class="container">
+<div class="dcurs-admin-header">
+<div><p class="section-label">ADMIN PANEL</p><h1>Dashboard</h1><p>Manage members, research, events, notifications and documents.</p></div>
+<button class="dcurs-admin-logout" onclick="logoutAdmin()">Logout</button>
+</div>
+
+<div class="dcurs-admin-stats">
+<div class="dcurs-admin-card"><span>Students</span><strong id="studentCount">0</strong></div>
+<div class="dcurs-admin-card"><span>Applications</span><strong id="applicationCount">0</strong></div>
+<div class="dcurs-admin-card"><span>Documents</span><strong id="documentCount">0</strong></div>
+<div class="dcurs-admin-card"><span>Events</span><strong id="eventCount">0</strong></div>
+</div>
+
+<section class="dcurs-admin-section">
+<h2>Quick Actions</h2>
+<div class="dcurs-admin-actions">
+<a href="admin-manage.html#membersPanel" class="dcurs-admin-action"><strong>👥 Member Verification</strong><span>Approve or reject student applications.</span></a>
+<a href="admin-manage.html#researchPanel" class="dcurs-admin-action"><strong>📄 Research Verification</strong><span>Verify projects, papers and research PDFs.</span></a>
+<a href="admin-manage.html#eventsPanel" class="dcurs-admin-action"><strong>📅 Event Update</strong><span>Create, edit or delete events.</span></a>
+<a href="admin-manage.html#notificationsPanel" class="dcurs-admin-action"><strong>🔔 Notification Update</strong><span>Publish and manage student notices.</span></a>
+<a href="admin-documents.html" class="dcurs-admin-action"><strong>📁 Documents</strong><span>Manage research files and approvals.</span></a>
+<a href="admin-audit.html" class="dcurs-admin-action"><strong>🛡️ Audit Logs</strong><span>Review security and administrative activity.</span></a>
+</div>
+</section>
+
+<section class="dcurs-admin-section">
+<h2>Recent Activity</h2>
+<div class="dcurs-admin-table-wrap"><table class="dcurs-admin-table"><thead><tr><th>Activity</th><th>User</th><th>Date</th></tr></thead><tbody id="activityRows"><tr><td colspan="3">Loading...</td></tr></tbody></table></div>
+</section>
+</div>
+</main>
+
+<footer class="footer"><div class="dcurs-copyright">© 2026 DCURS Admin Panel</div></footer>
+
+<script>
+const adminToken=localStorage.getItem("adminToken");
+if(!adminToken) window.location.href="admin-login.html";
+
+async function loadAdminStats(){
+ try{
+  const response=await fetch("/api/admin/stats",{headers:{Authorization:"Bearer "+adminToken}});
+  if(response.status===401||response.status===403){logoutAdmin();return;}
+  const data=await response.json();
+  document.getElementById("studentCount").textContent=data.students??0;
+  document.getElementById("applicationCount").textContent=data.applications??0;
+  document.getElementById("documentCount").textContent=data.documents??0;
+  document.getElementById("eventCount").textContent=data.events??0;
+ }catch(e){console.error("Admin stats:",e);}
+}
+function logoutAdmin(){localStorage.removeItem("adminToken");window.location.href="admin-login.html";}
+loadAdminStats();
+</script>
+</body>
+</html>
